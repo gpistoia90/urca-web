@@ -166,6 +166,51 @@ h3 { font-size: 20px; line-height: 1.3; }
 .datos b { color: var(--fg); font-weight: 600; }
 .datos { padding-left: 0; }
 
+/* Recorrido del cliente (portada). Sin JS o con movimiento reducido se ve el estado final.
+   Con JS, la línea lima se traza paso a paso al entrar en pantalla; el texto nunca se oculta. */
+.recorrido { padding-block: clamp(56px, 7vw, 88px); border-top: 1px solid var(--d-line); }
+.recorrido-cab { max-width: 34ch; margin-bottom: clamp(36px, 5vw, 56px); }
+.recorrido-cab .etiqueta { margin-bottom: 12px; }
+.recorrido-pasos { --gap: 28px; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gap); }
+.recorrido-pasos li { position: relative; }
+.recorrido-pasos li::before {
+  content: ""; display: block; position: relative; z-index: 1;
+  width: 14px; height: 14px; border-radius: 50%; margin-bottom: 22px;
+  background: var(--lime); border: 2px solid var(--lime);
+}
+.recorrido-pasos li:not(:last-child)::after {
+  content: ""; position: absolute; top: 6px; left: 14px; width: calc(100% + var(--gap) - 14px); height: 2px;
+  background: linear-gradient(var(--lime), var(--lime)) no-repeat left / 100% 100%, var(--d-forest-500);
+}
+.r-num { display: block; font: 500 12px/16px var(--mono); letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+.recorrido-pasos h3 { font-size: 20px; }
+.recorrido-pasos li:last-child h3 { color: var(--lime); }
+.r-chip { display: inline-block; margin: 10px 0 12px; padding: 4px 10px; border: 1px solid rgba(184, 242, 92, .45); border-radius: 999px; font: 500 12px/1.4 var(--mono); color: var(--lime); background: rgba(184, 242, 92, .06); }
+.recorrido-pasos p:not(.r-chip) { font-size: 15px; line-height: 1.5; color: var(--muted); }
+@media (max-width: 900px) {
+  .recorrido-pasos { --gap: 26px; grid-template-columns: 1fr; padding-left: 34px; }
+  .recorrido-pasos li::before { position: absolute; left: -34px; top: 1px; margin: 0; }
+  .recorrido-pasos li:not(:last-child)::after { top: 15px; left: -28px; width: 2px; height: calc(100% + var(--gap) - 14px); background-position: top; }
+}
+/* Animación (solo con JS y sin movimiento reducido) */
+.recorrido.js .recorrido-pasos li::before { background: var(--d-ground); border-color: var(--d-forest-500); }
+.recorrido.js .recorrido-pasos li:not(:last-child)::after { background-size: 0 100%; }
+.recorrido.en-marcha .recorrido-pasos li::before { animation: r-enciende .35s ease-out calc(var(--i) * .6s) both; }
+.recorrido.en-marcha .recorrido-pasos li:not(:last-child)::after { animation: r-traza .5s ease-in-out calc(var(--i) * .6s + .2s) both; }
+.recorrido.en-marcha .recorrido-pasos li:last-child::after {
+  content: ""; position: absolute; top: 0; left: 0; width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid var(--lime); animation: r-latido 2.4s ease-out 3s infinite; opacity: 0;
+}
+@keyframes r-enciende { from { background: var(--d-ground); border-color: var(--d-forest-500); transform: scale(.7); } to { background: var(--lime); border-color: var(--lime); transform: scale(1); } }
+@keyframes r-traza { from { background-size: 0 100%; } to { background-size: 100% 100%; } }
+@keyframes r-traza-y { from { background-size: 100% 0; } to { background-size: 100% 100%; } }
+@keyframes r-latido { 0% { opacity: .8; transform: scale(1); } 100% { opacity: 0; transform: scale(2.6); } }
+@media (max-width: 900px) {
+  .recorrido.js .recorrido-pasos li:not(:last-child)::after { background-size: 100% 0; }
+  .recorrido.en-marcha .recorrido-pasos li:not(:last-child)::after { animation-name: r-traza-y; }
+  .recorrido.en-marcha .recorrido-pasos li:last-child::after { left: -34px; top: 1px; }
+}
+
 /* Secciones */
 .seccion { padding-block: clamp(56px, 7vw, 96px); }
 .seccion + .seccion { border-top: 1px solid var(--rule); }
