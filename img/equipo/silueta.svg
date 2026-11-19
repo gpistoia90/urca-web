@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1A3026"/>
+      <stop offset="1" stop-color="#0F1F18"/>
+    </linearGradient>
+    <radialGradient id="luz" cx="0.72" cy="0.18" r="0.7">
+      <stop offset="0" stop-color="#46805F" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#46805F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#fondo)"/>
+  <rect width="800" height="1000" fill="url(#luz)"/>
+  <!-- Silueta de espaldas: cabeza y hombros, sin rasgos -->
+  <ellipse cx="400" cy="430" rx="128" ry="150" fill="#2E5A45"/>
+  <path d="M400 590c-60 0-104 14-128 34-100 22-176 92-196 206-10 60-12 110-12 170h672c0-60-2-110-12-170-20-114-96-184-196-206-24-20-68-34-128-34z" fill="#2E5A45"/>
+  <path d="M352 584h96l-6 46c-12 10-28 14-42 14s-30-4-42-14z" fill="#264C3A"/>
+</svg>
