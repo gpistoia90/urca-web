@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculadora de ROAS mínimo y coste máximo por cliente | URCA</title>
+<meta name="description" content="Calcula gratis tu ROAS mínimo (break even) y cuánto puedes pagar como máximo por cliente, por contacto y por clic en Google Ads y Meta Ads. Sin registro.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://urca-web.vercel.app/recursos/calculadora-roas">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="URCA">
+<meta property="og:title" content="Calculadora de ROAS mínimo y coste máximo por cliente | URCA">
+<meta property="og:description" content="Calcula gratis tu ROAS mínimo (break even) y cuánto puedes pagar como máximo por cliente, por contacto y por clic en Google Ads y Meta Ads. Sin registro.">
+<meta property="og:url" content="https://urca-web.vercel.app/recursos/calculadora-roas">
+<meta property="og:image" content="https://urca-web.vercel.app/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B0F0D">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/estilos.css?v=2026-11-19">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://urca-web.vercel.app"},{"@type":"ListItem","position":2,"name":"Recursos","item":"https://urca-web.vercel.app/recursos"},{"@type":"ListItem","position":3,"name":"Calculadora de ROAS","item":"https://urca-web.vercel.app/recursos/calculadora-roas"}]},{"@type":"WebApplication","name":"Calculadora de ROAS mínimo de URCA","url":"https://urca-web.vercel.app/recursos/calculadora-roas","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":"es-ES","description":"Calcula gratis tu ROAS mínimo (break even) y cuánto puedes pagar como máximo por cliente, por contacto y por clic en Google Ads y Meta Ads. Sin registro.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@id":"https://urca-web.vercel.app#urca"}}]}</script>
+</head>
+<body>
+<a class="salto" href="#contenido">Saltar al contenido</a>
+<header class="cabecera">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="URCA, inicio"><img src="/img/urca-lockup-sobre-claro.svg" alt="URCA" width="126" height="40"></a>
+    <nav class="menu" aria-label="Principal"><a href="/google-ads">Google Ads</a><a href="/meta-ads">Meta Ads</a><a href="/cuanto-cuesta-google-ads">Precios</a><a href="/recursos" aria-current="page">Recursos</a><a href="/sobre-nosotros">Sobre nosotros</a><a class="btn btn-principal btn-peq" href="/contacto">Cuéntanos tu caso</a></nav>
+    <details class="menu-movil"><summary>Menú</summary><nav aria-label="Principal"><a href="/google-ads">Google Ads</a><a href="/meta-ads">Meta Ads</a><a href="/cuanto-cuesta-google-ads">Precios</a><a href="/recursos">Recursos</a><a href="/sobre-nosotros">Sobre nosotros</a><a href="/agencia-google-ads-barcelona">Barcelona</a><a href="/contacto">Contacto</a></nav></details>
+  </div>
+</header>
+<main id="contenido">
+<section class="portada oscuro">
+  <div class="wrap">
+    <nav class="migas" aria-label="Estás en"><ol><li><a href="/">Inicio</a></li><li><a href="/recursos">Recursos</a></li><li aria-current="page">Calculadora de ROAS</li></ol></nav>
+    <h1>¿Te sale a cuenta <span class="acc">anunciarte?</span></h1>
+    <p class="entradilla">Calcula tu ROAS mínimo y cuánto puedes pagar como máximo por cada cliente, contacto y clic sin perder dinero. Los valores de partida son un ejemplo: cámbialos por los tuyos.</p>
+    
+  </div>
+</section><section class="seccion"><div class="wrap">
+<div class="calc">
+  <form class="calc-form" id="calc" novalidate>
+    <fieldset>
+      <legend><span class="paso">1</span> Tu venta</legend>
+      <div class="campo"><label for="c-ticket">Precio medio de una venta</label><div class="con-unidad"><input id="c-ticket" type="number" inputmode="decimal" min="0" step="any" value="120"><span>€</span></div><p class="ayuda">Lo que paga de media un cliente cada vez que compra, sin IVA.</p></div>
+      <div class="campo"><label for="c-margen">Margen bruto</label><div class="con-unidad"><input id="c-margen" type="number" inputmode="decimal" min="0" max="100" step="any" value="40"><span>%</span></div><p class="ayuda">Lo que te queda de cada venta después de pagar el producto o el servicio, antes de publicidad.</p></div>
+      <div class="campo"><label for="c-compras">Veces que te compra un cliente</label><div class="con-unidad"><input id="c-compras" type="number" inputmode="decimal" min="1" step="any" value="1"><span>veces</span></div><p class="ayuda">Si tus clientes repiten (una academia, una clínica, un restaurante), pon cuántas veces compran en total. Si no, deja 1.</p></div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="paso">2</span> Tus contactos</legend>
+      <div class="campo"><label for="c-conv">De cada 100 visitas a tu web, ¿cuántas te contactan o compran?</label><div class="con-unidad"><input id="c-conv" type="number" inputmode="decimal" min="0" max="100" step="any" value="3"><span>de 100</span></div><p class="ayuda">Si no lo sabes, entre 2 y 5 es habitual en una web de servicios.</p></div>
+      <div class="campo"><label for="c-cierre">De cada 10 contactos, ¿cuántos acaban comprando?</label><div class="con-unidad"><input id="c-cierre" type="number" inputmode="decimal" min="0" max="10" step="any" value="3"><span>de 10</span></div><p class="ayuda">Si vendes online y el contacto ya es la compra, pon 10.</p></div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="paso">3</span> Si ya te anuncias <span class="opcional">(opcional)</span></legend>
+      <div class="campo"><label for="c-roas">Tu ROAS actual</label><div class="con-unidad"><input id="c-roas" type="number" inputmode="decimal" min="0" step="any" placeholder="Ej.: 3,5"><span>×</span></div><p class="ayuda">Ingresos atribuidos a los anuncios dividido entre lo invertido. En Google Ads es la columna «Valor de conv./coste».</p></div>
+      <div class="campo"><label for="c-clientes">Clientes nuevos que quieres al mes</label><div class="con-unidad"><input id="c-clientes" type="number" inputmode="decimal" min="0" step="any" placeholder="Ej.: 10"><span>clientes</span></div></div>
+    </fieldset>
+  </form>
+  <aside class="calc-res" aria-live="polite" aria-label="Resultado">
+    <p class="etiqueta">Tu punto de equilibrio</p>
+    <div class="res-principal"><span class="res-num" id="r-roas">—</span><span class="res-tit">ROAS mínimo</span></div>
+    <p class="res-nota" id="r-roas-nota"></p>
+    <dl class="res-lista">
+      <div><dt>Máximo por cliente</dt><dd id="r-cpa">—</dd></div>
+      <div><dt>Máximo por contacto</dt><dd id="r-cpl">—</dd></div>
+      <div><dt>Máximo por clic</dt><dd id="r-cpc">—</dd></div>
+    </dl>
+    <div class="res-extra" id="r-actual" hidden></div>
+    <div class="res-extra" id="r-techo" hidden></div>
+    <p class="res-pie">Son máximos para no perder dinero: para ganar, tus costes reales tienen que quedar por debajo.</p>
+    <a class="btn btn-principal" href="/contacto">Revisamos tus números →</a>
+  </aside>
+</div>
+</div></section><section class="seccion blanca"><div class="wrap"><div class="lectura">
+<h2>Qué es el ROAS</h2>
+<p>El <strong>ROAS</strong> (del inglés <em>return on ad spend</em>) es lo que ingresas por cada euro que inviertes en anuncios. Se calcula dividiendo los ingresos que traen los anuncios entre lo invertido. Un ROAS de 4 significa que por cada euro invertido entran 4 € en ventas.</p>
+<p>Pero ingresar no es ganar: de esos 4 € hay que pagar el producto o el servicio. Por eso un ROAS que en un negocio es excelente, en otro puede dar pérdidas.</p>
+<h2>Cómo se calcula el ROAS mínimo</h2>
+<p>El ROAS mínimo, o <strong>ROAS de equilibrio</strong> (<em>break even</em>), es el punto en el que la publicidad ni gana ni pierde. Se calcula así:</p>
+<p class="formula">ROAS mínimo = 1 ÷ margen bruto</p>
+<p>Con un margen del 40 %, el ROAS mínimo es 1 ÷ 0,40 = <strong>2,5</strong>. Por debajo de 2,5 cada venta que traen los anuncios te cuesta dinero; por encima, te deja margen.</p>
+<p>Si tus clientes vuelven a comprar, lo que vale un cliente se multiplica, y puedes permitirte pagar más por conseguirlo. Por eso la calculadora tiene en cuenta cuántas veces te compra cada cliente.</p>
+<h2>Del cliente al clic</h2>
+<p>El coste máximo por cliente es lo que te deja un cliente: precio × margen × veces que compra. A partir de ahí:</p>
+<ul>
+  <li><strong>Máximo por contacto</strong> = máximo por cliente × los contactos que acaban comprando.</li>
+  <li><strong>Máximo por clic</strong> = máximo por contacto × las visitas que te contactan.</li>
+</ul>
+<p>Es útil para comparar con lo que ves en tus campañas: si en Google Ads pagas 1,20 € por clic y tu máximo es 0,90 €, hay que mejorar la web, la oferta o las búsquedas antes de invertir más.</p>
+<h2>Dónde ver tu ROAS</h2>
+<ul>
+  <li><strong>Google Ads:</strong> añade la columna «Valor de conv./coste» en tus campañas. Necesitas tener las conversiones medidas con su valor.</li>
+  <li><strong>Meta Ads:</strong> la columna «ROAS (retorno de la inversión publicitaria) de compras» en el Administrador de anuncios.</li>
+  <li><strong>Si vendes servicios</strong> y no registras el valor de cada venta, calcula a mano: ventas cerradas que vinieron de anuncios × precio medio ÷ inversión.</li>
+</ul>
+<p class="nota">La calculadora funciona en tu navegador: no guardamos ni enviamos los datos que escribes.</p>
+</div></div></section><section class="cierre oscuro">
+  <div class="wrap">
+    <div><h2>¿Tus números no salen?</h2><p>Cuéntanos qué vendes y cuánto te cuesta hoy cada cliente. Te decimos qué cambiaríamos para que salgan.</p></div>
+    <a class="btn btn-principal" href="/contacto">Cuéntanos tu caso →</a>
+  </div>
+</section>
+</main>
+<footer class="pie oscuro">
+  <div class="wrap">
+    <div class="marca">
+      <img src="/img/urca-lockup-sobre-oscuro.svg" alt="URCA" width="126" height="40" loading="lazy">
+      <p>Agencia de Google Ads y Meta Ads para pymes. En Barcelona y en remoto para toda España.</p>
+    </div>
+    <div>
+      <h2>Servicios</h2>
+      <ul><li><a href="/google-ads">Google Ads</a></li><li><a href="/meta-ads">Meta Ads</a></li><li><a href="/agencia-google-ads-barcelona">Agencia en Barcelona</a></li></ul>
+    </div>
+    <div>
+      <h2>Recursos</h2>
+      <ul><li><a href="/recursos/calculadora-roas">Calculadora de ROAS</a></li><li><a href="/recursos/checklist-google-ads-meta-ads">Checklist de Google Ads y Meta Ads</a></li><li><a href="/cuanto-cuesta-google-ads">Cuánto cuesta Google Ads</a></li><li><a href="/google-ads-o-meta-ads">Google Ads o Meta Ads</a></li></ul>
+    </div>
+    <div>
+      <h2>URCA</h2>
+      <ul><li><a href="/sobre-nosotros">Sobre nosotros</a></li><li><a href="/contacto">Contacto</a></li></ul>
+    </div>
+    <div class="legal"><span>© 2026 URCA. Tu inversión, a buen puerto.</span><a href="/aviso-legal">Aviso legal</a><a href="/privacidad">Privacidad</a></div>
+  </div>
+</footer>
+<script>
+(function () {
+  var f2 = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var f1 = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  var f0 = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 });
+  function num(id) { var v = parseFloat(String(document.getElementById(id).value).replace(',', '.')); return isFinite(v) ? v : NaN; }
+  function eur(v) { return (Math.abs(v) >= 100 ? f0.format(v) : f2.format(v)) + ' €'; }
+  function set(id, txt) { document.getElementById(id).textContent = txt; }
+  function calcular() {
+    var ticket = num('c-ticket'), margen = num('c-margen') / 100, compras = num('c-compras'),
+        conv = num('c-conv') / 100, cierre = num('c-cierre') / 10, roas = num('c-roas'), clientes = num('c-clientes');
+    if (!(compras >= 1)) compras = 1;
+    var ok = ticket > 0 && margen > 0 && margen <= 1;
+    if (!ok) {
+      set('r-roas', '—'); set('r-cpa', '—'); set('r-cpl', '—'); set('r-cpc', '—');
+      set('r-roas-nota', 'Pon un precio medio y un margen entre 1 y 100 % para ver el resultado.');
+      document.getElementById('r-actual').hidden = true; document.getElementById('r-techo').hidden = true;
+      return;
+    }
+    var roasMin = 1 / margen;
+    var roasMinVida = 1 / (margen * compras);
+    var cpa = ticket * margen * compras;
+    set('r-roas', f1.format(roasMin));
+    set('r-roas-nota', compras > 1
+      ? 'En la primera venta. Contando que cada cliente te compra ' + f1.format(compras) + ' veces, el mínimo baja a ' + f1.format(roasMinVida) + '.'
+      : 'Por cada euro en anuncios necesitas ' + f2.format(roasMin) + ' € en ventas para no perder.');
+    set('r-cpa', eur(cpa));
+    var cpl = (cierre > 0 && cierre <= 1) ? cpa * cierre : NaN;
+    set('r-cpl', isFinite(cpl) ? eur(cpl) : '—');
+    var cpc = (isFinite(cpl) && conv > 0 && conv <= 1) ? cpl * conv : NaN;
+    set('r-cpc', isFinite(cpc) ? eur(cpc) : '—');
+
+    var act = document.getElementById('r-actual');
+    if (roas > 0) {
+      var porEuro = roas * margen - 1;
+      act.hidden = false;
+      act.className = 'res-extra ' + (porEuro >= 0 ? 'gana' : 'pierde');
+      act.textContent = porEuro >= 0
+        ? 'Con tu ROAS de ' + f1.format(roas) + ', cada euro en anuncios te deja ' + f2.format(porEuro) + ' € de margen en la primera venta.'
+        : 'Con tu ROAS de ' + f1.format(roas) + ', cada euro en anuncios te cuesta ' + f2.format(-porEuro) + ' € en la primera venta.'
+          + (compras > 1 && roas * margen * compras - 1 >= 0 ? ' Si el cliente repite como has indicado, lo recuperas con sus siguientes compras.' : '');
+    } else { act.hidden = true; }
+
+    var techo = document.getElementById('r-techo');
+    if (clientes > 0) {
+      techo.hidden = false;
+      techo.className = 'res-extra';
+      techo.textContent = 'Para ' + f0.format(clientes) + ' clientes nuevos al mes, la inversión no debería pasar de ' + eur(clientes * cpa) + ' al mes. A partir de ahí, perderías dinero.';
+    } else { techo.hidden = true; }
+  }
+  document.getElementById('calc').addEventListener('input', calcular);
+  calcular();
+})();
+</script>
+</body>
+</html>
