@@ -48,7 +48,12 @@
     <fieldset>
       <legend><span class="paso">1</span> Tu venta</legend>
       <div class="campo"><label for="c-ticket">Precio medio de una venta</label><div class="con-unidad"><input id="c-ticket" type="number" inputmode="decimal" min="0" step="any" value="120"><span>€</span></div><p class="ayuda">Lo que paga de media un cliente cada vez que compra, sin IVA.</p></div>
-      <div class="campo"><label for="c-margen">Margen bruto</label><div class="con-unidad"><input id="c-margen" type="number" inputmode="decimal" min="0" max="100" step="any" value="40"><span>%</span></div><p class="ayuda">Lo que te queda de cada venta después de pagar el producto o el servicio, antes de publicidad.</p></div>
+      <div class="campo"><label for="c-margen">Margen bruto</label><div class="con-unidad"><input id="c-margen" type="number" inputmode="decimal" min="0" max="100" step="any" value="40"><span>%</span></div><p class="ayuda">Lo que te queda de cada venta después de pagar el producto o el servicio, antes de publicidad.</p>
+        <details class="ayuda-margen"><summary>¿No sabes tu margen? Calcúlalo aquí</summary>
+          <div class="campo"><label for="c-coste">Lo que te cuesta servir una venta</label><div class="con-unidad"><input id="c-coste" type="number" inputmode="decimal" min="0" step="any" placeholder="Ej.: 70"><span>€</span></div><p class="ayuda">Producto, materiales, horas de quien la hace o comisiones. Sin contar la publicidad.</p></div>
+          <p class="ayuda-res" id="c-margen-res" aria-live="polite">Margen = (precio − coste) ÷ precio.</p>
+          <button class="btn btn-borde btn-peq" type="button" id="c-usar-margen" disabled>Usar este margen</button>
+        </details></div>
       <div class="campo"><label for="c-compras">Veces que te compra un cliente</label><div class="con-unidad"><input id="c-compras" type="number" inputmode="decimal" min="1" step="any" value="1"><span>veces</span></div><p class="ayuda">Si tus clientes repiten (una academia, una clínica, un restaurante), pon cuántas veces compran en total. Si no, deja 1.</p></div>
     </fieldset>
     <fieldset>
@@ -119,7 +124,7 @@
     </div>
     <div>
       <h2>Recursos</h2>
-      <ul><li><a href="/recursos/calculadora-roas">Calculadora de ROAS</a></li><li><a href="/recursos/checklist-google-ads-meta-ads">Checklist de Google Ads y Meta Ads</a></li><li><a href="/cuanto-cuesta-google-ads">Cuánto cuesta Google Ads</a></li><li><a href="/google-ads-o-meta-ads">Google Ads o Meta Ads</a></li></ul>
+      <ul><li><a href="/recursos/calculadora-roas">Calculadora de ROAS</a></li><li><a href="/recursos/checklist-google-ads-meta-ads">Checklist de Google Ads y Meta Ads</a></li><li><a href="/recursos/glosario-google-ads-meta-ads">Glosario</a></li><li><a href="/cuanto-cuesta-google-ads">Cuánto cuesta Google Ads</a></li><li><a href="/google-ads-o-meta-ads">Google Ads o Meta Ads</a></li></ul>
     </div>
     <div>
       <h2>URCA</h2>
@@ -178,7 +183,26 @@
       techo.textContent = 'Para ' + f0.format(clientes) + ' clientes nuevos al mes, la inversión no debería pasar de ' + eur(clientes * cpa) + ' al mes. A partir de ahí, perderías dinero.';
     } else { techo.hidden = true; }
   }
-  document.getElementById('calc').addEventListener('input', calcular);
+  var margenCalc = NaN;
+  function ayudaMargen() {
+    var precio = num('c-ticket'), coste = num('c-coste'), res = document.getElementById('c-margen-res'), btn = document.getElementById('c-usar-margen');
+    if (precio > 0 && coste >= 0 && coste < precio) {
+      margenCalc = (precio - coste) / precio * 100;
+      res.textContent = 'Con un precio de ' + eur(precio) + ' y un coste de ' + eur(coste) + ', tu margen es del ' + f1.format(margenCalc) + ' %.';
+      btn.disabled = false;
+    } else {
+      margenCalc = NaN; btn.disabled = true;
+      res.textContent = (precio > 0 && coste >= precio) ? 'El coste es igual o mayor que el precio: no queda margen para pagar anuncios.' : 'Margen = (precio − coste) ÷ precio.';
+    }
+  }
+  document.getElementById('c-usar-margen').addEventListener('click', function () {
+    if (!isFinite(margenCalc)) return;
+    var m = document.getElementById('c-margen');
+    m.value = Math.round(margenCalc * 10) / 10;
+    calcular(); m.focus();
+  });
+  document.getElementById('calc').addEventListener('input', function () { ayudaMargen(); calcular(); });
+  ayudaMargen();
   calcular();
 })();
 </script>
