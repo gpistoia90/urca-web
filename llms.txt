@@ -11,7 +11,7 @@ URCA es una agencia de Google Ads y Meta Ads (Facebook e Instagram) para pymes, 
 - [Agencia de Google Ads y Meta Ads en Barcelona](https://urca-web.vercel.app/agencia-google-ads-barcelona): Agencia de Google Ads y Meta Ads en Barcelona para pymes y negocios locales: campañas por barrio y municipio, medición de llamadas y reuniones en persona.
 - [Cuánto cuesta Google Ads para una pyme en España](https://urca-web.vercel.app/cuanto-cuesta-google-ads): Cuánto cuesta anunciarse en Google Ads, Facebook e Instagram para una pyme en España: cómo se paga, con cuánto empezar y cuánto te cuesta cada cliente.
 - [Google Ads o Meta Ads: cuál conviene a tu negocio](https://urca-web.vercel.app/google-ads-o-meta-ads): Diferencias entre Google Ads y Meta Ads (Facebook e Instagram) y cuál conviene a tu negocio, con una recomendación según el tipo de pyme.
-- [Sobre nosotros: por qué nos llamamos URCA](https://urca-web.vercel.app/sobre-nosotros): URCA es una agencia de Google Ads y Meta Ads para pymes. El nombre viene de un barrio de Río de Janeiro y de un barco que siempre llegaba a puerto.
+- [Sobre nosotros: el equipo de URCA](https://urca-web.vercel.app/sobre-nosotros): Quiénes están detrás de URCA: un equipo de cinco personas especialistas en Google Ads, Meta Ads, growth y diseño web y UX, al servicio de pymes.
 
 ## Contacto
 - [Formulario de contacto](https://urca-web.vercel.app/contacto)
