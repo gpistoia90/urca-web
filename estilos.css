@@ -235,6 +235,14 @@ h3 { font-size: 20px; line-height: 1.3; }
 .historia .btn { margin-top: 26px; }
 @media (max-width: 860px) { .historia { grid-template-columns: 1fr; } }
 
+/* Foto a todo el ancho de la pantalla */
+.foto-ancha { margin: 0; background: var(--d-ground); }
+.foto-ancha img { width: 100%; height: clamp(300px, 64vh, 720px); object-fit: cover; object-position: center 60%; }
+.foto-ancha figcaption { padding-block: 14px; font-size: 14px; color: var(--d-ink-muted); }
+.lectura-grande p { font-size: clamp(19px, 2vw, 23px); line-height: 1.55; color: var(--fg); }
+.tras-lectura { margin-top: 40px; }
+.seccion.blanca + .seccion, .foto-ancha + .seccion { border-top: 0; }
+
 .foto { margin-block: 36px; }
 .foto img { border-radius: var(--radius); width: 100%; }
 .foto figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); }
