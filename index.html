@@ -45,7 +45,7 @@
       <a class="btn btn-principal" href="/contacto">Cuéntanos tu caso</a>
       <a class="btn btn-borde" href="#como-trabajamos">Cómo trabajamos</a>
     </div>
-    <ul class="datos">
+    <ul class="datos desliza">
       <li><b>Primera semana:</b> revisión de tu cuenta y tu web</li>
       <li><b>Cada semana:</b> ajuste de campañas</li>
       <li><b>Cada mes:</b> informe en lenguaje claro</li>
@@ -58,17 +58,18 @@
       <p class="etiqueta">Del anuncio al cliente</p>
       <h2 id="recorrido-titulo">Un clic no es un cliente. <span class="acc">Medimos el camino entero.</span></h2>
     </div>
-    <ol class="recorrido-pasos">
+    <ol class="recorrido-pasos desliza">
       <li style="--i:0"><span class="r-num">01</span><h3>Búsqueda</h3><p class="r-chip">«fontanero en Gràcia»</p><p>Alguien busca lo que vendes en Google o pasa el rato en Instagram.</p></li>
       <li style="--i:1"><span class="r-num">02</span><h3>Anuncio</h3><p class="r-chip">Patrocinado · tu negocio</p><p>Ve tu anuncio en el momento justo y en su zona.</p></li>
       <li style="--i:2"><span class="r-num">03</span><h3>Tu web</h3><p class="r-chip">visita</p><p>Entra en tu web o en tu ficha y entiende qué ofreces.</p></li>
       <li style="--i:3"><span class="r-num">04</span><h3>Contacto</h3><p class="r-chip">llamada · WhatsApp · formulario</p><p>Te llama, te escribe o te deja sus datos. Lo registramos todo.</p></li>
       <li style="--i:4"><span class="r-num">05</span><h3>Cliente</h3><p class="r-chip">venta</p><p>Cruzamos los contactos con tus ventas: así sabemos qué anuncio trae clientes.</p></li>
     </ol>
+    <p class="pista" aria-hidden="true">Desliza para ver los 5 pasos →</p>
   </div>
 </section>
 <script>(function(){var r=document.querySelector(".recorrido");if(!r||!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;r.classList.add("js");var o=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){r.classList.add("en-marcha");o.disconnect();}});},{threshold:.35});o.observe(r);})();</script>
-<section class="seccion "><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Qué hacemos</p><h2>Publicidad en Google y en Meta, medida en clientes</h2><p>Dos canales que se complementan. Te decimos cuál tiene sentido para ti y lo gestionamos de principio a fin.</p></div><div class="rejilla-2">
+<section class="seccion "><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Qué hacemos</p><h2>Publicidad en Google y en Meta, medida en clientes</h2><p>Dos canales que se complementan. Te decimos cuál tiene sentido para ti y lo gestionamos de principio a fin.</p></div><div class="rejilla-2 desliza">
   <article class="tarjeta">
     <p class="etiqueta">Cuando ya te buscan</p>
     <h3>Google Ads</h3>
@@ -84,18 +85,19 @@
     <p class="mas"><a href="/meta-ads">Gestión de Meta Ads →</a></p>
   </article>
 </div>
-<p class="nota tras-rejilla">¿No sabes por cuál empezar? Lo explicamos en <a href="/google-ads-o-meta-ads">Google Ads o Meta Ads: cuál conviene a tu negocio</a>.</p></div></section><section class="seccion blanca" id="como-trabajamos"><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Cómo trabajamos</p><h2>De menos a más, con datos en cada paso</h2></div><ol class="pasos">
+<p class="nota tras-rejilla">¿No sabes por cuál empezar? Lo explicamos en <a href="/google-ads-o-meta-ads">Google Ads o Meta Ads: cuál conviene a tu negocio</a>.</p></div></section><section class="seccion blanca" id="como-trabajamos"><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Cómo trabajamos</p><h2>De menos a más, con datos en cada paso</h2></div><ol class="pasos plegable">
   <li><span class="cuando">Semana 1</span><h3>Revisamos tu cuenta, tu web y tus números</h3><p>Qué vendes, cuánto vale un cliente para ti y qué se ha hecho hasta ahora. Si no tienes cuenta, la creamos a tu nombre.</p></li>
   <li><span class="cuando">Antes de lanzar</span><h3>Dejamos la medición lista</h3><p>Cada llamada, formulario y mensaje de WhatsApp queda registrado. Sin eso no se puede saber qué anuncio trae clientes.</p></li>
   <li><span class="cuando">Semanas 2–4</span><h3>Lanzamos con un presupuesto prudente</h3><p>Empezamos con poco y con las búsquedas o públicos más claros. La inversión solo crece si los datos lo justifican.</p></li>
   <li><span class="cuando">Cada semana</span><h3>Ajustamos</h3><p>Quitamos búsquedas que no venden, probamos anuncios nuevos y movemos el dinero hacia lo que funciona.</p></li>
   <li><span class="cuando">Semana 12</span><h3>Decidimos con datos</h3><p>Con tres meses de resultados revisamos contigo el coste por cliente y decidimos si escalar, mantener o cambiar el rumbo.</p></li>
-</ol></div></section><section class="seccion "><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Para quién</p><h2>Pymes que ya venden y quieren vender más</h2><p>Trabajamos con negocios pequeños y medianos que tienen un producto o servicio probado y alguien que atiende a cada contacto que llega.</p></div><ul class="lista-2">
+</ol>
+<script>(function(){var ol=document.querySelector(".pasos.plegable");if(!ol||!matchMedia("(max-width: 760px)").matches)return;ol.classList.add("plegado");ol.querySelectorAll("li").forEach(function(li){var h=li.querySelector("h3"),b=document.createElement("button");b.type="button";b.className="paso-btn";b.setAttribute("aria-expanded","false");while(h.firstChild)b.appendChild(h.firstChild);h.appendChild(b);b.addEventListener("click",function(){b.setAttribute("aria-expanded",li.classList.toggle("abierto")?"true":"false");});});})();</script></div></section><section class="seccion "><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Para quién</p><h2>Pymes que ya venden y quieren vender más</h2><p>Trabajamos con negocios pequeños y medianos que tienen un producto o servicio probado y alguien que atiende a cada contacto que llega.</p></div><ul class="lista-2 desliza">
   <li><b>Negocios locales y de servicios</b><span>Clínicas, academias, talleres, reformas, abogados: quien vive de que le llamen.</span></li>
   <li><b>Restaurantes y comercios</b><span>Reservas, visitas a la tienda y pedidos en la zona.</span></li>
   <li><b>Tiendas online</b><span>Campañas de producto en Google y venta con imagen y vídeo en Instagram.</span></li>
   <li><b>Profesionales y pequeñas empresas B2B</b><span>Contactos cualificados para quien vende servicios a otras empresas.</span></li>
-</ul></div></section><section class="seccion blanca"><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Nuestras reglas</p><h2>Claridad desde el primer día</h2></div><ul class="compromisos">
+</ul></div></section><section class="seccion blanca"><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Nuestras reglas</p><h2>Claridad desde el primer día</h2></div><ul class="compromisos desliza">
   <li><h3>Las cuentas son tuyas</h3><p>Google Ads, Meta y la medición se crean a tu nombre. Si un día te vas, te lo llevas todo.</p></li>
   <li><h3>La inversión, directa</h3><p>Pagas los anuncios a Google y a Meta con tu tarjeta. Ese dinero no pasa por nosotros.</p></li>
   <li><h3>Precio cerrado</h3><p>Te damos por escrito lo que cuesta la gestión antes de empezar.</p></li>
