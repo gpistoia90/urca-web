@@ -498,3 +498,109 @@ h3 { font-size: 20px; line-height: 1.3; }
 }
 @media (max-width: 520px) { .desliza { --borde: 16px; } }
 @media (min-width: 761px) { .pista { display: none; } }
+
+/* Escenas animadas (Qué hacemos). Decorativas (aria-hidden): el texto va al lado.
+   Sin JS o con movimiento reducido se ven quietas en su estado final. */
+.bloques { display: grid; gap: clamp(48px, 7vw, 104px); }
+.bloque { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: center; }
+.bloque.al-reves .escena { order: 2; }
+.bloque-texto .etiqueta { margin-bottom: 12px; }
+.bloque-texto h3 { font-size: clamp(26px, 3vw, 34px); line-height: 1.15; }
+.bloque-texto p { margin-top: 12px; color: var(--muted); }
+.bloque-texto ul { margin-top: 16px; padding-left: 20px; display: grid; gap: 6px; }
+.bloque-texto li::marker { color: var(--acc); }
+.bloque-texto .mas { margin-top: 22px; font-weight: 600; }
+.bloque-texto .mas a { text-decoration: none; }
+.bloque-texto .mas a:hover { text-decoration: underline; }
+
+.escena { position: relative; aspect-ratio: 5 / 4; border-radius: 24px; overflow: hidden; background: var(--d-forest-900); isolation: isolate; }
+.escena-meta { background: var(--lime); }
+.e-luna { position: absolute; top: 12%; right: 12%; width: 44px; height: 44px; border-radius: 50%; background: var(--lime); }
+.e-loma { position: absolute; bottom: -12%; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+.e-loma-1 { left: -8%; width: 52%; height: 46%; background: #1A3026; }
+.e-loma-2 { right: -10%; width: 46%; height: 78%; background: var(--d-forest-500); }
+.e-aro { position: absolute; border-radius: 50%; border: 2px solid rgba(10, 20, 12, .18); }
+.e-aro-1 { width: 70%; aspect-ratio: 1; left: -18%; top: -22%; }
+.e-aro-2 { width: 46%; aspect-ratio: 1; right: -10%; bottom: -14%; background: rgba(10, 20, 12, .06); }
+
+.movil {
+  --s: 1;
+  position: absolute; left: 50%; bottom: -28px; z-index: 1;
+  width: 228px; height: 372px; padding: 22px 14px 0; overflow: hidden;
+  transform: translateX(-50%) scale(var(--s)); transform-origin: 50% 100%;
+  background: #F4F6F2; color: #0E1411; font-family: var(--sans);
+  border: 7px solid #0B0F0D; border-radius: 34px; box-shadow: 0 30px 60px rgba(0, 0, 0, .35);
+}
+.m-linea { display: block; height: 6px; border-radius: 3px; background: #D5DDD7; }
+.m-corta { width: 60%; }
+.m-busca { display: flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px; border-radius: 999px; background: #fff; border: 1px solid #D5DDD7; font: 500 11.5px/1 var(--mono); }
+.m-lupa { position: relative; flex: none; width: 10px; height: 10px; border: 2px solid #4A5A51; border-radius: 50%; }
+.m-lupa::after { content: ""; position: absolute; right: -4px; bottom: -4px; width: 5px; height: 2px; background: #4A5A51; transform: rotate(45deg); }
+.m-tecleo { display: inline-block; overflow: hidden; white-space: nowrap; width: 19ch; padding-right: 1px; border-right: 1.5px solid #0E1411; }
+.m-anuncio { display: grid; gap: 6px; margin-top: 14px; padding: 12px; border-radius: 12px; background: #fff; border: 1.5px solid #4A7A12; }
+.m-patro { font: 600 9px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #4A7A12; }
+.m-anuncio b { font: 600 15px/1.2 var(--display); }
+.m-boton { justify-self: start; margin-top: 4px; padding: 7px 14px; border-radius: 999px; background: #0E1411; color: var(--lime); font: 600 11px/1 var(--sans); }
+.m-res { display: grid; gap: 6px; margin-top: 12px; padding: 12px; border-radius: 12px; background: #fff; }
+.m-tit { width: 70%; height: 8px; background: #B9C5BD; }
+.m-feed { display: grid; gap: 12px; transform: translateY(-168px); }
+.m-post { position: relative; display: grid; gap: 8px; padding: 10px; border-radius: 12px; background: #fff; }
+.m-cab { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.m-cab i { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #D5DDD7; }
+.m-cab .m-linea { flex: 1; }
+.m-cab b { font-weight: 600; }
+.m-post-anuncio .m-cab i { background: var(--d-forest-500); }
+.m-post-anuncio .m-patro { margin-left: auto; }
+.m-foto { position: relative; display: block; height: 130px; border-radius: 8px; background: #E3ECE5; overflow: hidden; }
+.m-post-anuncio .m-foto { background: var(--d-forest-900); }
+.mf-sol { position: absolute; top: 18px; right: 26px; width: 26px; height: 26px; border-radius: 50%; background: var(--lime); }
+.mf-loma { position: absolute; right: -10px; bottom: -20px; width: 120px; height: 110px; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: var(--d-forest-500); }
+.m-cta { display: block; padding: 8px; border-radius: 8px; background: #0E1411; color: var(--lime); text-align: center; font: 600 11px/1 var(--sans); }
+.m-corazon { position: absolute; right: 18px; top: 66px; font-size: 30px; line-height: 1; color: var(--lime); text-shadow: 0 2px 10px rgba(0, 0, 0, .35); }
+
+.escena.en-marcha .m-tecleo { animation: g-tecleo 8s steps(19, end) infinite, g-cursor .8s step-end infinite; }
+.escena.en-marcha .m-anuncio { animation: g-anuncio 8s ease-out infinite; }
+.escena.en-marcha .m-boton { animation: g-boton 8s ease-out infinite; }
+.escena.en-marcha .m-feed { animation: m-desliza 8s ease-in-out infinite; }
+.escena.en-marcha .m-corazon { animation: m-corazon 8s ease-out infinite; }
+@keyframes g-tecleo { 0% { width: 0; } 30%, 92% { width: 19ch; } 100% { width: 0; } }
+@keyframes g-cursor { 50% { border-color: transparent; } }
+@keyframes g-anuncio { 0%, 32% { opacity: .25; transform: translateY(10px); border-color: #D5DDD7; } 40%, 92% { opacity: 1; transform: none; border-color: #4A7A12; } 100% { opacity: .25; transform: translateY(10px); border-color: #D5DDD7; } }
+@keyframes g-boton { 0%, 52%, 64%, 100% { transform: none; box-shadow: none; } 57% { transform: scale(.9); box-shadow: 0 0 0 6px rgba(184, 242, 92, .55); } }
+@keyframes m-desliza { 0% { transform: translateY(0); } 30%, 86% { transform: translateY(-168px); } 100% { transform: translateY(0); } }
+@keyframes m-corazon { 0%, 42% { transform: scale(0); } 50% { transform: scale(1.35); } 56%, 82% { transform: scale(1); } 88%, 100% { transform: scale(0); } }
+
+/* Cierre con la bahía: un barco que llega a puerto */
+.cierre .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 460px); gap: 32px 56px; align-items: center; }
+.cierre-texto .btn { margin-top: 24px; }
+.puerto { position: relative; height: 230px; border-radius: 20px; overflow: hidden; background: linear-gradient(180deg, #13261D 0%, var(--d-forest-900) 60%); border: 1px solid var(--d-line); }
+.p-luna { position: absolute; top: 22px; right: 24%; width: 34px; height: 34px; border-radius: 50%; background: var(--lime); }
+.p-monte { position: absolute; bottom: 38%; border-radius: 50% 50% 0 0 / 90% 90% 0 0; }
+.p-monte-1 { right: 6%; width: 92px; height: 128px; background: var(--d-forest-500); }
+.p-monte-2 { right: 24%; width: 140px; height: 64px; background: #1A3026; }
+.p-agua { position: absolute; left: 0; right: 0; bottom: 0; height: 38%; background: var(--d-ground); border-top: 1px solid var(--d-forest-500); }
+.p-agua i { position: absolute; display: block; height: 2px; border-radius: 1px; }
+.p-reflejo { right: calc(24% + 2px); top: 10px; width: 30px; background: repeating-linear-gradient(180deg, var(--lime) 0 2px, transparent 2px 9px); height: 46px !important; opacity: .55; }
+.p-ola { width: 34px; background: var(--d-forest-500); }
+.p-ola-1 { left: 12%; top: 22px; }
+.p-ola-2 { left: 40%; top: 48px; width: 22px; }
+.p-ola-3 { left: 70%; top: 34px; width: 40px; }
+.p-muelle { position: absolute; right: 0; bottom: calc(38% - 3px); width: 18%; height: 6px; background: #46805F; }
+.p-barco { position: absolute; bottom: calc(38% - 8px); left: 56%; }
+.p-barco svg { display: block; transform-origin: 50% 90%; }
+.puerto.en-marcha .p-barco { animation: p-navega 14s ease-in-out infinite; }
+.puerto.en-marcha .p-barco svg { animation: p-balanceo 3s ease-in-out infinite; }
+.puerto.en-marcha .p-ola { animation: p-ola 5s ease-in-out infinite alternate; }
+.puerto.en-marcha .p-ola-2 { animation-delay: -2s; }
+.puerto.en-marcha .p-ola-3 { animation-delay: -3.5s; }
+@keyframes p-navega { 0% { left: -14%; } 65%, 100% { left: 56%; } }
+@keyframes p-balanceo { 0%, 100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(1px); } }
+@keyframes p-ola { from { transform: translateX(-10px); } to { transform: translateX(12px); } }
+
+@media (max-width: 860px) { .cierre .wrap { grid-template-columns: 1fr; } .puerto { height: 180px; } .p-luna { right: 50%; top: 18px; width: 28px; height: 28px; } .p-reflejo { right: calc(50% - 1px); width: 26px; } .p-monte-2 { width: 110px; height: 52px; } }
+@media (max-width: 760px) {
+  .bloque { grid-template-columns: 1fr; gap: 20px; }
+  .bloque.al-reves .escena { order: 0; }
+  .escena { aspect-ratio: 16 / 11; }
+  .movil { --s: .72; bottom: -24px; }
+}

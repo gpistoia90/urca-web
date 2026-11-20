@@ -54,10 +54,16 @@
   <p class="check-reset"><button class="btn btn-borde btn-peq" type="button" id="check-borrar">Desmarcar todo</button></p>
 </div></section><section class="cierre oscuro">
   <div class="wrap">
-    <div><h2>¿Te han quedado casillas sin marcar?</h2><p>Cuéntanos cuáles. Te decimos por dónde empezaríamos y qué se puede arreglar antes de invertir más.</p></div>
-    <a class="btn btn-principal" href="/contacto">Cuéntanos tu caso →</a>
+    <div class="cierre-texto"><h2>¿Te han quedado casillas sin marcar?</h2><p>Cuéntanos cuáles. Te decimos por dónde empezaríamos y qué se puede arreglar antes de invertir más.</p><a class="btn btn-principal" href="/contacto">Cuéntanos tu caso →</a></div>
+    <div class="puerto" data-anima aria-hidden="true">
+      <span class="p-luna"></span><span class="p-monte p-monte-1"></span><span class="p-monte p-monte-2"></span>
+      <span class="p-agua"><i class="p-reflejo"></i><i class="p-ola p-ola-1"></i><i class="p-ola p-ola-2"></i><i class="p-ola p-ola-3"></i></span>
+      <span class="p-muelle"></span>
+      <span class="p-barco"><svg viewBox="0 0 46 40" width="46" height="40"><path d="M22.5 3v26" stroke="#EEF2EE" stroke-width="1.5"/><path d="M24 5v23h16z" fill="#EEF2EE"/><path d="M21 9v19H9z" fill="#B8F25C"/><path d="M4 30h38l-6 8H10z" fill="#46805F"/></svg></span>
+    </div>
   </div>
 </section>
+<script>(function(){var els=document.querySelectorAll("[data-anima]");if(!els.length||!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;var o=new IntersectionObserver(function(es){es.forEach(function(x){x.target.classList.toggle("en-marcha",x.isIntersecting);});},{threshold:.25});els.forEach(function(el){o.observe(el);});})();</script>
 </main>
 <footer class="pie oscuro">
   <div class="wrap">
