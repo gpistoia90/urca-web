@@ -399,8 +399,15 @@ async function buscar(params) {
   avisar(""); estado("Buscando negocios en el mapa… <b>puede tardar hasta un minuto</b> si OpenStreetMap va cargado.", null);
   capa.clearLayers(); Object.keys(marcadores).forEach(k => delete marcadores[k]);
   try {
-    const r = await fetch("/api/buscar?" + new URLSearchParams(params)).then(x => x.json());
+    let r = await fetch("/api/buscar?" + new URLSearchParams(params)).then(x => x.json());
     if (mia !== ronda) return;
+    if (!r.ok && /OpenStreetMap/.test(r.error || "")) {
+      estado("OpenStreetMap va saturado. <b>Reintentando…</b>", null);
+      await new Promise(ok => setTimeout(ok, 4000));
+      if (mia !== ronda) return;
+      r = await fetch("/api/buscar?" + new URLSearchParams(params)).then(x => x.json());
+      if (mia !== ronda) return;
+    }
     if (!r.ok) { estado(""); avisar(r.error || "No se pudo buscar.", true); return; }
     busqueda = r; visibles = POR_PAGINA;
     filtros.prioridad = "Todas"; filtros.situacion = "";

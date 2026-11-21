@@ -33,9 +33,9 @@ const SECTORES = {
   alojamientos:  { nombre: "Hoteles y alojamientos", google: "hotel", alto: true, osm: ["tourism=hotel", "tourism=guest_house", "tourism=apartment"] },
 };
 
-const OVERPASS = [
-  "https://overpass-api.de/api/interpreter",
+const OVERPASS = [  // por orden de lanzamiento
   "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass-api.de/api/interpreter",
   "https://overpass.private.coffee/api/interpreter",
 ];
 
@@ -73,20 +73,44 @@ function consultaOverpass(sector, filtro) {
   return `[out:json][timeout:40];${filtro === "(area.a)" ? "" : ""}(${partes});out center tags ${MAX_OSM + 1};`;
 }
 
-async function overpass(q, limiteMs) {
-  const fin = Date.now() + limiteMs;
+// Los servidores públicos de Overpass se saturan a menudo. Se lanza el primero; si a los
+// ESCALON ms no ha contestado (o falla antes), se lanza también el siguiente, y así. Gana el
+// primero que responde y se cancelan los demás.
+const ESCALON = 8000;
+function overpass(q, limiteMs) {
+  const ctl = new AbortController();
+  const fin = setTimeout(() => ctl.abort(), limiteMs);
   const errores = [];
-  for (const ep of OVERPASS) {
-    const quedan = fin - Date.now();
-    if (quedan < 4000) break;
-    try {
-      return await json(ep, { method: "POST", headers: { "User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded" },
-                              body: "data=" + encodeURIComponent(q) }, Math.min(quedan, 45000));
-    } catch (e) {
-      errores.push(ep.split("/")[2] + ": " + (e.name === "TimeoutError" ? "no contesta" : e.message.slice(0, 60)));
-    }
-  }
-  throw new Fallo("Los servidores de OpenStreetMap están saturados ahora mismo. Vuelve a probar en un minuto. (" + errores.join(" · ") + ")");
+  return new Promise((resolver, rechazar) => {
+    let lanzados = 0, vivos = 0, hecho = false, siguiente = null;
+    const terminar = (error, datos) => {
+      if (hecho) return;
+      hecho = true; clearTimeout(fin); clearTimeout(siguiente); ctl.abort();
+      error ? rechazar(error) : resolver(datos);
+    };
+    const lanzar = () => {
+      clearTimeout(siguiente);
+      if (hecho || lanzados >= OVERPASS.length) return;
+      const ep = OVERPASS[lanzados++];
+      vivos++;
+      siguiente = setTimeout(lanzar, ESCALON);
+      fetch(ep, { method: "POST", signal: ctl.signal, body: "data=" + encodeURIComponent(q),
+                  headers: { "User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded" } })
+        .then(async r => { const t = await r.text(); if (!r.ok) throw new Error("HTTP " + r.status); return JSON.parse(t); })
+        .then(datos => terminar(null, datos))
+        .catch(e => {
+          vivos--;
+          errores.push(ep.split("/")[2] + ": " + (e.name === "AbortError" ? "no contesta" : String(e.message).slice(0, 40)));
+          if (hecho) return;
+          if (lanzados < OVERPASS.length) lanzar();
+          else if (!vivos) terminar(new Fallo("Los servidores de OpenStreetMap están saturados ahora mismo. Vuelve a probar en un par de minutos."));
+        });
+    };
+    ctl.signal.addEventListener("abort", () => {
+      if (!hecho) terminar(new Fallo("OpenStreetMap no ha contestado a tiempo. Vuelve a probar en un par de minutos o acota a un barrio."));
+    });
+    lanzar();
+  });
 }
 
 function primera(tags, claves) {
