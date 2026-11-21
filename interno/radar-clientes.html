@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Radar de clientes · URCA</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B0F0D">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+/* Radar de clientes · herramienta interna de URCA.
+   Concepto: banda oscura de cabecera con el buscador (la bahía de noche) y, debajo, mesa de trabajo clara:
+   mapa a la izquierda y lista de oportunidades a la derecha; en el móvil, una columna. */
+:root {
+  --ground: #F4F6F2; --surface: #FFFFFF; --soft: #E3ECE5; --ink: #0E1411; --muted: #4A5A51; --line: #D5DDD7;
+  --accent: #4A7A12; --on-accent: #FFFFFF;
+  --d-ground: #0B0F0D; --d-surface: #141B17; --d-ink: #EEF2EE; --d-muted: #A0B4A8; --d-line: #24332B; --lime: #B8F25C; --on-lime: #0A140C;
+  --alta: #B23A1F; --alta-bg: #FBE6DF; --media: #8A5A00; --media-bg: #FBEFCF; --baja: #4A5A51; --baja-bg: #E7ECE8; --ok: #2F6B1E; --ok-bg: #E2F0D6;
+  --display: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 400 15px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+[hidden] { display: none !important; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Cabecera oscura con buscador */
+.banda { background: var(--d-ground); color: var(--d-ink); padding-block: 18px 22px; }
+.banda a { color: var(--lime); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.top img { height: 34px; width: auto; display: block; }
+.sello { font: 500 11.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--d-muted); border: 1px solid var(--d-line); border-radius: 999px; padding: 6px 10px; }
+.banda h1 { font: 600 clamp(26px, 3.4vw, 36px)/1.1 var(--display); letter-spacing: -.01em; margin-top: 18px; color: var(--d-ink); }
+.banda .entradilla { color: var(--d-muted); max-width: 70ch; margin-top: 6px; }
+form.buscador { margin-top: 18px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, .9fr) auto; gap: 10px; align-items: end; }
+.campo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.campo label { font: 500 11.5px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--d-muted); }
+.campo select, .campo input { background: var(--d-surface); border: 1px solid var(--d-line); color: var(--d-ink); border-radius: 10px; padding: 11px 12px; min-width: 0; width: 100%; }
+.campo select:focus-visible, .campo input:focus-visible { outline-color: var(--lime); }
+.btn { border: 1px solid transparent; border-radius: 10px; padding: 11px 18px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.btn-lima { background: var(--lime); color: var(--on-lime); }
+.btn-lima:disabled { opacity: .6; cursor: progress; }
+.btn-borde { background: transparent; border-color: var(--line); color: var(--ink); font-weight: 500; padding: 8px 14px; }
+.btn-borde:hover { border-color: var(--accent); }
+.nota-fuente { margin-top: 10px; font-size: 13px; color: var(--d-muted); }
+
+/* Estado de la búsqueda */
+.estado { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding-block: 12px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.estado b { color: var(--ink); }
+.barra { flex: 1 1 200px; height: 6px; background: var(--soft); border-radius: 3px; overflow: hidden; }
+.barra i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.aviso { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--media-bg); color: var(--media); font-size: 14px; }
+.aviso.error { background: var(--alta-bg); color: var(--alta); }
+
+/* Mesa de trabajo */
+.mesa { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; padding-block: 18px 48px; align-items: start; }
+.mapa-caja { position: sticky; top: 12px; display: flex; flex-direction: column; gap: 8px; }
+#mapa { height: min(72vh, 680px); border-radius: 14px; border: 1px solid var(--line); background: var(--soft); z-index: 0; }
+.mapa-pie { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 12.5px; color: var(--muted); }
+.cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.cifra { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; min-width: 0; }
+.cifra b { display: block; font: 600 24px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.cifra span { font-size: 12.5px; color: var(--muted); }
+.filtros { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.fila { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--ground); }
+.chip small { font: 500 11.5px var(--mono); margin-left: 4px; opacity: .75; }
+.fila select { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; font-size: 13.5px; }
+.interruptor { display: inline-flex; gap: 6px; align-items: center; font-size: 13.5px; cursor: pointer; }
+.acciones { display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px; font-size: 13.5px; color: var(--muted); }
+#lista { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.vacio { padding: 40px 18px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; }
+.vacio b { display: block; color: var(--ink); font: 600 18px var(--display); margin-bottom: 4px; }
+.vacio ol { text-align: left; max-width: 46ch; margin: 14px auto 0; padding-left: 20px; }
+
+details.ficha { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; scroll-margin-top: 12px; }
+details.ficha.foco { border-color: var(--accent); box-shadow: 0 0 0 3px var(--soft); }
+details.ficha > summary { list-style: none; cursor: pointer; padding: 11px 14px; display: grid; grid-template-columns: 54px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+details.ficha > summary::-webkit-details-marker { display: none; }
+.punt b { display: block; font: 600 20px/1 var(--display); font-variant-numeric: tabular-nums; }
+.medidor { height: 4px; background: var(--soft); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+.medidor i { display: block; height: 100%; background: var(--baja); }
+.medidor.Alta i { background: var(--alta); } .medidor.Media i { background: var(--media); }
+.nombre { font-weight: 600; overflow-wrap: anywhere; }
+.nombre .hecho { font: 500 11px var(--mono); color: var(--ok); background: var(--ok-bg); border-radius: 999px; padding: 2px 7px; margin-left: 6px; vertical-align: 2px; }
+.meta { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.pastilla { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.p-Alta { color: var(--alta); background: var(--alta-bg); } .p-Media { color: var(--media); background: var(--media-bg); }
+.p-Baja, .p-Pendiente { color: var(--baja); background: var(--baja-bg); }
+.cuerpo { border-top: 1px solid var(--line); padding: 14px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px 22px; }
+.cuerpo > * { min-width: 0; }
+.ancho { grid-column: 1 / -1; }
+h3 { font: 500 11.5px/1.3 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; font-size: 14px; }
+dt { color: var(--muted); } dd { margin: 0; overflow-wrap: anywhere; }
+.si { color: var(--ok); font-weight: 600; } .no { color: var(--alta); font-weight: 600; }
+ul.porque { margin: 0; padding-left: 18px; font-size: 14px; display: flex; flex-direction: column; gap: 3px; }
+.mensaje { background: var(--soft); border-radius: 10px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; }
+.mensaje p { flex: 1; min-width: 0; font-size: 14.5px; }
+.pie-ficha { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 13.5px; }
+.mas { display: flex; justify-content: center; margin-top: 6px; }
+footer { border-top: 1px solid var(--line); padding-block: 16px 28px; font-size: 12.5px; color: var(--muted); }
+.leaflet-container { font: inherit; }
+.leaflet-popup-content { font-size: 13.5px; }
+.leaflet-popup-content button { margin-top: 6px; }
+
+@media (max-width: 980px) {
+  form.buscador { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .mesa { grid-template-columns: minmax(0, 1fr); }
+  .mapa-caja { position: static; }
+  #mapa { height: 46vh; }
+}
+@media (max-width: 600px) {
+  form.buscador { grid-template-columns: minmax(0, 1fr); }
+  .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cuerpo { grid-template-columns: minmax(0, 1fr); }
+  details.ficha > summary { grid-template-columns: 44px minmax(0, 1fr); }
+  details.ficha > summary .pastilla { grid-column: 2; justify-self: start; }
+  .mensaje { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { .barra i { transition: none; } }
+</style>
+</head>
+<body>
+<header class="banda">
+  <div class="wrap">
+    <div class="top">
+      <a href="/" aria-label="URCA, inicio"><img src="/img/urca-lockup-sobre-oscuro.svg" alt="URCA" width="107" height="34"></a>
+      <span class="sello">Uso interno · no indexada</span>
+    </div>
+    <h1>Radar de clientes</h1>
+    <p class="entradilla">Elige un sector y un municipio. El radar busca los negocios en el mapa, entra en su web y te dice si se anuncian en Google o Meta, si miden y por dónde abrir la conversación.</p>
+    <form class="buscador" id="buscador">
+      <div class="campo"><label for="sector">Sector</label><select id="sector" required><option value="">Cargando…</option></select></div>
+      <div class="campo"><label for="lugar">Municipio o barrio</label><input id="lugar" type="text" placeholder="Sabadell, Gràcia (Barcelona)…" autocomplete="off" required></div>
+      <div class="campo"><label for="fuente">Fuente</label>
+        <select id="fuente"><option value="osm">OpenStreetMap</option><option value="google" disabled>Google Maps (sin activar)</option></select></div>
+      <button class="btn btn-lima" id="buscar" type="submit">Buscar clientes</button>
+    </form>
+    <p class="nota-fuente" id="nota-fuente">OpenStreetMap es gratis pero incompleto: en clínicas, peluquerías o gimnasios faltan muchos negocios. Google Maps tiene casi todos y se activa con una clave en Vercel.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="estado" id="estado" hidden>
+    <span id="estado-texto"></span>
+    <div class="barra" id="barra" hidden><i id="barra-i"></i></div>
+  </div>
+  <div id="aviso" class="aviso" hidden></div>
+
+  <div class="mesa">
+    <div class="mapa-caja">
+      <div id="mapa" role="region" aria-label="Mapa de resultados"></div>
+      <div class="mapa-pie">
+        <button type="button" class="btn btn-borde" id="buscar-zona">Buscar en esta zona del mapa</button>
+        <span>Rojo: prioridad alta · Ámbar: media · Gris: baja</span>
+      </div>
+    </div>
+
+    <section aria-label="Resultados">
+      <div class="cifras" id="cifras"></div>
+      <div class="filtros" id="filtros" hidden>
+        <div class="fila" id="f-prioridad"></div>
+        <div class="fila" id="f-situacion"></div>
+        <div class="fila">
+          <label class="interruptor"><input type="checkbox" id="f-contacto"> Solo con teléfono o email</label>
+          <label class="interruptor"><input type="checkbox" id="f-ocultar"> Ocultar contactados</label>
+          <select id="orden" aria-label="Orden"><option value="prioridad">Más oportunidad primero</option><option value="nombre">Por nombre</option><option value="resenas">Menos reseñas primero</option></select>
+        </div>
+      </div>
+      <div class="acciones" id="acciones" hidden>
+        <span id="cuenta"></span>
+        <button type="button" class="btn btn-borde" id="exportar">Descargar lista (CSV para Excel)</button>
+      </div>
+      <div id="lista">
+        <div class="vacio"><b>Busca tu primera lista de clientes</b>
+          <ol><li>Elige un sector, por ejemplo «Clínicas dentales».</li><li>Escribe un municipio o «barrio, ciudad».</li><li>El radar analiza cada web y ordena los negocios por oportunidad para URCA.</li></ol>
+        </div>
+      </div>
+      <div class="mas" id="mas" hidden><button type="button" class="btn btn-borde" id="ver-mas">Ver 20 más</button></div>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">Datos de negocios y mapa © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a><span id="pie-google" hidden> y Google Maps</span>. Las señales se leen del código público de cada web y pueden fallar: un píxel que solo carga tras aceptar cookies no se ve. Revisa cada negocio antes de escribir.</div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(() => {
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const PRIORIDAD = { Alta: 0, Media: 1, Baja: 2, Pendiente: 3 };
+const COLOR = { Alta: "#B23A1F", Media: "#C58A0B", Baja: "#7D8C83", Pendiente: "#A9B5AD" };
+const SITUACIONES = [
+  ["sin-medir", "Se anuncia sin medir"], ["a-medias", "Se anuncia, medición a medias"], ["no-anuncia", "No se anuncia"],
+  ["mide-no-anuncia", "Mide pero no se anuncia"], ["sin-web", "Sin web"], ["web-sin-dato", "Web sin comprobar"], ["caida", "Web caída"], ["revisar", "Revisar a mano"],
+  ["montado", "Ya lo tiene montado"], ["analizando", "Analizando…"],
+];
+const NOMBRE_SIT = Object.fromEntries(SITUACIONES);
+const POR_PAGINA = 20;
+
+let sectores = [], busqueda = null, negocios = [], visibles = 20;
+const filtros = { prioridad: "Todas", situacion: "", contacto: false, ocultar: false, orden: "prioridad" };
+let contactados = {};
+try { contactados = JSON.parse(localStorage.getItem("urca-radar-contactados") || "{}"); } catch (_) {}
+const guardarContactados = () => { try { localStorage.setItem("urca-radar-contactados", JSON.stringify(contactados)); } catch (_) {} };
+
+// ─────────────── mapa
+const mapa = L.map("mapa", { scrollWheelZoom: false }).setView([41.39, 2.17], 11);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(mapa);
+mapa.on("focus", () => mapa.scrollWheelZoom.enable());
+mapa.on("blur", () => mapa.scrollWheelZoom.disable());
+const capa = L.layerGroup().addTo(mapa);
+const marcadores = {};
+
+// ─────────────── puntuación (la lógica de URCA)
+function evaluar(n) {
+  const s = n.scan;
+  const porque = [];
+  let pts, sit;
+  if (!n.web && n.fuente === "OpenStreetMap") { sit = "web-sin-dato"; pts = 45; porque.push("OpenStreetMap no tiene su web, pero puede que la tenga: búscalo en Google Maps antes de escribir."); }
+  else if (!n.web) { sit = "sin-web"; pts = 52; porque.push("No tiene web: necesita una página y anuncios para captar clientes nuevos."); }
+  else if (!s) { return { sit: "analizando", pts: null, prioridad: "Pendiente", porque: ["Analizando su web…"] }; }
+  else if (!s.ok) {
+    sit = s.estado === "bloqueada" ? "revisar" : "caida";
+    pts = sit === "caida" ? 50 : 40;
+    porque.push(s.error || "La web no responde.");
+  } else {
+    const anuncia = s.publicidad.length > 0;
+    const canales = s.publicidad.join(" y ");
+    if (anuncia && !s.ga4) { sit = "sin-medir"; pts = 80; porque.push(`Se anuncia en ${canales} y no se ve Google Analytics${s.ua_antiguo ? " (solo el antiguo, apagado en 2023)" : ""}.`); }
+    else if (anuncia && s.publicidad.includes("Google Ads") && !s.google_ads_conversion) { sit = "a-medias"; pts = 66; porque.push(`Se anuncia en ${canales} pero no se ve el seguimiento de conversiones de Google Ads.`); }
+    else if (anuncia) { sit = "montado"; pts = 30; porque.push(`Se anuncia en ${canales} y mide: probablemente ya tiene agencia o alguien que se lo lleva.`); }
+    else if (!s.ga4) { sit = "no-anuncia"; pts = 70; porque.push("No se ve ninguna campaña en Google ni en Meta, ni Google Analytics."); }
+    else { sit = "mide-no-anuncia"; pts = 60; porque.push("Tiene Google Analytics pero no se ve ninguna campaña."); }
+    if (!s.reservas.length && !s.whatsapp && !s.formulario) { pts += 6; porque.push("Desde la web no se puede reservar, escribir ni pedir cita."); }
+    else if (s.reservas.length) porque.push("Reserva online: " + s.reservas.join(", ") + ".");
+    if (!s.movil) { pts += 5; porque.push("La web no está adaptada al móvil."); }
+    if (s.lenta) { pts += 4; porque.push(`La portada tarda ${s.segundos} s en cargar.`); }
+    if (!s.https) { pts += 4; porque.push("La web no usa https: el navegador la marca como no segura."); }
+    if (s.anio_copyright && s.anio_copyright < new Date().getFullYear() - 3) { pts += 3; porque.push(`El pie dice © ${s.anio_copyright}: la web lleva años sin tocarse.`); }
+  }
+  if (busqueda && busqueda.sector_alto && sit !== "montado") { pts += 5; porque.push("Sector de ticket alto: un cliente nuevo vale mucho."); }
+  if (n.instagram || (s && s.instagram)) { pts += 3; }
+  if (!n.telefono && !n.email && !(s && (s.formulario || s.whatsapp))) { pts -= 12; porque.push("No hay teléfono ni email a la vista: costará contactar."); }
+  if (n.cadena) { pts -= 15; porque.push("Parece una cadena o franquicia: el marketing se decide fuera."); }
+  if (n.resenas != null && n.resenas < 25 && sit !== "montado") { pts += 3; porque.push(`Solo ${n.resenas} reseñas en Google.`); }
+  pts = Math.max(0, Math.min(100, Math.round(pts)));
+  return { sit, pts, prioridad: pts >= 75 ? "Alta" : pts >= 55 ? "Media" : "Baja", porque };
+}
+
+function lugarCorto() { return (busqueda && busqueda.zona && busqueda.zona.nombre !== "la zona del mapa") ? busqueda.zona.nombre.split(",")[0] : "tu zona"; }
+
+function mensaje(n, ev) {
+  const s = n.scan || {};
+  const sector = (sectores.find(x => x.id === (busqueda && busqueda.sector)) || {}).nombre || "tu sector";
+  const busca = sector.toLowerCase();
+  const canales = (s.publicidad || []).join(" y ");
+  switch (ev.sit) {
+    case "sin-medir": return `Hola. He visto que ${n.nombre} tiene anuncios en ${canales}. ¿Sabes cuántos clientes te llegan de ahí cada mes? Desde fuera no veo Google Analytics en la web, y sin eso es difícil saber qué campaña funciona.`;
+    case "a-medias": return `Hola. He visto que ${n.nombre} se anuncia en Google. ¿Las campañas te dicen cuántas llamadas o reservas consiguen? Desde fuera no veo el seguimiento de conversiones, que es lo que permite pagar solo por lo que funciona.`;
+    case "no-anuncia": return `Hola. He visto la web de ${n.nombre}. ¿Has probado a anunciarte en Google para salir cuando alguien busca ${busca} en ${lugarCorto()}? Desde fuera no veo ninguna campaña activa.`;
+    case "mide-no-anuncia": return `Hola. He visto la web de ${n.nombre}. ¿Te has planteado anunciarte en Google o en Instagram? Ya tienes Analytics, así que se podría medir desde el primer día cuántos clientes trae cada euro.`;
+    case "sin-web": return `Hola. He encontrado ${n.nombre} en el mapa pero no veo que tengas web. ¿Cómo te llegan hoy los clientes nuevos? Con una página sencilla y anuncios en Google se puede captar a quien busca ${busca} en ${lugarCorto()}.`;
+    case "caida": return `Hola. He intentado entrar en la web de ${n.nombre} y no carga. ¿Lo sabías? Si haces publicidad o te buscan en Google, ahora mismo esas visitas se pierden.`;
+    default: return "";
+  }
+}
+
+// ─────────────── pintar
+function filtrados() {
+  return negocios.filter(n =>
+    (filtros.prioridad === "Todas" || n.ev.prioridad === filtros.prioridad) &&
+    (!filtros.situacion || n.ev.sit === filtros.situacion) &&
+    (!filtros.contacto || n.telefono || n.email) &&
+    (!filtros.ocultar || !contactados[n.id]));
+}
+
+function ordenar(lista) {
+  const f = {
+    prioridad: (a, b) => (PRIORIDAD[a.ev.prioridad] - PRIORIDAD[b.ev.prioridad]) || ((b.ev.pts ?? -1) - (a.ev.pts ?? -1)) || a.nombre.localeCompare(b.nombre, "es"),
+    nombre: (a, b) => a.nombre.localeCompare(b.nombre, "es"),
+    resenas: (a, b) => ((a.resenas ?? 1e9) - (b.resenas ?? 1e9)) || a.nombre.localeCompare(b.nombre, "es"),
+  }[filtros.orden];
+  return lista.slice().sort(f);
+}
+
+function pintarCifras() {
+  const conWeb = negocios.filter(n => n.web).length;
+  const analizadas = negocios.filter(n => n.web && n.scan).length;
+  const altas = negocios.filter(n => n.ev.prioridad === "Alta").length;
+  $("cifras").innerHTML = [[negocios.length, "negocios"], [conWeb, "con web"], [`${analizadas}/${conWeb}`, "webs analizadas"], [altas, "prioridad alta"]]
+    .map(([v, t]) => `<div class="cifra"><b>${v}</b><span>${t}</span></div>`).join("");
+  const cuenta = p => negocios.filter(n => n.ev.prioridad === p).length;
+  $("f-prioridad").innerHTML = ["Todas", "Alta", "Media", "Baja"].map(p =>
+    `<button type="button" class="chip" data-p="${p}" aria-pressed="${filtros.prioridad === p}">${p}${p === "Todas" ? "" : `<small>${cuenta(p)}</small>`}</button>`).join("");
+  $("f-situacion").innerHTML = SITUACIONES.map(([k, t]) => [k, t, negocios.filter(n => n.ev.sit === k).length]).filter(x => x[2] || filtros.situacion === x[0])
+    .map(([k, t, c]) => `<button type="button" class="chip" data-s="${k}" aria-pressed="${filtros.situacion === k}">${t}<small>${c}</small></button>`).join("");
+}
+
+function sino(v, texto) { return v ? `<span class="si">${esc(texto || "Sí")}</span>` : '<span class="no">No se ve</span>'; }
+
+function ficha(n) {
+  const ev = n.ev, s = n.scan, m = mensaje(n, ev);
+  const tel = n.telefono ? `<a href="tel:${esc(n.telefono.replace(/[^\d+]/g, ""))}">${esc(n.telefono)}</a>` : "";
+  const ig = n.instagram ? (n.instagram.startsWith("http") ? n.instagram : "https://" + n.instagram.replace(/^@/, "instagram.com/")) : "";
+  const maps = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(n.nombre + " " + (n.direccion || lugarCorto()));
+  const senales = s && s.ok ? `
+      <div><h3>Su web</h3><dl>
+        <dt>Publicidad</dt><dd>${sino(s.publicidad.length, s.publicidad.join(", "))}</dd>
+        <dt>Google Analytics</dt><dd>${sino(s.ga4)}${s.ua_antiguo ? " · solo el antiguo" : ""}</dd>
+        <dt>Tag Manager</dt><dd>${sino(s.gtm)}</dd>
+        <dt>Reserva online</dt><dd>${sino(s.reservas.length, s.reservas.join(", "))}</dd>
+        <dt>WhatsApp</dt><dd>${sino(s.whatsapp)}</dd>
+        <dt>Formulario</dt><dd>${sino(s.formulario)}</dd>
+        <dt>Móvil</dt><dd>${sino(s.movil, "Adaptada")}</dd>
+        <dt>Carga</dt><dd>${esc(s.segundos)} s</dd>
+        <dt>Hecha con</dt><dd>${esc(s.plataforma)}</dd>
+      </dl></div>` : "";
+  return `<details class="ficha" id="f-${esc(n.id)}" data-id="${esc(n.id)}">
+    <summary>
+      <div class="punt"><b>${ev.pts == null ? "…" : ev.pts}</b><div class="medidor ${ev.prioridad}"><i style="width:${ev.pts || 0}%"></i></div></div>
+      <div><div class="nombre">${esc(n.nombre)}${contactados[n.id] ? '<span class="hecho">Contactado</span>' : ""}</div>
+        <div class="meta">${esc(NOMBRE_SIT[ev.sit])}${n.direccion ? " · " + esc(n.direccion) : ""}${n.resenas != null ? ` · ${esc(n.valoracion)}★ (${esc(n.resenas)})` : ""}</div></div>
+      <span class="pastilla p-${ev.prioridad}">${ev.prioridad === "Pendiente" ? "Analizando" : ev.prioridad}</span>
+    </summary>
+    <div class="cuerpo">
+      <div><h3>Por qué</h3><ul class="porque">${ev.porque.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>
+      <div><h3>Contacto</h3><dl>
+        ${n.web ? `<dt>Web</dt><dd><a href="${esc(n.web)}" target="_blank" rel="noopener">${esc(n.web.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""))}</a></dd>` : ""}
+        ${tel ? `<dt>Teléfono</dt><dd>${tel}</dd>` : ""}
+        ${n.email ? `<dt>Email</dt><dd>${esc(n.email)}</dd>` : ""}
+        ${ig ? `<dt>Instagram</dt><dd><a href="${esc(ig)}" target="_blank" rel="noopener">${esc(ig.replace(/^https?:\/\/(www\.)?instagram\.com\//, "@").replace(/\/$/, ""))}</a></dd>` : ""}
+        ${n.horario ? `<dt>Horario</dt><dd>${esc(n.horario)}</dd>` : ""}
+        <dt>Mapas</dt><dd><a href="${esc(maps)}" target="_blank" rel="noopener">Ver en Google Maps</a>${n.fuente === "OpenStreetMap" ? ` · <a href="${esc(n.ficha)}" target="_blank" rel="noopener">OpenStreetMap</a>` : ""}</dd>
+      </dl></div>
+      ${senales}
+      ${m ? `<div class="ancho"><h3>Primer mensaje</h3><div class="mensaje"><p id="m-${esc(n.id)}">${esc(m)}</p><button type="button" class="btn btn-borde" data-copiar="m-${esc(n.id)}">Copiar</button></div></div>` : ""}
+      <div class="ancho pie-ficha"><label class="interruptor"><input type="checkbox" data-contactado="${esc(n.id)}"${contactados[n.id] ? " checked" : ""}> Ya lo hemos contactado</label>
+        <span class="meta">Se guarda solo en este navegador.</span></div>
+    </div></details>`;
+}
+
+function pintarLista() {
+  if (!busqueda) return;
+  const lista = ordenar(filtrados());
+  $("cuenta").textContent = `${lista.length} de ${negocios.length} negocios`;
+  const abiertas = new Set([...document.querySelectorAll("details.ficha[open]")].map(d => d.dataset.id));
+  $("lista").innerHTML = lista.slice(0, visibles).map(ficha).join("") ||
+    `<div class="vacio"><b>${negocios.length ? "Ningún negocio con esos filtros" : "No hay negocios de ese sector aquí"}</b>${negocios.length ? "Quita algún filtro." : "Prueba otro municipio o la fuente Google Maps."}</div>`;
+  abiertas.forEach(id => { const d = document.getElementById("f-" + id); if (d) d.open = true; });
+  $("mas").hidden = lista.length <= visibles;
+  $("ver-mas").textContent = `Ver ${Math.min(POR_PAGINA, lista.length - visibles)} más`;
+  pintarMapa(lista);
+}
+
+function pintarMapa(lista) {
+  const ids = new Set(lista.map(n => n.id));
+  for (const n of negocios) {
+    let mk = marcadores[n.id];
+    if (!ids.has(n.id)) { if (mk) capa.removeLayer(mk); continue; }
+    const estilo = { radius: n.ev.prioridad === "Alta" ? 8 : 6, color: "#fff", weight: 1.5, fillColor: COLOR[n.ev.prioridad], fillOpacity: .95 };
+    if (!mk) {
+      mk = marcadores[n.id] = L.circleMarker([n.lat, n.lon], estilo);
+      mk.bindPopup(() => `<b>${esc(n.nombre)}</b><br>${esc(NOMBRE_SIT[n.ev.sit])} · ${n.ev.pts ?? "…"}<br><button type="button" class="btn btn-borde" data-ir="${esc(n.id)}">Ver ficha</button>`);
+    } else mk.setStyle(estilo);
+    if (!capa.hasLayer(mk)) capa.addLayer(mk);
+  }
+}
+
+function pintar() { negocios.forEach(n => { n.ev = evaluar(n); }); pintarCifras(); pintarLista(); }
+
+function avisar(texto, error) { const a = $("aviso"); a.textContent = texto || ""; a.hidden = !texto; a.classList.toggle("error", !!error); }
+function estado(texto, progreso) {
+  $("estado").hidden = !texto; $("estado-texto").innerHTML = texto || "";
+  $("barra").hidden = progreso == null; if (progreso != null) $("barra-i").style.width = Math.round(progreso * 100) + "%";
+}
+
+// ─────────────── búsqueda y análisis
+let ronda = 0;
+async function buscar(params) {
+  const mia = ++ronda;
+  $("buscar").disabled = true; $("buscar-zona").disabled = true;
+  avisar(""); estado("Buscando negocios en el mapa… <b>puede tardar hasta un minuto</b> si OpenStreetMap va cargado.", null);
+  capa.clearLayers(); Object.keys(marcadores).forEach(k => delete marcadores[k]);
+  try {
+    const r = await fetch("/api/buscar?" + new URLSearchParams(params)).then(x => x.json());
+    if (mia !== ronda) return;
+    if (!r.ok) { estado(""); avisar(r.error || "No se pudo buscar.", true); return; }
+    busqueda = r; visibles = POR_PAGINA;
+    filtros.prioridad = "Todas"; filtros.situacion = "";
+    negocios = r.negocios.map(n => Object.assign(n, { scan: null }));
+    $("filtros").hidden = $("acciones").hidden = false;
+    $("pie-google").hidden = r.fuente !== "google";
+    const pts = negocios.map(n => [n.lat, n.lon]);
+    if (pts.length) mapa.fitBounds(pts, { padding: [24, 24], maxZoom: 15 });
+    else mapa.fitBounds([[r.zona.bbox[0], r.zona.bbox[1]], [r.zona.bbox[2], r.zona.bbox[3]]]);
+    if (r.hay_mas) avisar(`Hay más resultados de los que se muestran (${negocios.length}). Acota a un barrio o usa «Buscar en esta zona del mapa».`);
+    else if (r.fuente === "osm" && negocios.length < 15) avisar(`OpenStreetMap solo tiene ${negocios.length} negocios de este sector en ${r.zona.nombre}. Seguro que hay más: Google Maps los tendría.`);
+    pintar();
+    await analizarWebs(mia);
+  } catch (e) {
+    if (mia === ronda) { estado(""); avisar("No se pudo conectar con el radar. Revisa la conexión y vuelve a probar.", true); }
+  } finally {
+    if (mia === ronda) { $("buscar").disabled = false; $("buscar-zona").disabled = false; }
+  }
+}
+
+async function analizarWebs(mia) {
+  const cola = negocios.filter(n => n.web);
+  const total = cola.length;
+  let hechas = 0, pendientePintar = null;
+  const zona = busqueda.zona.nombre;
+  const repintar = () => { if (!pendientePintar) pendientePintar = setTimeout(() => { pendientePintar = null; if (mia === ronda) pintar(); }, 400); };
+  const texto = () => `<b>${negocios.length}</b> negocios en ${esc(zona)} · analizando webs <b>${hechas}/${total}</b>`;
+  if (!total) { estado(`<b>${negocios.length}</b> negocios en ${esc(zona)} · ninguno tiene web registrada`); return; }
+  estado(texto(), 0);
+  const trabajador = async () => {
+    while (cola.length && mia === ronda) {
+      const n = cola.shift();
+      try { n.scan = await fetch("/api/escanear?url=" + encodeURIComponent(n.web)).then(x => x.json()); }
+      catch (_) { n.scan = { ok: false, estado: "caida", error: "No se pudo analizar la web." }; }
+      hechas++;
+      if (mia === ronda) { estado(texto(), hechas / total); repintar(); }
+    }
+  };
+  await Promise.all(Array.from({ length: 6 }, trabajador));
+  if (mia !== ronda) return;
+  clearTimeout(pendientePintar); pintar();
+  estado(`<b>${negocios.length}</b> negocios en ${esc(zona)} · <b>${total}</b> webs analizadas · ordenados por oportunidad`);
+}
+
+// ─────────────── exportar
+function exportarCsv() {
+  const lista = ordenar(filtrados());
+  const c = v => { const s = String(v == null ? "" : v); return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const sn = v => v ? "Sí" : "No";
+  const cab = ["Negocio", "Prioridad", "Puntos", "Situación", "Dirección", "Teléfono", "Email", "Web", "Instagram", "Publicidad", "Google Analytics",
+    "Reserva online", "WhatsApp", "Formulario", "Móvil", "Carga (s)", "Valoración", "Reseñas", "Por qué", "Primer mensaje", "Contactado", "Fuente", "Ficha"];
+  const filas = lista.map(n => {
+    const s = n.scan && n.scan.ok ? n.scan : null;
+    return [n.nombre, n.ev.prioridad, n.ev.pts, NOMBRE_SIT[n.ev.sit], n.direccion, n.telefono, n.email, n.web, n.instagram,
+      s ? s.publicidad.join(", ") || "No se ve" : "", s ? sn(s.ga4) : "", s ? s.reservas.join(", ") || "No" : "", s ? sn(s.whatsapp) : "",
+      s ? sn(s.formulario) : "", s ? sn(s.movil) : "", s ? s.segundos : "", n.valoracion, n.resenas, n.ev.porque.join(" "),
+      mensaje(n, n.ev), contactados[n.id] ? "Sí" : "", n.fuente, n.ficha].map(c).join(";");
+  });
+  const blob = new Blob(["﻿" + [cab.join(";")].concat(filas).join("\r\n")], { type: "text/csv;charset=utf-8" });
+  const sector = (busqueda.sector || "radar").replace(/[^\w-]/g, "");
+  const lugar = (busqueda.zona.nombre.split(",")[0] || "zona").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\w]+/g, "-");
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: `radar-urca-${sector}-${lugar}.csv` });
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+
+// ─────────────── eventos
+$("buscador").addEventListener("submit", ev => {
+  ev.preventDefault();
+  const sector = $("sector").value, lugar = $("lugar").value.trim();
+  if (!sector || !lugar) return;
+  try { localStorage.setItem("urca-radar-ultima", JSON.stringify({ sector, lugar, fuente: $("fuente").value })); } catch (_) {}
+  buscar({ sector, lugar, fuente: $("fuente").value });
+});
+$("buscar-zona").addEventListener("click", () => {
+  const sector = $("sector").value;
+  if (!sector) { avisar("Elige primero un sector.", true); $("sector").focus(); return; }
+  const b = mapa.getBounds();
+  buscar({ sector, bbox: [b.getSouth(), b.getWest(), b.getNorth(), b.getEast()].map(x => x.toFixed(5)).join(","), fuente: $("fuente").value });
+});
+$("filtros").addEventListener("click", ev => {
+  const p = ev.target.closest("[data-p]"), s = ev.target.closest("[data-s]");
+  if (p) filtros.prioridad = p.dataset.p;
+  else if (s) filtros.situacion = filtros.situacion === s.dataset.s ? "" : s.dataset.s;
+  else return;
+  visibles = POR_PAGINA; pintarCifras(); pintarLista();
+});
+$("f-contacto").addEventListener("change", ev => { filtros.contacto = ev.target.checked; visibles = POR_PAGINA; pintarLista(); });
+$("f-ocultar").addEventListener("change", ev => { filtros.ocultar = ev.target.checked; visibles = POR_PAGINA; pintarLista(); });
+$("orden").addEventListener("change", ev => { filtros.orden = ev.target.value; pintarLista(); });
+$("ver-mas").addEventListener("click", () => { visibles += POR_PAGINA; pintarLista(); });
+$("exportar").addEventListener("click", exportarCsv);
+
+function irA(id) {
+  const lista = ordenar(filtrados());
+  const i = lista.findIndex(n => n.id === id);
+  if (i >= visibles) { visibles = i + 1; pintarLista(); }
+  const d = document.getElementById("f-" + id);
+  if (!d) return;
+  d.open = true; d.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  d.classList.add("foco"); setTimeout(() => d.classList.remove("foco"), 1800);
+}
+
+document.addEventListener("click", async ev => {
+  const ir = ev.target.closest("[data-ir]");
+  if (ir) { mapa.closePopup(); irA(ir.dataset.ir); return; }
+  const b = ev.target.closest("[data-copiar]");
+  if (!b) return;
+  const el = $(b.dataset.copiar);
+  try { await navigator.clipboard.writeText(el.textContent); b.textContent = "Copiado"; }
+  catch (_) { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Seleccionado"; }
+  setTimeout(() => { b.textContent = "Copiar"; }, 1600);
+});
+document.addEventListener("change", ev => {
+  const id = ev.target.dataset && ev.target.dataset.contactado;
+  if (!id) return;
+  if (ev.target.checked) contactados[id] = new Date().toISOString().slice(0, 10); else delete contactados[id];
+  guardarContactados();
+  const n = negocios.find(x => x.id === id);
+  if (n) { const nombre = document.querySelector(`#f-${CSS.escape(id)} .nombre`); if (nombre) nombre.innerHTML = esc(n.nombre) + (contactados[id] ? '<span class="hecho">Contactado</span>' : ""); }
+  if (filtros.ocultar) pintarLista();
+});
+
+// ─────────────── arranque
+fetch("/api/buscar?estado=1").then(x => x.json()).then(r => {
+  sectores = r.sectores;
+  $("sector").innerHTML = '<option value="">Elige un sector</option>' + sectores.map(s => `<option value="${esc(s.id)}">${esc(s.nombre)}</option>`).join("");
+  const g = $("fuente").querySelector('[value="google"]');
+  if (r.fuentes.google) { g.disabled = false; g.textContent = "Google Maps"; $("fuente").value = "google";
+    $("nota-fuente").textContent = "Google Maps tiene casi todos los negocios, con valoración y número de reseñas. OpenStreetMap es gratis pero incompleto."; }
+  let ultima = null;
+  try { ultima = JSON.parse(localStorage.getItem("urca-radar-ultima") || "null"); } catch (_) {}
+  if (ultima) {
+    if (sectores.some(s => s.id === ultima.sector)) $("sector").value = ultima.sector;
+    $("lugar").value = ultima.lugar || "";
+    if (ultima.fuente === "osm" || (ultima.fuente === "google" && r.fuentes.google)) $("fuente").value = ultima.fuente;
+  }
+}).catch(() => { $("sector").innerHTML = '<option value="">No se pudo cargar</option>'; avisar("El radar no responde. Recarga la página en un momento.", true); });
+pintarCifras();
+})();
+</script>
+</body>
+</html>

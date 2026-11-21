@@ -12,6 +12,15 @@
       ]
     },
     {
+      "source": "/(interno|api)/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
@@ -20,5 +29,13 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/buscar.js": {
+      "maxDuration": 60
+    },
+    "api/escanear.js": {
+      "maxDuration": 30
+    }
+  }
 }
