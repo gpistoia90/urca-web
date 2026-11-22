@@ -51,9 +51,11 @@
     <p class="etiqueta">Acceso gratuito</p>
     <h2>Déjanos tu correo y empieza a crear tu landing.</h2>
     <ul>
-      <li>Vista previa en el móvil y en el ordenador mientras escribes.</li>
-      <li>Tres plantillas y el color de tu marca.</li>
+      <li>Ideas de oferta, razones y público para tu sector.</li>
+      <li>Vista previa en el móvil y en el ordenador, con tu logo, tu foto y tu color.</li>
+      <li>Una nota de tu landing con consejos para mejorarla.</li>
       <li>Descarga en un único archivo HTML con formulario, botón de WhatsApp y medición de campañas.</li>
+      <li>Enlaces con UTM y textos de anuncio para Google Ads y Meta Ads.</li>
     </ul>
   </div>
   <form class="form cl-acceso-form" id="cl-acceso-form" novalidate>
@@ -70,6 +72,8 @@
     <p class="cl-arriba"><span>Tu borrador se guarda en este navegador.</span><button class="cl-enlace" type="button" id="cl-ejemplo">Ver un ejemplo</button></p>
     <fieldset>
       <legend><span class="paso">1</span> Tu negocio</legend>
+      <div class="campo"><label for="cl-sector">Tu sector <span class="opcional">(opcional)</span></label><select id="cl-sector" name="sector"><option value="">Elige para ver ideas</option><option value="dental">Clínica dental</option><option value="fisio">Fisioterapia u osteopatía</option><option value="estetica">Centro de estética</option><option value="peluqueria">Peluquería o barbería</option><option value="academia">Academia o formación</option><option value="reformas">Reformas</option><option value="hogar">Fontanería, cerrajería o electricidad</option><option value="restaurante">Restaurante o bar</option><option value="gimnasio">Gimnasio o entrenamiento</option><option value="asesoria">Asesoría o despacho</option><option value="tienda">Tienda o producto</option><option value="inmobiliaria">Inmobiliaria</option><option value="otro">Otro</option></select>
+        <p class="ayuda">Te sugerimos ofertas, razones y público para tu sector. Son ideas: quédate solo con lo que sea verdad en tu negocio y completa lo que va entre corchetes.</p></div>
       <div class="campo"><label for="cl-negocio">Nombre del negocio</label><input id="cl-negocio" name="negocio" type="text" placeholder="Ej.: Clínica Dental Mar" autocomplete="organization" maxlength="80"></div>
       <div class="campo"><label for="cl-actividad">A qué te dedicas</label><input id="cl-actividad" name="actividad" type="text" placeholder="Ej.: clínica dental" maxlength="60"><p class="ayuda">En dos o tres palabras. Sale encima del titular.</p></div>
       <div class="campo"><label for="cl-zona">Ciudad o barrio</label><input id="cl-zona" name="zona" type="text" placeholder="Ej.: Sants, Barcelona" maxlength="60"><p class="ayuda">Si trabajas en una zona concreta, ponla: quien llega desde el anuncio quiere saber que estás cerca.</p></div>
@@ -77,15 +81,19 @@
     <fieldset>
       <legend><span class="paso">2</span> Lo que anuncias</legend>
       <div class="campo"><label for="cl-oferta">Qué anuncias</label><input id="cl-oferta" name="oferta" type="text" placeholder="Ej.: ortodoncia invisible para adultos" maxlength="110"><p class="ayuda">Será el titular. Usa las mismas palabras que tu anuncio y que lo que busca tu cliente.</p></div>
+      <div class="cl-ideas" data-para="oferta" hidden></div>
       <div class="campo"><label for="cl-gancho">Condición especial <span class="opcional">(opcional)</span></label><input id="cl-gancho" name="gancho" type="text" placeholder="Ej.: primera visita y estudio gratis" maxlength="90"><p class="ayuda">Una promoción, un precio o un plazo real. Si no tienes, déjalo vacío.</p></div>
+      <div class="cl-ideas" data-para="gancho" hidden></div>
       <div class="campo"><label for="cl-razones">Por qué elegirte</label><textarea id="cl-razones" name="razones" rows="4" placeholder="Una razón por línea, por ejemplo:
 Abrimos los sábados por la mañana
 Presupuesto cerrado antes de empezar
 Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cuatro. Cuanto más concretas (horarios, garantías, años), mejor.</p></div>
+      <div class="cl-ideas" data-para="razones" hidden></div>
     </fieldset>
     <fieldset>
       <legend><span class="paso">3</span> Para quién es</legend>
       <div class="campo"><label for="cl-publico">Tu cliente ideal</label><input id="cl-publico" name="publico" type="text" placeholder="Ej.: adultos que quieren corregir su sonrisa sin brackets metálicos" maxlength="140"><p class="ayuda">Sale como «Pensado para…». Habla de su situación, no de tu empresa.</p></div>
+      <div class="cl-ideas" data-para="publico" hidden></div>
     </fieldset>
     <fieldset>
       <legend><span class="paso">4</span> Cómo te contactan</legend>
@@ -106,6 +114,13 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
       <div class="campo"><span class="cl-tit" id="cl-plantilla-tit">Plantilla</span><div class="cl-plantillas" role="radiogroup" aria-labelledby="cl-plantilla-tit"><label class="cl-plantilla"><input type="radio" name="plantilla" value="directa" checked><span><i class="cl-mini cl-mini-directa" aria-hidden="true"></i><b>Directa</b>Fondo claro y el formulario junto al titular.</span></label><label class="cl-plantilla"><input type="radio" name="plantilla" value="contraste"><span><i class="cl-mini cl-mini-contraste" aria-hidden="true"></i><b>Contraste</b>Cabecera oscura que destaca tu color.</span></label><label class="cl-plantilla"><input type="radio" name="plantilla" value="cercana"><span><i class="cl-mini cl-mini-cercana" aria-hidden="true"></i><b>Cercana</b>Tonos cálidos, letra con serifa y todo centrado.</span></label></div></div>
       <div class="campo"><span class="cl-tit" id="cl-color-tit">Color de tu marca</span><div class="cl-colores" role="radiogroup" aria-labelledby="cl-color-tit"><label class="cl-color" title="Azul"><input type="radio" name="color" value="#1F6FEB" checked aria-label="Azul"><span style="--c:#1F6FEB"></span></label><label class="cl-color" title="Verde"><input type="radio" name="color" value="#0F8A5F" aria-label="Verde"><span style="--c:#0F8A5F"></span></label><label class="cl-color" title="Naranja"><input type="radio" name="color" value="#D9480F" aria-label="Naranja"><span style="--c:#D9480F"></span></label><label class="cl-color" title="Frambuesa"><input type="radio" name="color" value="#C2255C" aria-label="Frambuesa"><span style="--c:#C2255C"></span></label><label class="cl-color" title="Violeta"><input type="radio" name="color" value="#5F3DC4" aria-label="Violeta"><span style="--c:#5F3DC4"></span></label><label class="cl-color" title="Negro"><input type="radio" name="color" value="#1A1A1A" aria-label="Negro"><span style="--c:#1A1A1A"></span></label><label class="cl-color cl-color-libre" title="Otro color"><input type="radio" name="color" value="libre" aria-label="Otro color"><span></span></label><input type="color" name="colorLibre" id="cl-color-libre" value="#2B8A99" aria-label="Elige tu color"></div>
         <p class="ayuda">Si el color es muy claro, los textos se oscurecen solos para que se lean bien.</p></div>
+      <div class="campo"><span class="cl-tit">Logo y foto <span class="opcional">(opcional)</span></span>
+        <div class="cl-imagenes">
+          <div class="cl-imagen" data-imagen="logo"><img alt="Tu logo" hidden><label class="btn btn-borde btn-peq">Subir logo<input class="cl-archivo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" data-imagen-input="logo"></label><button class="cl-enlace" type="button" data-quitar="logo" hidden>Quitar</button></div>
+          <div class="cl-imagen" data-imagen="foto"><img alt="Tu foto" hidden><label class="btn btn-borde btn-peq">Subir foto<input class="cl-archivo" type="file" accept="image/png,image/jpeg,image/webp" data-imagen-input="foto"></label><button class="cl-enlace" type="button" data-quitar="foto" hidden>Quitar</button></div>
+        </div>
+        <p class="cl-aviso" id="cl-img-aviso" hidden></p>
+        <p class="ayuda">Van dentro del mismo archivo HTML y no salen de tu navegador. La foto se reduce para que la landing cargue rápido en el móvil. Usa imágenes tuyas o con permiso.</p></div>
       <label class="casilla"><input type="checkbox" name="resenas" checked><span>Dejar un hueco para reseñas reales de tus clientes.</span></label>
     </fieldset>
     <p class="cl-ir-vista"><a class="btn btn-borde" href="#cl-vista">Ver cómo queda ↓</a></p>
@@ -116,9 +131,24 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
       <div class="cl-dispositivos" role="group" aria-label="Tamaño de la vista previa"><button type="button" data-vista="movil" aria-pressed="true">Móvil</button><button type="button" data-vista="escritorio" aria-pressed="false">Ordenador</button></div>
     </div>
     <div class="cl-caja" id="cl-caja"><iframe id="cl-marco" title="Vista previa de tu landing" sandbox="allow-scripts allow-same-origin"></iframe></div>
-    <div class="cl-estado" id="cl-estado" aria-live="polite"></div>
+    <div class="cl-estado" id="cl-estado"></div>
     <div class="cl-botones"><button class="btn btn-principal" id="cl-descargar" type="button">Descargar la landing</button><button class="btn btn-borde btn-peq" id="cl-grande" type="button">Ver a tamaño real</button><button class="cl-enlace" id="cl-borrar" type="button">Empezar de cero</button></div>
   </aside>
+</div>
+<div class="cl-anuncios" id="cl-anuncios" hidden>
+  <div class="cab-seccion"><p class="etiqueta">Paso 6</p><h2>Tus anuncios, a juego con la landing</h2><p>Los enlaces con UTM para saber qué campaña te trae cada contacto y borradores de textos con los límites de cada plataforma. Revísalos antes de usarlos.</p></div>
+  <div class="cl-anuncios-rejilla">
+    <section class="cl-panel" aria-labelledby="cl-enlaces-tit">
+      <h3 id="cl-enlaces-tit">Enlaces para tus anuncios</h3>
+      <div class="campo"><label for="cl-url">Dirección de tu landing</label><input id="cl-url" name="urlLanding" form="cl-form" type="url" inputmode="url" placeholder="Ej.: https://ofertas.tunegocio.es" maxlength="200"><p class="ayuda">Donde la vas a publicar. Si aún no lo sabes, vuelve cuando la tengas.</p></div>
+      <div class="campo"><label for="cl-campana">Nombre de la campaña <span class="opcional">(opcional)</span></label><input id="cl-campana" name="campana" form="cl-form" placeholder="Se crea solo a partir de lo que anuncias" maxlength="60"><p class="ayuda">Así la verás en Google Analytics. Va en minúsculas y sin espacios.</p></div>
+      <div id="cl-enlaces"></div>
+    </section>
+    <section class="cl-panel" aria-labelledby="cl-textos-tit">
+      <h3 id="cl-textos-tit">Textos de anuncio</h3>
+      <div id="cl-textos"></div>
+    </section>
+  </div>
 </div>
 <div class="destacado cl-final" id="cl-final" hidden>
   <p class="etiqueta">¿Y ahora qué?</p>
@@ -152,6 +182,7 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   <li><strong>Campos ocultos con el origen de cada contacto</strong>: <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_term</code>, <code>utm_content</code>, <code>gclid</code> (Google Ads) y <code>fbclid</code> (Meta). Así sabes qué campaña te trajo a cada cliente.</li>
   <li><strong>Eventos de medición listos</strong> (<code>generate_lead</code>, <code>clic_whatsapp</code> y <code>clic_llamada</code>) para Google Tag Manager o Google Analytics, y un hueco señalado para pegar tu etiqueta de Google y el píxel de Meta.</li>
   <li><strong>La etiqueta <code>noindex</code></strong>: es una página para tus anuncios, no para salir en los resultados de Google. Los anuncios funcionan igual.</li>
+  <li><strong>Tu logo y tu foto</strong>, si los subes, dentro del mismo archivo.</li>
   <li><strong>Huecos en amarillo</strong> para lo que solo tú puedes poner: tus datos legales, reseñas reales o lo que te haya faltado rellenar.</li>
 </ul>
 <h2>Cómo publicarla</h2>
@@ -168,7 +199,7 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   <li><strong>Que cargue rápido en el móvil.</strong> La mayoría de las visitas de tus anuncios llegarán desde un teléfono. Un único archivo sin librerías ayuda.</li>
   <li><strong>Que sea verdad.</strong> Reseñas reales, condiciones reales y plazos reales. Una urgencia inventada se nota y resta confianza.</li>
 </ul>
-<p class="nota">Lo que escribes en el creador se queda en tu navegador. Nos llega tu correo al entrar y, cuando descargas la landing, el nombre, la actividad, la zona y la oferta de tu negocio.</p>
+<p class="nota">Lo que escribes y las imágenes que subes se quedan en tu navegador. Nos llega tu correo al entrar y, cuando descargas la landing, el nombre, la actividad, la zona y la oferta de tu negocio.</p>
 </div></div></section><section class="seccion "><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Preguntas</p><h2>Antes de empezar</h2></div><div class="preguntas"><details open><summary>¿Es gratis?</summary><div class="respuesta"><p>Sí. Crear la landing, verla y descargarla no cuesta nada; solo te pedimos el correo para entrar. El formulario usa FormSubmit, que tiene un plan gratuito.</p></div></details><details><summary>¿Sirve para Google Ads y para Meta Ads?</summary><div class="respuesta"><p>Sí. Es una página normal: la pones como URL final en Google Ads o como destino en Meta Ads. Los campos ocultos guardan el <code>gclid</code> de Google y el <code>fbclid</code> de Meta junto a cada contacto.</p></div></details><details><summary>¿Por qué lleva huecos en amarillo?</summary><div class="respuesta"><p>Porque hay datos que no podemos inventar: tu NIF y tu dirección para la privacidad, tus reseñas o lo que no hayas rellenado. Están marcados para que no se te pase ninguno antes de publicar.</p></div></details><details><summary>¿Puedo cambiar el diseño o quitar el enlace a URCA del pie?</summary><div class="respuesta"><p>Sí. La landing es tuya: puedes editar el HTML como quieras y borrar el enlace del pie.</p></div></details><details><summary>¿Y si no sé publicarla?</summary><div class="respuesta"><p>Te la publicamos nosotros. <a href="/contacto" data-origen="preguntas">Cuéntanos tu caso</a> y te decimos cómo lo haríamos y, si quieres, qué campañas le llevarían visitas.</p></div></details></div></div></section><section class="cierre oscuro">
   <div class="wrap">
     <div class="cierre-texto"><h2>¿Te la publicamos y la llenamos de clientes?</h2><p>Nos encargamos de subirla, de medir cada contacto y de las campañas de Google Ads o Meta Ads que le llevan visitas.</p><a class="btn btn-principal" href="/contacto">Cuéntanos tu caso →</a></div>
@@ -217,6 +248,10 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   var estado = document.getElementById('cl-estado'), dialogo = document.getElementById('cl-dialogo');
   var correoSesion = '';
   var vista = 'movil', vistaVisible = false, previsualizada = false, temporizador = null;
+  var SECTORES = {"dental": {"nombre": "Clínica dental", "actividad": "Clínica dental", "oferta": ["Implantes dentales", "Ortodoncia invisible para adultos", "Limpieza y revisión dental"], "gancho": ["Primera visita y diagnóstico sin coste", "Financiación hasta en [X] meses sin intereses"], "razones": ["Presupuesto cerrado antes de empezar", "Abrimos por la tarde y los sábados por la mañana", "Más de [X] años en el barrio", "Siempre te atiende el mismo dentista"], "publico": ["adultos que quieren mejorar su sonrisa sin brackets metálicos", "familias que buscan un dentista de confianza cerca de casa"]}, "fisio": {"nombre": "Fisioterapia u osteopatía", "actividad": "Fisioterapia", "oferta": ["Fisioterapia para el dolor de espalda", "Recuperación de lesiones deportivas", "Fisioterapia a domicilio"], "gancho": ["Primera valoración por [X] €", "Bono de [X] sesiones con descuento"], "razones": ["Sesiones de [X] minutos, una persona cada vez", "Siempre con el mismo fisioterapeuta", "Cita en [X] días como máximo", "Ejercicios para casa al terminar cada sesión"], "publico": ["personas con dolor de espalda o cuello que quieren volver a moverse sin molestias", "deportistas que quieren recuperarse de una lesión"]}, "estetica": {"nombre": "Centro de estética", "actividad": "Centro de estética", "oferta": ["Depilación láser", "Tratamientos faciales", "Manicura y pedicura semipermanente"], "gancho": ["Primera sesión de prueba por [X] €", "Diagnóstico de piel sin coste"], "razones": ["Te explicamos el tratamiento y el precio antes de empezar", "Profesionales con [X] años de experiencia", "Cita online en un minuto", "Equipos de [marca o tipo]"], "publico": ["personas que quieren olvidarse de la cuchilla", "personas que quieren cuidar su piel con un tratamiento profesional"]}, "peluqueria": {"nombre": "Peluquería o barbería", "actividad": "Peluquería", "oferta": ["Corte y peinado", "Mechas y color", "Corte y arreglo de barba"], "gancho": ["[X] % de descuento en tu primera visita"], "razones": ["Reserva online en un minuto", "Abrimos de [hora] a [hora], también los sábados", "Te asesoramos antes de cortar", "Productos de [marca]"], "publico": ["personas que buscan una peluquería de confianza en el barrio", "hombres que quieren un buen corte sin esperar"]}, "academia": {"nombre": "Academia o formación", "actividad": "Academia", "oferta": ["Clases de inglés para niños", "Preparación de exámenes oficiales", "Clases de refuerzo escolar"], "gancho": ["Primera clase de prueba gratis", "Matrícula gratuita hasta el [fecha]"], "razones": ["Grupos de [X] alumnos como máximo", "Profesores titulados", "Informe de progreso cada trimestre", "Horarios de tarde, al salir del colegio"], "publico": ["familias que buscan clases cerca de casa", "adultos que necesitan un título para su trabajo"]}, "reformas": {"nombre": "Reformas", "actividad": "Reformas", "oferta": ["Reforma integral de baño", "Reforma de cocina llave en mano", "Reforma integral de piso"], "gancho": ["Visita y presupuesto sin coste"], "razones": ["Presupuesto cerrado y por escrito", "Un único responsable de obra", "Plazo de entrega en el contrato", "Garantía de [X] años"], "publico": ["propietarios que quieren reformar sin sorpresas en el precio ni en el plazo", "familias que quieren renovar el baño o la cocina"]}, "hogar": {"nombre": "Fontanería, cerrajería o electricidad", "actividad": "Fontanería", "oferta": ["Fontanero urgente", "Cerrajero urgente", "Electricista para averías"], "gancho": ["Precio de la salida cerrado antes de ir"], "razones": ["Te decimos el precio antes de ir", "Atendemos [días y horas]", "Llegamos en unos [X] minutos dentro de [zona]", "Factura y garantía en cada trabajo"], "publico": ["vecinos con una avería que no puede esperar", "comunidades y negocios que necesitan un profesional de confianza"]}, "restaurante": {"nombre": "Restaurante o bar", "actividad": "Restaurante", "oferta": ["Menú de mediodía", "Reservas para grupos y celebraciones", "Comida para llevar"], "gancho": ["Menú del día por [X] €"], "razones": ["Cocina [tipo] con producto de temporada", "Menú para grupos cerrado de antemano", "Opciones vegetarianas y sin gluten", "Terraza"], "publico": ["gente que trabaja en la zona y busca un buen menú de mediodía", "grupos que buscan sitio para una celebración"]}, "gimnasio": {"nombre": "Gimnasio o entrenamiento", "actividad": "Centro de entrenamiento", "oferta": ["Entrenamiento personal", "Pilates en grupos reducidos", "Clases dirigidas"], "gancho": ["Primera clase de prueba gratis", "Sin matrícula hasta el [fecha]"], "razones": ["Grupos de [X] personas como máximo", "Entrenadores titulados", "Horario de [hora] a [hora]", "Plan adaptado a tu nivel"], "publico": ["personas que quieren ponerse en forma con alguien que les guíe", "gente que empieza de cero y no quiere un gimnasio masificado"]}, "asesoria": {"nombre": "Asesoría o despacho", "actividad": "Asesoría", "oferta": ["Asesoría fiscal y contable para autónomos", "Abogado de familia", "Gestión laboral para pymes"], "gancho": ["Primera consulta de [X] minutos sin coste"], "razones": ["Precio mensual cerrado", "Un asesor fijo que conoce tu caso", "Respuesta en [X] horas laborables", "Todo online o en el despacho, como prefieras"], "publico": ["autónomos que quieren olvidarse de los papeles", "pymes que buscan una asesoría que les responda rápido"]}, "tienda": {"nombre": "Tienda o producto", "actividad": "Tienda", "oferta": ["[Producto] con envío en [X] horas", "Nueva colección de [producto]"], "gancho": ["Envío gratis a partir de [X] €", "[X] % de descuento en tu primer pedido"], "razones": ["Devoluciones gratis durante [X] días", "Pago seguro con tarjeta y Bizum", "Atención por WhatsApp", "Hecho en [lugar]"], "publico": ["personas que buscan [producto] de calidad sin salir de casa"]}, "inmobiliaria": {"nombre": "Inmobiliaria", "actividad": "Inmobiliaria", "oferta": ["Vende tu piso", "Valoración de tu vivienda"], "gancho": ["Valoración de tu vivienda sin coste"], "razones": ["Un solo agente se ocupa de tu venta", "Fotos profesionales y visita virtual", "Te informamos de cada visita", "[X] años vendiendo en [zona]"], "publico": ["propietarios que quieren vender su piso al mejor precio y sin perder tiempo"]}};
+  var IMAGENES = { logo: leerLocal('urca-creador-logo-v1'), foto: leerLocal('urca-creador-foto-v1') };
+  function lineas(t) { return String(t || '').split(/\n+/).map(function (r) { return r.replace(/^[\s\-•*·✓]+/, '').trim(); }).filter(Boolean).slice(0, 4); }
+  function rgba(c, a) { return 'rgba(' + rgb(c).join(',') + ',' + a + ')'; }
 
   function medir(ev, datos) {
     datos = datos || {};
@@ -331,6 +366,9 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
       + '.pl-contraste .heroe{color:#FFFFFF}.pl-contraste .heroe .entrada{color:rgba(255,255,255,.84)}.pl-contraste .heroe .antetitulo{color:var(--acento-claro)}'
       + '.pl-cercana .heroe{text-align:center}.pl-cercana .entrada{margin-left:auto;margin-right:auto}.pl-cercana .heroe .acciones{justify-content:center}'
       + '.pl-cercana .seccion h2{margin-left:auto;margin-right:auto;text-align:center}.pl-cercana .formulario h2{text-align:left}'
+      + '.marca img{display:block;height:40px;width:auto;max-width:190px;object-fit:contain}'
+      + '.foto{display:block;width:100%;height:auto;max-height:460px;object-fit:cover;border-radius:var(--radio)}'
+      + '.foto-centrada{max-width:760px;max-height:400px;margin:36px auto 0}.banda-foto{padding-top:clamp(32px,5vw,56px)}.banda-foto .foto{max-height:420px}'
       + '@media(max-width:600px){.acciones .boton{width:100%}.barra .boton{min-height:40px;padding:8px 14px;font-size:14px}}'
       + '@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}';
   }
@@ -341,6 +379,8 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   function generar(d, previa) {
     var faltan = [];
     function hueco(t) { faltan.push(t); return '<mark class="hueco">[' + esc(t) + ']</mark>'; }
+    // Lo que el negocio deja entre corchetes (de las ideas por sector) también se marca como hueco.
+    function texto(t) { return esc(t).replace(/\[([^\]]{1,80})\]/g, function (m, x) { faltan.push(x); return '<mark class="hueco">[' + x + ']</mark>'; }); }
     var pl = PLANTILLAS[d.plantilla] ? d.plantilla : 'directa';
     var acento = d.color === 'libre' ? d.colorLibre : d.color;
     acento = aHex(rgb(acento));
@@ -352,9 +392,9 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     var negocio = d.negocio ? esc(d.negocio) : hueco('Nombre de tu negocio');
     var oferta = d.oferta || '';
     var enZona = d.zona && oferta.toLowerCase().indexOf(d.zona.toLowerCase().split(',')[0]) < 0 ? ' en ' + d.zona : '';
-    var titular = oferta ? esc(oferta + enZona) : hueco('Lo que anuncias: tu servicio o producto estrella');
+    var titular = oferta ? texto(oferta + enZona) : hueco('Lo que anuncias: tu servicio o producto estrella');
     var ante = [d.actividad, d.zona].filter(Boolean).map(esc).join(' · ');
-    var para = d.publico ? 'Pensado para ' + esc(d.publico.replace(/[.\s]+$/, '')) + '.' : hueco('Para quién es: describe a tu cliente ideal');
+    var para = d.publico ? 'Pensado para ' + texto(d.publico.replace(/[.\s]+$/, '')) + '.' : hueco('Para quién es: describe a tu cliente ideal');
     var msgWa = 'Hola, quería información' + (oferta ? ' sobre ' + oferta : '') + '.';
     var urlWa = tel ? 'https://wa.me/' + tel + '?text=' + encodeURIComponent(msgWa) : '';
     var telVisible = esc(d.telefono || '');
@@ -367,8 +407,8 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     if (accion !== 'formulario' && conForm) secundaria = '<a class="boton boton-sec" href="#formulario">Prefiero dejar mis datos</a>';
     else if (accion === 'formulario' && tel) secundaria = '<a class="boton boton-sec" href="tel:+' + tel + '">Llamar al ' + telVisible + '</a>';
 
-    var razones = String(d.razones || '').split(/\n+/).map(function (r) { return r.replace(/^[\s\-•*·]+/, '').trim(); }).filter(Boolean).slice(0, 4);
-    var lis = razones.map(function (r) { return '<li>' + esc(r) + '</li>'; });
+    var razones = lineas(d.razones);
+    var lis = razones.map(function (r) { return '<li>' + texto(r) + '</li>'; });
     for (var i = razones.length; i < 3; i++) lis.push('<li>' + hueco('Razón ' + (i + 1) + ' para elegirte: algo concreto y verdadero') + '</li>');
 
     var pasos = accion === 'whatsapp'
@@ -406,19 +446,29 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     var tituloPagina = (oferta || d.actividad || 'Tu landing') + enZona + (d.negocio ? ' | ' + d.negocio : '');
     var descripcion = (d.publico ? 'Pensado para ' + d.publico.replace(/[.\s]+$/, '') + '. ' : '') + principal.frase;
 
-    var heroe = '<section class="heroe' + (formEnHeroe ? ' con-form' : '') + '"><div class="envoltura heroe-rejilla"><div>'
+    var fotoTag = IMAGENES.foto ? '<img class="foto" src="' + IMAGENES.foto + '" alt="' + esc(oferta || d.negocio || '') + '">' : '';
+    var fotoColumna = !!fotoTag && pl === 'directa' && !formEnHeroe;
+    var fotoBanda = !!fotoTag && pl === 'directa' && formEnHeroe;
+    var fotoFondo = !!fotoTag && pl === 'contraste';
+    var fotoCentro = !!fotoTag && pl === 'cercana';
+    var oscuro = mezcla(acento, '#0A0B0C', 0.86);
+    var heroe = '<section class="heroe' + (formEnHeroe || fotoColumna ? ' con-form' : '') + '"'
+      + (fotoFondo ? ' style="background:linear-gradient(' + rgba(oscuro, 0.9) + ',' + rgba(oscuro, 0.72) + '),url(\'' + IMAGENES.foto + '\') center/cover"' : '')
+      + '><div class="envoltura heroe-rejilla"><div>'
       + (ante ? '<p class="antetitulo">' + ante + '</p>' : '')
       + '<h1>' + titular + '</h1>'
-      + (d.gancho ? '<p class="gancho">' + esc(d.gancho) + '</p>' : '')
+      + (d.gancho ? '<p class="gancho">' + texto(d.gancho) + '</p>' : '')
       + '<p class="entrada">' + para + ' ' + esc(principal.frase) + '</p>'
       + (formEnHeroe ? (tel ? '<div class="acciones"><a class="boton boton-sec" href="tel:+' + tel + '">Llamar al ' + telVisible + '</a></div>' : '')
                      : '<div class="acciones"><a class="boton" href="' + principal.href + '">' + esc(principal.txt) + '</a>' + secundaria + '</div>')
-      + '</div>' + (formEnHeroe ? formulario : '') + '</div></section>';
+      + (fotoCentro ? fotoTag.replace('class="foto"', 'class="foto foto-centrada"') : '')
+      + '</div>' + (formEnHeroe ? formulario : '') + (fotoColumna ? '<div>' + fotoTag + '</div>' : '') + '</div></section>';
 
-    var cuerpo = '<header class="barra"><div class="envoltura"><a class="marca" href="#">' + negocio + '</a>'
-      + '<\!-- Si tienes logo, cambia el nombre por <img src="logo.png" alt="..." height="40"> -->'
+    var marca = IMAGENES.logo ? '<img src="' + IMAGENES.logo + '" alt="' + (d.negocio ? esc(d.negocio) : 'Logo') + '">' : negocio;
+    var cuerpo = '<header class="barra"><div class="envoltura"><a class="marca" href="#">' + marca + '</a>'
+      + (IMAGENES.logo ? '' : '<\!-- Si tienes logo, súbelo en el creador o cambia el nombre por <img src="logo.png" alt="..." height="40"> -->')
       + '<a class="boton boton-peq" href="' + principal.href + '">' + (accion === 'llamada' ? 'Llamar' : accion === 'whatsapp' ? 'WhatsApp' : 'Pide información') + '</a></div></header>'
-      + '<main>' + heroe
+      + '<main>' + heroe + (fotoBanda ? '<div class="envoltura banda-foto">' + fotoTag + '</div>' : '')
       + '<section class="seccion"><div class="envoltura"><h2>Por qué elegir ' + negocio + '</h2><ul class="razones">' + lis.join('') + '</ul></div></section>'
       + '<section class="seccion alterna"><div class="envoltura"><h2>Cómo funciona</h2><ol class="pasos">' + pasosHtml + '</ol></div></section>'
       + (d.resenas ? '<section class="seccion"><div class="envoltura"><h2>Lo que dicen nuestros clientes</h2><div class="resenas">' + hueco('Pega aquí 2 o 3 reseñas reales, por ejemplo de Google, con el nombre de quien las escribió') + '</div></div></section>' : '')
@@ -509,14 +559,181 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     caja.style.height = Math.round(alto * s + 2 * margen) + 'px';
     caja.className = 'cl-caja cl-caja-' + vista;
   }
-  function pintarEstado(r) {
+  function revisar(d) {
+    var tel = telefono(d.telefono), correoOk = EMAIL_RE.test(d.email || ''), accion = d.accion || 'formulario';
+    var rz = lineas(d.razones);
+    var concretas = rz.filter(function (r) { return /\d/.test(r) || r.length >= 35; }).length;
+    var textos = [d.oferta, d.gancho, d.publico, d.razones].join(' ');
+    var c = [
+      [!!d.oferta, 15, 'Escribe qué anuncias: será el titular de la landing.'],
+      [!!d.oferta && d.oferta.length <= 60, 5, 'Acorta el titular a menos de 60 caracteres: en el móvil se lee de un vistazo.'],
+      [!!d.zona, 10, 'Añade tu ciudad o barrio: quien llega desde el anuncio quiere saber que estás cerca.'],
+      [!!d.publico, 10, 'Describe a tu cliente ideal: que se reconozca al leer «Pensado para…».'],
+      [rz.length >= 3, 15, 'Escribe al menos tres razones para elegirte.'],
+      [concretas >= 2, 10, 'Haz tus razones más concretas: horarios, plazos, años o garantías reales.'],
+      [accion === 'formulario' ? correoOk : !!tel, 15, accion === 'formulario' ? 'Pon tu correo: sin él no te llegan los contactos del formulario.' : 'Pon tu teléfono: es el botón principal de la landing.'],
+      [!!tel, 5, 'Añade tu teléfono: mucha gente prefiere llamar o escribir por WhatsApp.'],
+      [!!d.gancho, 5, 'Si tienes una promoción o una condición real, ponla: da un motivo para escribir hoy.'],
+      [!/\[[^\]]+\]/.test(textos), 5, 'Completa los textos que siguen entre corchetes [ ].'],
+      [!!d.resenas, 5, 'Activa el hueco de reseñas y pega opiniones reales: dan confianza.']
+    ];
+    var nota = 0, consejos = [];
+    c.forEach(function (x) { if (x[0]) nota += x[1]; else consejos.push(x[2]); });
+    return { nota: nota, consejos: consejos };
+  }
+  function pintarEstado(r, rev) {
+    var abiertos = {};
+    estado.querySelectorAll('details[id]').forEach(function (x) { abiertos[x.id] = x.open; });
     var h = '';
     r.avisos.forEach(function (a) { h += '<p class="cl-aviso">' + esc(a) + '</p>'; });
+    var etiqueta = rev.nota >= 85 ? 'Lista para tus anuncios' : rev.nota >= 60 ? 'Bien, con margen de mejora' : 'Le falta lo básico';
+    h += '<div class="cl-nota"><span class="cl-nota-num">' + rev.nota + '<small>/100</small></span><div class="cl-nota-txt"><b>' + etiqueta + '</b><span class="cl-medidor" aria-hidden="true"><i style="width:' + rev.nota + '%"></i></span></div></div>';
+    var nc = rev.consejos.length;
+    if (nc) h += '<details id="cl-consejos"' + (abiertos['cl-consejos'] ? ' open' : '') + '><summary><b>' + nc + (nc === 1 ? ' consejo' : ' consejos') + '</b> para subir la nota</summary><ul>' + rev.consejos.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></details>';
     var n = r.faltan.length;
-    h += n ? '<details><summary><b>' + n + (n === 1 ? ' hueco' : ' huecos') + '</b> por completar, en amarillo</summary><ul>' + r.faltan.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul></details>'
+    h += n ? '<details id="cl-huecos"' + (abiertos['cl-huecos'] ? ' open' : '') + '><summary><b>' + n + (n === 1 ? ' hueco' : ' huecos') + '</b> por completar, en amarillo</summary><ul>' + r.faltan.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul></details>'
            : '<p><b>0 huecos</b>: solo te queda publicarla.</p>';
     estado.innerHTML = h;
   }
+  function pintarIdeas() {
+    var s = SECTORES[form.elements.sector.value];
+    form.querySelectorAll('.cl-ideas').forEach(function (caja) {
+      var lista = s ? (s[caja.getAttribute('data-para')] || []) : [];
+      caja.hidden = !lista.length;
+      caja.innerHTML = lista.length ? '<span class="cl-ideas-tit">Ideas:</span>' + lista.map(function (t) { return '<button type="button" class="cl-idea" data-texto="' + esc(t) + '">' + esc(t) + '</button>'; }).join('') : '';
+    });
+  }
+
+  // ---- Anuncios a juego
+  function slug(t) { return String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\[[^\]]*\]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40).replace(/-+$/, ''); }
+  function unicos(l) { var v = {}; return l.map(function (x) { return String(x || '').trim(); }).filter(function (x) { var k = x.toLowerCase(); if (!x || v[k]) return false; v[k] = 1; return true; }); }
+  function fila(t, max, etiqueta, recomendado) {
+    var n = Array.from(t).length;
+    var cuenta = max ? '<span class="cl-cuenta' + (n > max ? ' mal' : '') + '" title="' + (recomendado ? 'Recomendado' : 'Máximo') + ': ' + max + ' caracteres">' + n + '/' + max + '</span>' : '';
+    return '<div class="cl-fila">' + (etiqueta ? '<span class="cl-fila-et">' + esc(etiqueta) + '</span>' : '') + '<code>' + esc(t) + '</code>' + cuenta
+      + '<button type="button" class="cl-copiar" data-copiar="' + esc(t) + '">Copiar</button></div>';
+  }
+  function pintarAnuncios(d) {
+    var panel = document.getElementById('cl-anuncios'), abiertos = {};
+    panel.querySelectorAll('details[id]').forEach(function (x) { abiertos[x.id] = x.open; });
+    var base = String(d.urlLanding || '').trim().replace(/[?#].*$/, '');
+    if (base && !/^https?:\/\//i.test(base)) base = 'https://' + base;
+    var sinBase = !base; if (sinBase) base = 'https://tu-landing.es';
+    var camp = slug(d.campana) || slug(d.oferta) || 'mi-campana';
+    var e1 = (sinBase ? '<p class="cl-aviso">Pon la dirección de tu landing y los enlaces quedan listos para pegar.</p>' : '')
+      + '<h4>Google Ads</h4>' + fila(base, 0, 'URL final') + fila('utm_source=google&utm_medium=cpc&utm_campaign=' + camp, 0, 'Sufijo de URL final')
+      + '<p class="ayuda">Activa también el etiquetado automático en tu cuenta: añade el gclid a cada visita.</p>'
+      + '<h4>Meta Ads</h4>' + fila(base, 0, 'Sitio web') + fila('utm_source=meta&utm_medium=paid_social&utm_campaign=' + camp + '&utm_content={{ad.name}}', 0, 'Parámetros de URL')
+      + '<p class="ayuda">Meta cambia {{ad.name}} por el nombre de cada anuncio, así sabes cuál funciona mejor.</p>'
+      + '<h4>Para Instagram, WhatsApp o un correo</h4>' + fila(base + '?utm_source=instagram&utm_medium=social&utm_campaign=' + camp, 0, 'Enlace');
+    document.getElementById('cl-enlaces').innerHTML = e1;
+
+    var neg = d.negocio || '', of = d.oferta || '', act = d.actividad || '', zonaC = String(d.zona || '').split(',')[0].trim();
+    var ofMin = of ? of.charAt(0).toLowerCase() + of.slice(1) : '';
+    var rz = lineas(d.razones), accion = d.accion || 'formulario';
+    var gancho = String(d.gancho || '').replace(/[.\s]+$/, ''), publ = String(d.publico || '').replace(/[.\s]+$/, '');
+    var cta = accion === 'whatsapp' ? 'Escríbenos por WhatsApp' : accion === 'llamada' ? 'Llámanos y te informamos' : 'Pide información hoy';
+    var frase = accion === 'whatsapp' ? 'Escríbenos por WhatsApp y te respondemos.' : accion === 'llamada' ? 'Llámanos y te lo explicamos.' : 'Déjanos tus datos y te respondemos.';
+    var t;
+    if (!of) {
+      t = '<p class="cl-aviso">Escribe qué anuncias (paso 2) y aquí te proponemos titulares y textos.</p>';
+    } else {
+      var tits = unicos([of, zonaC ? of + ' en ' + zonaC : '', act && zonaC ? act + ' en ' + zonaC : '', gancho, neg, cta].concat(rz));
+      var descs = unicos([
+        publ ? 'Pensado para ' + publ + '. ' + frase : '',
+        rz.length ? rz.slice(0, 2).map(function (r) { return r.replace(/[.\s]+$/, ''); }).join('. ') + '. ' + frase : '',
+        gancho ? gancho + '. ' + (rz[0] ? rz[0].replace(/[.\s]+$/, '') + '. ' : '') + cta + '.' : ''
+      ]);
+      var meta1 = '¿Buscas ' + ofMin + (zonaC ? ' en ' + zonaC : '') + '?' + (rz.length ? '\n\n' + rz.map(function (r) { return '✓ ' + r; }).join('\n') : '') + (gancho ? '\n\n' + gancho + '.' : '') + '\n' + frase;
+      var meta2 = (publ ? 'Pensado para ' + publ + '. ' : '') + (neg ? neg + (zonaC ? ', en ' + zonaC : '') + '. ' : '') + (gancho ? gancho + '. ' : '') + frase;
+      t = '<details id="cl-t-google"' + (abiertos['cl-t-google'] === false ? '' : ' open') + '><summary>Google Ads: anuncio de búsqueda</summary>'
+        + '<p class="ayuda">Titulares de hasta 30 caracteres (Google pide al menos 3) y descripciones de hasta 90. Los que se pasan salen en rojo: acórtalos antes de usarlos.</p>'
+        + '<h4>Titulares</h4>' + tits.map(function (x) { return fila(x, 30); }).join('')
+        + '<h4>Descripciones</h4>' + descs.map(function (x) { return fila(x, 90); }).join('') + '</details>'
+        + '<details id="cl-t-meta"' + (abiertos['cl-t-meta'] ? ' open' : '') + '><summary>Meta Ads: Facebook e Instagram</summary>'
+        + '<p class="ayuda">En el móvil, el texto principal se corta hacia los 125 caracteres: pon lo importante al principio. Los límites de titular y descripción son los recomendados.</p>'
+        + '<h4>Texto principal</h4>' + unicos([meta1, meta2]).map(function (x) { return fila(x, 125, '', true); }).join('')
+        + '<h4>Titular</h4>' + unicos([gancho, of, act && zonaC ? act + ' en ' + zonaC : '']).map(function (x) { return fila(x, 40, '', true); }).join('')
+        + '<h4>Descripción</h4>' + unicos([cta, neg]).map(function (x) { return fila(x, 30, '', true); }).join('') + '</details>';
+    }
+    document.getElementById('cl-textos').innerHTML = t;
+  }
+  function copiar(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).catch(function () { copiarViejo(t); });
+    copiarViejo(t); return Promise.resolve();
+  }
+  function copiarViejo(t) { var a = document.createElement('textarea'); a.value = t; a.style.position = 'fixed'; a.style.opacity = '0'; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); } catch (e) {} a.remove(); }
+  document.getElementById('cl-anuncios').addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('.cl-copiar'); if (!b) return;
+    copiar(b.getAttribute('data-copiar')).then(function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1500); });
+    medir('anuncios_copiados');
+  });
+  document.getElementById('cl-anuncios').addEventListener('input', function () { programar(); });
+
+  // ---- Logo y foto (se incrustan como data URL; no salen del navegador)
+  function pintarImagenes() {
+    ['logo', 'foto'].forEach(function (k) {
+      var c = form.querySelector('[data-imagen="' + k + '"]'); if (!c) return;
+      var img = c.querySelector('img');
+      img.hidden = !IMAGENES[k];
+      if (IMAGENES[k]) img.src = IMAGENES[k]; else img.removeAttribute('src');
+      c.querySelector('[data-quitar]').hidden = !IMAGENES[k];
+    });
+  }
+  function guardarImagen(k) {
+    try { if (IMAGENES[k]) localStorage.setItem('urca-creador-' + k + '-v1', IMAGENES[k]); else localStorage.removeItem('urca-creador-' + k + '-v1'); return true; } catch (e) { return false; }
+  }
+  function cargarImagen(k, archivo) {
+    var aviso = document.getElementById('cl-img-aviso');
+    function fallo(t) { aviso.textContent = t; aviso.hidden = false; }
+    aviso.hidden = true;
+    if (!archivo) return;
+    if (!/^image\//.test(archivo.type)) return fallo('Ese archivo no es una imagen.');
+    if (archivo.size > 15 * 1024 * 1024) return fallo('La imagen pesa demasiado: prueba con una de menos de 15 MB.');
+    function listo(u) {
+      IMAGENES[k] = u; pintarImagenes();
+      if (!guardarImagen(k)) fallo('La imagen ya está en tu landing, pero no cabe en el borrador: si recargas la página, tendrás que volver a subirla.');
+      medir('imagen_subida', { tipo: k });
+      actualizar();
+    }
+    var lector = new FileReader();
+    lector.onload = function () {
+      if (archivo.type === 'image/svg+xml') { if (lector.result.length > 300000) return fallo('El SVG es demasiado grande.'); return listo(lector.result); }
+      var img = new Image();
+      img.onload = function () {
+        var maxA = k === 'logo' ? 480 : 1600, maxH = k === 'logo' ? 160 : 1200;
+        var f = Math.min(1, maxA / img.width, maxH / img.height);
+        var c = document.createElement('canvas'); c.width = Math.max(1, Math.round(img.width * f)); c.height = Math.max(1, Math.round(img.height * f));
+        var x = c.getContext('2d');
+        if (k === 'foto') { x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, c.width, c.height); }
+        x.drawImage(img, 0, 0, c.width, c.height);
+        listo(k === 'logo' ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', 0.8));
+      };
+      img.onerror = function () { fallo('No hemos podido leer la imagen. Prueba con un JPG o un PNG.'); };
+      img.src = lector.result;
+    };
+    lector.readAsDataURL(archivo);
+  }
+  form.addEventListener('change', function (ev) {
+    var k = ev.target.getAttribute && ev.target.getAttribute('data-imagen-input');
+    if (k) { cargarImagen(k, ev.target.files && ev.target.files[0]); ev.target.value = ''; }
+    if (ev.target.name === 'sector') {
+      var s = SECTORES[ev.target.value];
+      if (s && !form.elements.actividad.value) form.elements.actividad.value = s.actividad;
+      pintarIdeas();
+      medir('ideas_sector', { sector: ev.target.value });
+    }
+  });
+  form.addEventListener('click', function (ev) {
+    var q = ev.target.closest && ev.target.closest('[data-quitar]');
+    if (q) { var k = q.getAttribute('data-quitar'); IMAGENES[k] = ''; guardarImagen(k); pintarImagenes(); actualizar(); return; }
+    var b = ev.target.closest && ev.target.closest('.cl-idea'); if (!b) return;
+    var campo = b.parentNode.getAttribute('data-para'), el = form.elements[campo], t = b.getAttribute('data-texto');
+    if (campo === 'razones') { var ls = lineas(el.value); if (ls.indexOf(t) < 0 && ls.length < 4) ls.push(t); el.value = ls.join('\n'); }
+    else el.value = t;
+    el.focus();
+    programar();
+  });
   function comprobarVista(d) {
     if (!previsualizada && vistaVisible && d.negocio) { previsualizada = true; medir('landing_previsualizada', { plantilla: d.plantilla, accion: d.accion }); }
   }
@@ -527,7 +744,8 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     var y = 0; try { y = marco.contentWindow.scrollY || 0; } catch (e) {}
     marco.onload = function () { try { marco.contentWindow.scrollTo(0, y); } catch (e) {} };
     marco.srcdoc = r.html;
-    pintarEstado(r);
+    pintarEstado(r, revisar(d));
+    pintarAnuncios(d);
     guardar(d);
     comprobarVista(d);
   }
@@ -567,11 +785,12 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   function vacio(d) { return !(d.negocio || d.oferta || d.actividad || d.razones || d.publico); }
   document.getElementById('cl-ejemplo').addEventListener('click', function () {
     if (!vacio(leer()) && !window.confirm('El ejemplo sustituye lo que has escrito. ¿Seguimos?')) return;
-    escribir(EJEMPLO); actualizar();
+    escribir(EJEMPLO); pintarIdeas(); actualizar();
   });
   document.getElementById('cl-borrar').addEventListener('click', function () {
     if (!window.confirm('¿Borrar todo lo que has escrito?')) return;
-    form.reset(); try { localStorage.removeItem(CLAVE); } catch (e) {} actualizar();
+    form.reset(); try { localStorage.removeItem(CLAVE); } catch (e) {}
+    IMAGENES.logo = ''; IMAGENES.foto = ''; guardarImagen('logo'); guardarImagen('foto'); pintarImagenes(); pintarIdeas(); actualizar();
   });
 
   // ---- Descarga (con el correo la primera vez)
@@ -626,6 +845,9 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     acceso.hidden = true;
     document.getElementById('cl-creador').hidden = false;
     document.getElementById('cl-final').hidden = false;
+    document.getElementById('cl-anuncios').hidden = false;
+    pintarImagenes();
+    pintarIdeas();
     ajustar();
     actualizar();
   }
