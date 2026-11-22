@@ -44,7 +44,26 @@
   </div>
 </section><section class="seccion"><div class="wrap">
 <noscript><p class="aviso-form">El creador de landings necesita JavaScript activado en tu navegador.</p></noscript>
-<div class="creador">
+<div class="cl-acceso" id="cl-acceso">
+  <div class="cl-acceso-texto">
+    <p class="etiqueta">Acceso gratuito</p>
+    <h2>Déjanos tu correo y empieza a crear tu landing.</h2>
+    <ul>
+      <li>Vista previa en el móvil y en el ordenador mientras escribes.</li>
+      <li>Tres plantillas y el color de tu marca.</li>
+      <li>Descarga en un único archivo HTML con formulario, botón de WhatsApp y medición de campañas.</li>
+    </ul>
+  </div>
+  <form class="form cl-acceso-form" id="cl-acceso-form" novalidate>
+    <input class="oculto" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="campo ancho"><label for="cl-a-email">Tu correo</label><input id="cl-a-email" name="email" type="email" autocomplete="email" required></div>
+    <label class="casilla ancho"><input type="checkbox" name="privacidad" value="aceptada" required><span>Acepto que URCA guarde mi correo y los datos básicos del negocio que escriba en el creador (nombre, actividad, zona y oferta) para escribirme sobre mi landing. <a href="/privacidad" target="_blank" rel="noopener">Privacidad</a>.</span></label>
+    <p class="cl-error ancho" id="cl-a-error" role="alert" hidden></p>
+    <div class="ancho"><button class="btn btn-principal" type="submit">Abrir el creador →</button></div>
+    <p class="ayuda ancho">Solo te lo pedimos una vez en este navegador.</p>
+  </form>
+</div>
+<div class="creador" id="cl-creador" hidden>
   <form class="calc-form cl-form" id="cl-form" novalidate autocomplete="off">
     <p class="cl-arriba"><span>Tu borrador se guarda en este navegador.</span><button class="cl-enlace" type="button" id="cl-ejemplo">Ver un ejemplo</button></p>
     <fieldset>
@@ -99,7 +118,7 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     <div class="cl-botones"><button class="btn btn-principal" id="cl-descargar" type="button">Descargar la landing</button><button class="btn btn-borde btn-peq" id="cl-grande" type="button">Ver a tamaño real</button><button class="cl-enlace" id="cl-borrar" type="button">Empezar de cero</button></div>
   </aside>
 </div>
-<div class="destacado cl-final">
+<div class="destacado cl-final" id="cl-final" hidden>
   <p class="etiqueta">¿Y ahora qué?</p>
   <h2>¿Te la publicamos y la llenamos de clientes con Google Ads o Meta Ads?</h2>
   <p>Si no sabes dónde subirla o prefieres que alguien lleve los anuncios, nos encargamos nosotros: la publicamos, medimos cada contacto y montamos las campañas que le llevan visitas.</p>
@@ -107,19 +126,9 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
 </div>
 </div></section>
 <dialog class="cl-dialogo" id="cl-dialogo" aria-labelledby="cl-dialogo-tit">
-  <form class="cl-puerta" id="cl-puerta" novalidate>
-    <p class="etiqueta">Último paso</p>
-    <h2 id="cl-dialogo-tit">¿A qué correo la asociamos?</h2>
-    <p>La descarga empieza al momento. Solo te lo pedimos la primera vez.</p>
-    <input class="oculto" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <div class="campo"><label for="cl-p-email">Tu correo</label><input id="cl-p-email" name="email" type="email" autocomplete="email" required></div>
-    <label class="casilla"><input type="checkbox" name="privacidad" value="aceptada" required><span>Acepto que URCA guarde mi correo y los datos básicos del negocio (nombre, actividad, zona y oferta) para escribirme sobre esta landing. <a href="/privacidad" target="_blank" rel="noopener">Privacidad</a>.</span></label>
-    <p class="cl-error" id="cl-p-error" role="alert" hidden></p>
-    <div class="cl-dialogo-botones"><button class="btn btn-principal" type="submit">Descargar la landing</button><button class="btn btn-borde btn-peq" type="button" data-cerrar>Cancelar</button></div>
-  </form>
-  <div class="cl-despues" id="cl-despues" hidden>
+  <div class="cl-despues" id="cl-despues">
     <p class="etiqueta">Descargada</p>
-    <h2>Tu landing está en tu carpeta de descargas.</h2>
+    <h2 id="cl-dialogo-tit">Tu landing está en tu carpeta de descargas.</h2>
     <ol>
       <li>Completa los huecos en amarillo: abre el archivo con un editor de texto y busca «hueco».</li>
       <li>Súbela a tu hosting y haz un envío de prueba del formulario para activarlo.</li>
@@ -157,8 +166,8 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   <li><strong>Que cargue rápido en el móvil.</strong> La mayoría de las visitas de tus anuncios llegarán desde un teléfono. Un único archivo sin librerías ayuda.</li>
   <li><strong>Que sea verdad.</strong> Reseñas reales, condiciones reales y plazos reales. Una urgencia inventada se nota y resta confianza.</li>
 </ul>
-<p class="nota">Lo que escribes en el creador se queda en tu navegador. Solo nos llegan tu correo y el nombre, la actividad, la zona y la oferta de tu negocio cuando descargas la landing.</p>
-</div></div></section><section class="seccion "><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Preguntas</p><h2>Antes de empezar</h2></div><div class="preguntas"><details open><summary>¿Es gratis?</summary><div class="respuesta"><p>Sí. Crear la landing, verla y descargarla no cuesta nada; solo te pedimos el correo la primera vez que la descargas. El formulario usa FormSubmit, que tiene un plan gratuito.</p></div></details><details><summary>¿Sirve para Google Ads y para Meta Ads?</summary><div class="respuesta"><p>Sí. Es una página normal: la pones como URL final en Google Ads o como destino en Meta Ads. Los campos ocultos guardan el <code>gclid</code> de Google y el <code>fbclid</code> de Meta junto a cada contacto.</p></div></details><details><summary>¿Por qué lleva huecos en amarillo?</summary><div class="respuesta"><p>Porque hay datos que no podemos inventar: tu NIF y tu dirección para la privacidad, tus reseñas o lo que no hayas rellenado. Están marcados para que no se te pase ninguno antes de publicar.</p></div></details><details><summary>¿Puedo cambiar el diseño o quitar el enlace a URCA del pie?</summary><div class="respuesta"><p>Sí. La landing es tuya: puedes editar el HTML como quieras y borrar el enlace del pie.</p></div></details><details><summary>¿Y si no sé publicarla?</summary><div class="respuesta"><p>Te la publicamos nosotros. <a href="/contacto" data-origen="preguntas">Cuéntanos tu caso</a> y te decimos cómo lo haríamos y, si quieres, qué campañas le llevarían visitas.</p></div></details></div></div></section><section class="cierre oscuro">
+<p class="nota">Lo que escribes en el creador se queda en tu navegador. Nos llega tu correo al entrar y, cuando descargas la landing, el nombre, la actividad, la zona y la oferta de tu negocio.</p>
+</div></div></section><section class="seccion "><div class="wrap"><div class="cab-seccion"><p class="etiqueta">Preguntas</p><h2>Antes de empezar</h2></div><div class="preguntas"><details open><summary>¿Es gratis?</summary><div class="respuesta"><p>Sí. Crear la landing, verla y descargarla no cuesta nada; solo te pedimos el correo para entrar. El formulario usa FormSubmit, que tiene un plan gratuito.</p></div></details><details><summary>¿Sirve para Google Ads y para Meta Ads?</summary><div class="respuesta"><p>Sí. Es una página normal: la pones como URL final en Google Ads o como destino en Meta Ads. Los campos ocultos guardan el <code>gclid</code> de Google y el <code>fbclid</code> de Meta junto a cada contacto.</p></div></details><details><summary>¿Por qué lleva huecos en amarillo?</summary><div class="respuesta"><p>Porque hay datos que no podemos inventar: tu NIF y tu dirección para la privacidad, tus reseñas o lo que no hayas rellenado. Están marcados para que no se te pase ninguno antes de publicar.</p></div></details><details><summary>¿Puedo cambiar el diseño o quitar el enlace a URCA del pie?</summary><div class="respuesta"><p>Sí. La landing es tuya: puedes editar el HTML como quieras y borrar el enlace del pie.</p></div></details><details><summary>¿Y si no sé publicarla?</summary><div class="respuesta"><p>Te la publicamos nosotros. <a href="/contacto" data-origen="preguntas">Cuéntanos tu caso</a> y te decimos cómo lo haríamos y, si quieres, qué campañas le llevarían visitas.</p></div></details></div></div></section><section class="cierre oscuro">
   <div class="wrap">
     <div class="cierre-texto"><h2>¿Te la publicamos y la llenamos de clientes?</h2><p>Nos encargamos de subirla, de medir cada contacto y de las campañas de Google Ads o Meta Ads que le llevan visitas.</p><a class="btn btn-principal" href="/contacto">Cuéntanos tu caso →</a></div>
     <div class="puerto" data-anima aria-hidden="true">
@@ -184,7 +193,7 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     </div>
     <div>
       <h2>Recursos</h2>
-      <ul><li><a href="/recursos/calculadora-roas">Calculadora de ROAS</a></li><li><a href="/recursos/checklist-google-ads-meta-ads">Checklist de Google Ads y Meta Ads</a></li><li><a href="/recursos/glosario-google-ads-meta-ads">Glosario</a></li><li><a href="/recursos/creador-de-landings">Creador de landings</a></li><li><a href="/cuanto-cuesta-google-ads">Cuánto cuesta Google Ads</a></li><li><a href="/google-ads-o-meta-ads">Google Ads o Meta Ads</a></li></ul>
+      <ul><li><a href="/recursos/calculadora-roas">Calculadora de ROAS</a></li><li><a href="/recursos/checklist-google-ads-meta-ads">Checklist de Google Ads y Meta Ads</a></li><li><a href="/recursos/glosario-google-ads-meta-ads">Glosario</a></li><li><a href="/cuanto-cuesta-google-ads">Cuánto cuesta Google Ads</a></li><li><a href="/google-ads-o-meta-ads">Google Ads o Meta Ads</a></li></ul>
     </div>
     <div>
       <h2>URCA</h2>
@@ -198,13 +207,13 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
 (function () {
   var URL_CREADOR = 'https://www.urca.agency/recursos/creador-de-landings', URL_CONTACTO = 'https://www.urca.agency/contacto';
   var DESTINO = 'https://formsubmit.co/ajax/hola@urca.agency';
-  var CLAVE = 'urca-creador-landing-v1', CLAVE_CORREO = 'urca-creador-correo-v1';
+  var CLAVE = 'urca-creador-landing-v1', CLAVE_CORREO = 'urca-creador-acceso-v1', CLAVE_DATOS = 'urca-creador-datos-v1';
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var form = document.getElementById('cl-form');
   if (!form) return;
   var marco = document.getElementById('cl-marco'), caja = document.getElementById('cl-caja');
   var estado = document.getElementById('cl-estado'), dialogo = document.getElementById('cl-dialogo');
-  var puerta = document.getElementById('cl-puerta'), despues = document.getElementById('cl-despues');
+  var correoSesion = '';
   var vista = 'movil', vistaVisible = false, previsualizada = false, temporizador = null;
 
   function medir(ev, datos) {
@@ -487,6 +496,7 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   // ---- Vista previa
   var TAM = { movil: 390, escritorio: 1280 };
   function ajustar() {
+    if (!caja.clientWidth) return;
     var ancho = TAM[vista], margen = vista === 'movil' ? 14 : 0;
     var alto = vista === 'movil' ? Math.max(500, Math.min(760, window.innerHeight - 330)) : 800;
     var disp = caja.clientWidth - 2 * margen, s = Math.min(1, disp / ancho);
@@ -578,32 +588,26 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
   }
   function abrir() { if (dialogo.showModal) dialogo.showModal(); else dialogo.setAttribute('open', ''); }
   function cerrar() { if (dialogo.close) dialogo.close(); else dialogo.removeAttribute('open'); }
-  function yaDioCorreo() { try { return !!localStorage.getItem(CLAVE_CORREO); } catch (e) { return false; } }
+  function leerLocal(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function correo() { return correoSesion || leerLocal(CLAVE_CORREO); }
+  function avisarURCA(campos) {
+    var datos = new FormData();
+    for (var k in campos) datos.append(k, campos[k]);
+    datos.append('_template', 'table');
+    try { fetch(DESTINO, { method: 'POST', headers: { Accept: 'application/json' }, body: datos, keepalive: true }).catch(function () {}); } catch (e) {}
+  }
 
   document.getElementById('cl-descargar').addEventListener('click', function () {
-    if (yaDioCorreo()) { descargar(); puerta.hidden = true; despues.hidden = false; abrir(); return; }
-    puerta.hidden = false; despues.hidden = true; abrir();
-    var c = document.getElementById('cl-p-email'); if (!c.value) c.value = leer().email || ''; c.focus();
-  });
-  puerta.addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    var err = document.getElementById('cl-p-error'), correo = puerta.elements.email.value.trim();
-    if (!EMAIL_RE.test(correo)) { err.textContent = 'Escribe un correo válido.'; err.hidden = false; puerta.elements.email.focus(); return; }
-    if (!puerta.elements.privacidad.checked) { err.textContent = 'Marca la casilla para poder descargarla.'; err.hidden = false; return; }
-    err.hidden = true;
-    if (!puerta.elements._honey.value) {
-      var d = leer(), datos = new FormData();
-      datos.append('email', correo);
-      datos.append('negocio', d.negocio || '-'); datos.append('actividad', d.actividad || '-'); datos.append('zona', d.zona || '-');
-      datos.append('oferta', d.oferta || '-'); datos.append('accion', d.accion || '-'); datos.append('plantilla', d.plantilla || '-');
-      datos.append('privacidad', 'aceptada');
-      datos.append('_subject', 'Creador de landings: descarga' + (d.negocio ? ' de ' + d.negocio : ''));
-      datos.append('_template', 'table');
-      try { fetch(DESTINO, { method: 'POST', headers: { Accept: 'application/json' }, body: datos, keepalive: true }).catch(function () {}); } catch (e) {}
-      try { localStorage.setItem(CLAVE_CORREO, '1'); } catch (e) {}
-    }
+    var d = leer();
     descargar();
-    puerta.hidden = true; despues.hidden = false;
+    // La primera descarga en este navegador nos dice de qué negocio es (el correo ya llegó al entrar).
+    var huella = [d.negocio, d.actividad, d.zona, d.oferta].join('|');
+    if (correo() && leerLocal(CLAVE_DATOS) !== huella) {
+      avisarURCA({ email: correo(), negocio: d.negocio || '-', actividad: d.actividad || '-', zona: d.zona || '-', oferta: d.oferta || '-',
+        accion: d.accion || '-', plantilla: d.plantilla || '-', _subject: 'Creador de landings: descarga' + (d.negocio ? ' de ' + d.negocio : '') });
+      try { localStorage.setItem(CLAVE_DATOS, huella); } catch (e) {}
+    }
+    abrir();
   });
   dialogo.addEventListener('click', function (ev) {
     if (ev.target === dialogo || (ev.target.closest && ev.target.closest('[data-cerrar]'))) cerrar();
@@ -613,10 +617,32 @@ Aparcamiento en la puerta"></textarea><p class="ayuda">Una por línea, hasta cua
     a.addEventListener('click', function () { medir('clic_contacto_creador', { origen: a.getAttribute('data-origen') || 'pagina' }); });
   });
 
-  // ---- Arranque: recupera el borrador
+  // ---- Arranque: recupera el borrador y, si ya dejó el correo, abre el creador
   try { var g = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (g) escribir(g); } catch (e) {}
-  ajustar();
-  actualizar();
+  var acceso = document.getElementById('cl-acceso'), accesoForm = document.getElementById('cl-acceso-form');
+  function desbloquear() {
+    acceso.hidden = true;
+    document.getElementById('cl-creador').hidden = false;
+    document.getElementById('cl-final').hidden = false;
+    ajustar();
+    actualizar();
+  }
+  accesoForm.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var err = document.getElementById('cl-a-error'), c = accesoForm.elements.email.value.trim();
+    if (!EMAIL_RE.test(c)) { err.textContent = 'Escribe un correo válido.'; err.hidden = false; accesoForm.elements.email.focus(); return; }
+    if (!accesoForm.elements.privacidad.checked) { err.textContent = 'Marca la casilla para poder entrar.'; err.hidden = false; return; }
+    err.hidden = true;
+    if (accesoForm.elements._honey.value) return;
+    correoSesion = c;
+    try { localStorage.setItem(CLAVE_CORREO, c); } catch (e) {}
+    avisarURCA({ email: c, privacidad: 'aceptada', origen: new URLSearchParams(location.search).get('utm_source') || 'directo', _subject: 'Creador de landings: acceso nuevo' });
+    medir('acceso_creador');
+    desbloquear();
+    var y = document.getElementById('cl-creador').getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo(0, y);
+  });
+  if (correo()) desbloquear();
 })();
 </script>
 <script src="/chat.js?v=2026-11-22" defer></script>
