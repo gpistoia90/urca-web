@@ -6,11 +6,24 @@
 //   GET /api/buscar?estado=1                                    (qué fuentes hay disponibles)
 //
 // Devuelve una lista de negocios con el mismo formato venga de donde venga.
-// Google Maps se activa poniendo la variable GOOGLE_PLACES_KEY en Vercel
-// (Places API (New) habilitada en Google Cloud).
+//
+// Google Maps SOLO DENTRO DE LO GRATUITO. Pide web, teléfono, valoración y reseñas, así que
+// cada petición cuenta como «Text Search Enterprise»: Google da 1.000 gratis al mes y luego
+// cobra (35 $ cada 1.000, noviembre de 2026). Cada búsqueda del radar son 1 a 3 peticiones.
+// Por eso:
+//   - un contador mensual (Upstash Redis, gratis, conectado desde Vercel) apunta cada
+//     petición ANTES de hacerla y se planta en GOOGLE_LIMITE_MES (900 por defecto);
+//   - sin contador, o si el contador no responde, Google no se usa (falla cerrado);
+//   - al llegar al tope, la búsqueda se frena y se avisa de que se puede seguir el mes
+//     siguiente o ahora con OpenStreetMap.
+// Variables en Vercel: GOOGLE_PLACES_KEY y las que crea Upstash al conectarlo
+// (KV_REST_API_URL + KV_REST_API_TOKEN, o UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN).
 
 const UA = "URCA-Radar/1.0 (+https://www.urca.agency)";
 const MAX_OSM = 400;
+const LIMITE_GRATIS_GOOGLE = 1000;  // lo que regala Google al mes (Text Search Enterprise)
+const LIMITE_MES = Math.min(LIMITE_GRATIS_GOOGLE, Number(process.env.GOOGLE_LIMITE_MES) || 900);
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
 // Sectores: etiquetas de OpenStreetMap, búsqueda en Google y si el ticket suele ser alto.
 const SECTORES = {
@@ -176,6 +189,58 @@ async function buscarOsm(sector, lugar, bbox) {
   return { zona, negocios: negocios.slice(0, MAX_OSM), hay_mas: negocios.length > MAX_OSM };
 }
 
+// ───────────────────────────── contador del cupo gratuito de Google
+
+const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || "";
+const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+
+// Google factura por meses naturales; se usa el mes en UTC y el margen de 100 cubre el desfase.
+function mesActual() {
+  const d = new Date();
+  return { clave: "radar:google:" + d.toISOString().slice(0, 7), siguiente: MESES[(d.getUTCMonth() + 1) % 12] };
+}
+
+async function redis(...orden) {
+  if (!REDIS_URL || !REDIS_TOKEN) throw new Error("sin contador");
+  const r = await fetch(REDIS_URL, { method: "POST", signal: AbortSignal.timeout(5000),
+    headers: { Authorization: "Bearer " + REDIS_TOKEN, "Content-Type": "application/json" }, body: JSON.stringify(orden) });
+  const d = await r.json();
+  if (!r.ok || d.error) throw new Error("contador: " + (d.error || r.status));
+  return d.result;
+}
+
+async function usadasEsteMes() {
+  return Number(await redis("GET", mesActual().clave)) || 0;
+}
+
+// Reserva una petición del cupo. Devuelve false si ya no quedan (y no gasta nada).
+async function reservarPeticion() {
+  const { clave } = mesActual();
+  const n = Number(await redis("INCR", clave));
+  if (n === 1) await redis("EXPIRE", clave, 60 * 60 * 24 * 40);
+  if (n > LIMITE_MES) { await redis("DECR", clave); return false; }
+  return true;
+}
+
+function avisoLimite() {
+  return "Se ha usado todo lo gratuito de Google Maps de este mes. Puedes seguir a partir del 1 de " + mesActual().siguiente +
+         ", o buscar ahora con OpenStreetMap.";
+}
+
+class Limite extends Fallo {}
+
+async function estadoGoogle() {
+  if (!process.env.GOOGLE_PLACES_KEY) return { activo: false, motivo: "Falta la clave de Google en Vercel." };
+  if (!REDIS_URL || !REDIS_TOKEN) return { activo: false, motivo: "Falta el contador del cupo gratuito (Upstash en Vercel). Sin él, Google no se usa para no pasarse de lo gratis." };
+  try {
+    const usadas = await usadasEsteMes();
+    const quedan = Math.max(0, LIMITE_MES - usadas);
+    return { activo: quedan > 0, usadas, limite: LIMITE_MES, quedan, motivo: quedan > 0 ? "" : avisoLimite() };
+  } catch (_) {
+    return { activo: false, motivo: "El contador del cupo gratuito no responde. Por seguridad, Google no se usa ahora; prueba más tarde." };
+  }
+}
+
 // ───────────────────────────── Google Maps (Places API New)
 
 async function buscarGoogle(sector, lugar, bbox) {
@@ -189,13 +254,29 @@ async function buscarGoogle(sector, lugar, bbox) {
     locationRestriction: { rectangle: { low: { latitude: zona.bbox[0], longitude: zona.bbox[1] }, high: { latitude: zona.bbox[2], longitude: zona.bbox[3] } } },
   };
   const negocios = [];
-  let token = null;
+  let token = null, frenada = false;
   for (let pagina = 0; pagina < 3; pagina++) {
-    const datos = await json("https://places.googleapis.com/v1/places:searchText", {
-      method: "POST",
+    let libre;
+    try { libre = await reservarPeticion(); }
+    catch (_) { throw new Fallo("El contador del cupo gratuito no responde. Por seguridad, Google no se usa ahora: busca con OpenStreetMap o prueba más tarde."); }
+    if (!libre) {
+      if (pagina === 0) throw new Limite(avisoLimite());
+      frenada = true;
+      break;
+    }
+    const r = await fetch("https://places.googleapis.com/v1/places:searchText", {
+      method: "POST", signal: AbortSignal.timeout(15000),
       headers: { "Content-Type": "application/json", "X-Goog-Api-Key": clave, "X-Goog-FieldMask": campos },
       body: JSON.stringify(token ? Object.assign({}, cuerpo, { pageToken: token }) : cuerpo),
-    }, 15000);
+    });
+    const texto = await r.text();
+    if (r.status === 429 || r.status === 403) {
+      if (pagina === 0) throw new Limite("Google Maps ha frenado las búsquedas (límite o facturación). Puedes seguir en otro momento o buscar ahora con OpenStreetMap.");
+      frenada = true;
+      break;
+    }
+    if (!r.ok) throw new Fallo("Google Maps no ha respondido bien (error " + r.status + "). Vuelve a probar en un momento o usa OpenStreetMap.");
+    const datos = JSON.parse(texto);
     for (const p of datos.places || []) {
       if (p.businessStatus && p.businessStatus !== "OPERATIONAL") continue;
       negocios.push({
@@ -212,14 +293,13 @@ async function buscarGoogle(sector, lugar, bbox) {
     token = datos.nextPageToken;
     if (!token) break;
   }
-  return { zona, negocios, hay_mas: Boolean(token) };
+  return { zona, negocios, hay_mas: Boolean(token), aviso: frenada ? avisoLimite() + " Esta lista se ha quedado a medias." : "" };
 }
 
 // ───────────────────────────── función
 
 module.exports = async function handler(req, res) {
   const q = new URL(req.url, "http://x").searchParams;
-  const google = Boolean(process.env.GOOGLE_PLACES_KEY);
   const responder = (codigo, datos, cache) => {
     res.statusCode = codigo;
     res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -229,7 +309,8 @@ module.exports = async function handler(req, res) {
   };
 
   if (q.get("estado")) {
-    return responder(200, { fuentes: { osm: true, google },
+    const g = await estadoGoogle();
+    return responder(200, { fuentes: { osm: true, google: g.activo }, google: g,
       sectores: Object.entries(SECTORES).map(([id, s]) => ({ id, nombre: s.nombre, alto: s.alto })) });
   }
   const sector = SECTORES[q.get("sector")];
@@ -245,13 +326,18 @@ module.exports = async function handler(req, res) {
   const lugar = (q.get("lugar") || "").trim().slice(0, 120);
   if (!bbox && !lugar) return responder(400, { ok: false, error: "Escribe un municipio o un barrio." });
   const fuente = q.get("fuente") === "google" ? "google" : "osm";
-  if (fuente === "google" && !google) return responder(400, { ok: false, error: "Google Maps no está activado: falta la clave en Vercel." });
+  if (fuente === "google") {
+    if (!process.env.GOOGLE_PLACES_KEY) return responder(400, { ok: false, limite: true, error: "Google Maps no está activado: falta la clave en Vercel." });
+    if (!REDIS_URL || !REDIS_TOKEN) return responder(400, { ok: false, limite: true, error: "Google Maps está en pausa: falta el contador del cupo gratuito. Busca con OpenStreetMap." });
+  }
 
   try {
     const r = fuente === "google" ? await buscarGoogle(sector, lugar, bbox) : await buscarOsm(sector, lugar, bbox);
-    responder(200, Object.assign({ ok: true, fuente, sector: q.get("sector"), sector_alto: sector.alto }, r), true);
+    // Una lista cortada por el límite no se guarda en caché: el mes que viene debe poder completarse.
+    responder(200, Object.assign({ ok: true, fuente, sector: q.get("sector"), sector_alto: sector.alto }, r), !r.aviso);
   } catch (e) {
-    responder(200, { ok: false, error: e instanceof Fallo ? e.message : "No se pudo completar la búsqueda. Vuelve a probar en un momento." });
+    responder(200, { ok: false, limite: e instanceof Limite || undefined,
+                     error: e instanceof Fallo ? e.message : "No se pudo completar la búsqueda. Vuelve a probar en un momento." });
   }
 };
 module.exports.SECTORES = SECTORES;

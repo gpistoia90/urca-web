@@ -401,14 +401,20 @@ async function buscar(params) {
   try {
     let r = await fetch("/api/buscar?" + new URLSearchParams(params)).then(x => x.json());
     if (mia !== ronda) return;
-    if (!r.ok && /OpenStreetMap/.test(r.error || "")) {
+    // Solo se reintenta OpenStreetMap: Google nunca se reintenta solo, para no gastar cupo.
+    if (!r.ok && params.fuente !== "google" && /OpenStreetMap/.test(r.error || "")) {
       estado("OpenStreetMap va saturado. <b>Reintentando…</b>", null);
       await new Promise(ok => setTimeout(ok, 4000));
       if (mia !== ronda) return;
       r = await fetch("/api/buscar?" + new URLSearchParams(params)).then(x => x.json());
       if (mia !== ronda) return;
     }
-    if (!r.ok) { estado(""); avisar(r.error || "No se pudo buscar.", true); return; }
+    if (!r.ok) {
+      estado(""); avisar(r.error || "No se pudo buscar.", true);
+      if (r.limite) { $("fuente").value = "osm"; refrescarCupo(); }
+      return;
+    }
+    if (r.fuente === "google") refrescarCupo();
     busqueda = r; visibles = POR_PAGINA;
     filtros.prioridad = "Todas"; filtros.situacion = "";
     negocios = r.negocios.map(n => Object.assign(n, { scan: null }));
@@ -417,7 +423,8 @@ async function buscar(params) {
     const pts = negocios.map(n => [n.lat, n.lon]);
     if (pts.length) mapa.fitBounds(pts, { padding: [24, 24], maxZoom: 15 });
     else mapa.fitBounds([[r.zona.bbox[0], r.zona.bbox[1]], [r.zona.bbox[2], r.zona.bbox[3]]]);
-    if (r.hay_mas) avisar(`Hay más resultados de los que se muestran (${negocios.length}). Acota a un barrio o usa «Buscar en esta zona del mapa».`);
+    if (r.aviso) avisar(r.aviso);
+    else if (r.hay_mas) avisar(`Hay más resultados de los que se muestran (${negocios.length}). Acota a un barrio o usa «Buscar en esta zona del mapa».`);
     else if (r.fuente === "osm" && negocios.length < 15) avisar(`OpenStreetMap solo tiene ${negocios.length} negocios de este sector en ${r.zona.nombre}. Seguro que hay más: Google Maps los tendría.`);
     pintar();
     await analizarWebs(mia);
@@ -530,13 +537,33 @@ document.addEventListener("change", ev => {
   if (filtros.ocultar) pintarLista();
 });
 
+// ─────────────── cupo gratuito de Google
+// Muestra cuánto queda del cupo gratis del mes y desactiva Google cuando se acaba.
+function pintarCupo(g) {
+  const op = $("fuente").querySelector('[value="google"]');
+  const nota = $("nota-fuente");
+  if (g && g.activo) {
+    op.disabled = false;
+    op.textContent = "Google Maps";
+    nota.textContent = `Google Maps: quedan ${g.quedan} de ${g.limite} peticiones gratis este mes (cada búsqueda gasta de 1 a 3). ` +
+      "Al llegar al tope, el radar se frena solo y no se paga nada. OpenStreetMap es gratis sin límite, pero incompleto.";
+    return true;
+  }
+  op.disabled = true;
+  op.textContent = g && g.limite && g.quedan === 0 ? "Google Maps (gratis del mes agotado)" : "Google Maps (en pausa)";
+  if ($("fuente").value === "google") $("fuente").value = "osm";
+  nota.textContent = (g && g.motivo ? g.motivo + " " : "") + "OpenStreetMap es gratis pero incompleto: en clínicas, peluquerías o gimnasios faltan muchos negocios.";
+  return false;
+}
+function refrescarCupo() {
+  return fetch("/api/buscar?estado=1").then(x => x.json()).then(r => pintarCupo(r.google)).catch(() => pintarCupo(null));
+}
+
 // ─────────────── arranque
 fetch("/api/buscar?estado=1").then(x => x.json()).then(r => {
   sectores = r.sectores;
   $("sector").innerHTML = '<option value="">Elige un sector</option>' + sectores.map(s => `<option value="${esc(s.id)}">${esc(s.nombre)}</option>`).join("");
-  const g = $("fuente").querySelector('[value="google"]');
-  if (r.fuentes.google) { g.disabled = false; g.textContent = "Google Maps"; $("fuente").value = "google";
-    $("nota-fuente").textContent = "Google Maps tiene casi todos los negocios, con valoración y número de reseñas. OpenStreetMap es gratis pero incompleto."; }
+  if (pintarCupo(r.google)) $("fuente").value = "google";
   let ultima = null;
   try { ultima = JSON.parse(localStorage.getItem("urca-radar-ultima") || "null"); } catch (_) {}
   if (ultima) {
