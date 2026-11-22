@@ -12,10 +12,11 @@ URCA es una agencia de Google Ads y Meta Ads (Facebook e Instagram) para pymes, 
 - [Cuánto cuesta Google Ads para una pyme en España](https://www.urca.agency/cuanto-cuesta-google-ads): Cuánto cuesta anunciarse en Google Ads, Facebook e Instagram para una pyme en España: qué pagas a Google o Meta y cómo saber si te sale a cuenta.
 - [Google Ads o Meta Ads: cuál conviene a tu negocio](https://www.urca.agency/google-ads-o-meta-ads): Diferencias entre Google Ads y Meta Ads (Facebook e Instagram) y cuál conviene a tu negocio, con una recomendación según el tipo de pyme.
 - [Sobre nosotros: el equipo de URCA](https://www.urca.agency/sobre-nosotros): Quiénes están detrás de URCA: un equipo de cinco personas especialistas en growth, Google Ads, Meta Ads, diseño web y creatividades, al servicio de pymes.
-- [Recursos gratuitos para anunciarte en Google y Meta](https://www.urca.agency/recursos): Recursos gratuitos para pymes que se anuncian en Google y Meta: calculadora de ROAS mínimo, checklist, glosario y guías. Sin registro.
+- [Recursos gratuitos para anunciarte en Google y Meta](https://www.urca.agency/recursos): Recursos gratuitos para pymes que se anuncian en Google y Meta: calculadora de ROAS mínimo, checklist, creador de landings, glosario y guías. Sin registro.
 - [Calculadora de ROAS mínimo y coste máximo por cliente](https://www.urca.agency/recursos/calculadora-roas): Calcula gratis tu ROAS mínimo (break even) y cuánto puedes pagar como máximo por cliente, por contacto y por clic en Google Ads y Meta Ads. Sin registro.
 - [Glosario de Google Ads y Meta Ads para pymes](https://www.urca.agency/recursos/glosario-google-ads-meta-ads): Glosario de Google Ads y Meta Ads para pymes: qué es el ROAS, el CPC, el CPA, el remarketing, el píxel o una palabra clave negativa, explicado sin jerga.
 - [Checklist de Google Ads y Meta Ads para pymes](https://www.urca.agency/recursos/checklist-google-ads-meta-ads): Checklist gratuita de Google Ads y Meta Ads para pymes: qué revisar antes de anunciarte y qué revisar en tu cuenta si ya te anuncias. Sin registro.
+- [Creador de landings gratis para tus anuncios](https://www.urca.agency/recursos/creador-de-landings): Crea gratis la landing de tu campaña de Google Ads o Meta Ads: rellena tu negocio y tu oferta, elige plantilla y descárgala con formulario, WhatsApp y medición.
 
 ## Contacto
 - [Formulario de contacto](https://www.urca.agency/contacto)
