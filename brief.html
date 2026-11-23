@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Página privada: que no la indexe ningún buscador -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Pre-kickoff · URCA</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#0B0F0D; --f900:#0F1F18; --f700:#1A3026; --f500:#2E5A45; --f300:#46805F;
+    --lime:#B8F25C; --ink:#EEF2EE; --muted:#A0B4A8;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ground);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"Geist Mono",ui-monospace,monospace}
+  a{color:var(--lime)}
+
+  /* Barra superior */
+  .top{position:sticky;top:0;z-index:20;background:rgba(11,15,13,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--f700)}
+  .top-in{max-width:860px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
+  .logo{font-family:Outfit;font-weight:600;font-size:22px;letter-spacing:-.02em}
+  .logo b{color:var(--lime)}
+  .tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .client{margin-left:auto;font-family:Outfit;font-weight:500;color:var(--ink)}
+  .bar{height:3px;background:var(--f700)}
+  .bar i{display:block;height:100%;width:0;background:var(--lime);transition:width .3s}
+  .btn-save{background:none;border:1px solid var(--f500);color:var(--ink);padding:7px 14px;border-radius:999px;font:inherit;font-size:14px;cursor:pointer}
+  .btn-save:hover{border-color:var(--lime)}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--f700)}
+  .hero svg{position:absolute;right:-40px;bottom:-10px;width:520px;max-width:80%;opacity:.55;pointer-events:none}
+  .hero-in{position:relative;max-width:860px;margin:0 auto;padding:72px 24px 64px}
+  .hero h1{font-family:Outfit;font-weight:600;font-size:clamp(34px,6vw,54px);line-height:1.05;letter-spacing:-.025em;max-width:14ch}
+  .hero h1 span{color:var(--lime)}
+  .hero p{margin-top:18px;max-width:52ch;color:var(--muted);font-size:17px}
+  .hero .tag{margin-bottom:18px;display:block}
+
+  main{max-width:860px;margin:0 auto;padding:24px 24px 120px}
+
+  /* Secciones */
+  section{padding:48px 0 8px;border-bottom:1px solid var(--f700)}
+  .sec-head{display:flex;gap:18px;align-items:baseline;margin-bottom:6px}
+  .num{color:var(--lime);font-size:14px}
+  section h2{font-family:Outfit;font-weight:600;font-size:26px;letter-spacing:-.015em}
+  .sec-intro{color:var(--muted);margin:4px 0 0 42px;max-width:60ch}
+
+  .q{margin:26px 0 30px 42px}
+  .q label{display:block;font-weight:600;font-size:17px}
+  .q .hint{display:block;color:var(--muted);font-size:14.5px;margin-top:3px}
+  .field{position:relative;margin-top:12px}
+  textarea,input[type=text],input[type=email],input[type=tel],input[type=url]{
+    width:100%;background:var(--f900);border:1px solid var(--f700);border-radius:var(--radius);
+    color:var(--ink);font:inherit;padding:14px 52px 14px 16px;resize:vertical;transition:border-color .2s,background .2s}
+  textarea{min-height:110px}
+  textarea:focus,input:focus{outline:none;border-color:var(--f300);background:#11241b}
+  .filled textarea,.filled input{border-color:var(--f500)}
+  .mic{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:1px solid var(--f500);background:var(--f700);color:var(--ink);cursor:pointer;display:grid;place-items:center}
+  .mic svg{width:16px;height:16px}
+  .mic.on{background:var(--lime);color:var(--ground);border-color:var(--lime);animation:pulse 1.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(184,242,92,.5)}100%{box-shadow:0 0 0 12px rgba(184,242,92,0)}}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+  .grid2 .q{margin-left:0}
+  .grid-wrap{margin-left:42px}
+
+  /* Envío */
+  .send{padding:56px 0 0;text-align:center}
+  .btn-send{background:var(--lime);color:var(--ground);border:none;padding:16px 34px;border-radius:999px;font-family:Outfit;font-weight:600;font-size:18px;cursor:pointer}
+  .btn-send:disabled{opacity:.5;cursor:wait}
+  .send p{color:var(--muted);margin-top:14px;font-size:14.5px}
+  .status{margin-top:18px;font-size:15px;min-height:1.5em}
+  .status.ok{color:var(--lime)} .status.err{color:#ffb4a2}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:40px 0 0}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--f700);border:1px solid var(--f500);padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:30}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:640px){
+    .q,.sec-intro,.grid-wrap{margin-left:0}
+    .grid2{grid-template-columns:1fr}
+    .tag.hide-sm{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="logo">urca<b>.</b></div>
+    <span class="tag mono hide-sm">Pre-kickoff</span>
+    <span class="client" id="clientName"></span>
+    <button class="btn-save" id="btnSave" type="button">Guardar</button>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+</header>
+
+<div class="hero">
+  <!-- Pan de Azúcar + sol lima -->
+  <svg viewBox="0 0 520 260" aria-hidden="true">
+    <circle cx="300" cy="118" r="26" fill="#B8F25C"/>
+    <path d="M0 260 L120 200 Q190 150 240 175 L290 205 Q350 60 410 70 Q470 85 520 230 L520 260 Z" fill="#1A3026"/>
+    <path d="M0 260 L130 215 Q190 180 240 195 L300 222 Q360 110 410 115 Q460 125 520 245 L520 260 Z" fill="#0F1F18"/>
+    <line x1="40" y1="246" x2="480" y2="246" stroke="#2E5A45" stroke-width="2"/>
+    <line x1="120" y1="254" x2="400" y2="254" stroke="#2E5A45" stroke-width="2"/>
+  </svg>
+  <div class="hero-in">
+    <span class="tag mono">Empezamos a trabajar juntos</span>
+    <h1>Te damos la bienvenida a <span>URCA</span></h1>
+    <p>Para arrancar con buen pie necesitamos conocer tu negocio a fondo. Rellena lo que puedas: puedes escribir o usar el micrófono para dictar. Se guarda solo en este navegador y puedes volver cuando quieras.</p>
+  </div>
+</div>
+
+<main>
+  <form id="kickoff" autocomplete="on" novalidate></form>
+
+  <div class="send">
+    <button class="btn-send" id="btnSend" type="button">Enviar respuestas</button>
+    <p>Has completado <span id="pct" class="mono">0%</span>. Puedes enviarlo aunque no esté todo relleno: lo que falte lo vemos en el kickoff.</p>
+    <div class="status" id="status"></div>
+  </div>
+
+  <footer>Tus respuestas se guardan automáticamente · URCA — Tu inversión, a buen puerto.</footer>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   CONFIGURACIÓN
+   ENDPOINT: URL del Web App de Google Apps Script (o del
+   sistema interno de URCA cuando exista). Recibe un POST
+   con el JSON descrito en buildPayload().
+   ========================================================= */
+const CONFIG = {
+  ENDPOINT: "PEGAR_AQUI_URL_DEL_WEB_APP",
+  FORM_VERSION: "kickoff-v1",
+  FECHA_EXITO_DEFAULT: "dentro de 3 meses"
+};
+
+/* Parámetros del enlace: ?empresa=Natotex&id=7f3c...&fecha=marzo%202027 */
+const params = new URLSearchParams(location.search);
+const EMPRESA = (params.get("empresa") || "").trim();
+const CLIENT_ID = (params.get("id") || "").trim() || "sin-id";
+const FECHA_EXITO = (params.get("fecha") || CONFIG.FECHA_EXITO_DEFAULT).trim();
+const NOMBRE = EMPRESA || "tu empresa";
+const STORAGE_KEY = "urca-kickoff:" + CLIENT_ID + ":" + CONFIG.FORM_VERSION;
+
+/* =========================================================
+   PREGUNTAS — claves estables (no cambiarlas una vez en uso:
+   son las columnas que leerá el sistema interno)
+   ========================================================= */
+const SECTIONS = [
+  { id:"contacto", title:"Tus datos", intro:"Para saber quién rellena el brief y a quién escribir.", grid:true, qs:[
+    {k:"contacto_empresa", l:"Empresa", type:"text", value:EMPRESA},
+    {k:"contacto_web", l:"Web / tienda online", type:"url", ph:"https://"},
+    {k:"contacto_nombre", l:"Tu nombre y cargo", type:"text"},
+    {k:"contacto_email", l:"Email", type:"email"},
+    {k:"contacto_telefono", l:"Teléfono / WhatsApp", type:"tel"}
+  ]},
+  { id:"negocio", title:`${NOMBRE} y lo que vendéis`, qs:[
+    {k:"negocio_historia", l:`Cuéntanos ${NOMBRE} en pocas líneas`, h:"Historia, a qué os dedicáis, equipo y en qué momento está hoy el negocio."},
+    {k:"negocio_oferta", l:"¿Qué productos o servicios vendéis y qué peso tiene cada uno?", h:"Familias de producto o líneas de servicio, cuáles venden más y cuáles dejan más margen."},
+    {k:"negocio_foco", l:"¿Qué productos o servicios queréis empujar con nosotros?", h:"Para quién es cada uno y en qué se diferencian entre sí."},
+    {k:"negocio_proceso_venta", l:"¿Cómo es la venta de principio a fin?", h:"Compra online directa, formulario, llamada, presupuesto, visita… Cuánto tarda el cliente en decidir y quién atiende el contacto cuando llega."},
+    {k:"negocio_lanzamientos", l:"¿Tenéis lanzamientos o novedades previstos en los próximos 12 meses?", h:"Productos nuevos, servicios, aperturas, colecciones. Con fechas si las hay."}
+  ]},
+  { id:"canales", title:"Canales y precios", qs:[
+    {k:"canales_peso", l:"¿Por qué canales vendéis y qué peso tiene cada uno?", h:"Web propia, tienda física, marketplaces (Amazon, etc.), distribuidores, comerciales, exportación…"},
+    {k:"canales_lineas_rojas", l:"¿Hay líneas rojas que debamos respetar?", h:"Productos que no se pueden anunciar, precios, mensajes o zonas a evitar, acuerdos con distribuidores."},
+    {k:"canales_promociones", l:"¿Qué margen de maniobra hay con precios y promociones?", h:"¿Caben packs, envío gratis, regalos, descuentos de bienvenida o promociones puntuales?"}
+  ]},
+  { id:"cliente", title:"Vuestro cliente", qs:[
+    {k:"cliente_perfil", l:"¿Quién os compra?", h:"Particular o empresa, zona, edad, sector, motivo de compra. Si hay varios perfiles, cuéntanos cada uno."},
+    {k:"cliente_motivos_frenos", l:"¿Por qué os compran y qué les frena?", h:"Lo que más valoran y las dudas u objeciones más habituales (precio, confianza, envío, plazos…)."},
+    {k:"cliente_preguntas", l:"¿Qué preguntas os llegan más por teléfono, email, WhatsApp o redes?", h:"Es material directo para los anuncios y los textos."},
+    {k:"cliente_opiniones", l:`¿Qué dicen vuestros clientes de ${NOMBRE}?`, h:"Reseñas, frases que repiten, quejas. Si tenéis enlace a reseñas, pégalo."}
+  ]},
+  { id:"competencia", title:"Competencia", qs:[
+    {k:"competencia_quienes", l:"¿Quiénes son vuestros competidores y a qué precio venden?", h:"Directos e indirectos, incluidos marketplaces y grandes cadenas. Webs si las tienes a mano."},
+    {k:"competencia_diferencia", l:"¿Qué os diferencia de ellos?", h:"Producto, servicio, garantía, rapidez, trato, fabricación propia, precio…"},
+    {k:"competencia_referentes", l:"¿Hay alguna marca (de tu sector o no) cuya comunicación os guste?", h:"Nos ayuda a entender el tono y el nivel al que queréis llegar."}
+  ]},
+  { id:"numeros", title:"Números", intro:"Con esto calculamos a partir de qué retorno publicitario ganáis dinero con cada venta. Es confidencial.", qs:[
+    {k:"numeros_facturacion", l:"¿Cuánto habéis vendido en los últimos 12 meses?", h:"Total y, si podéis, mes a mes y por canal o familia de producto."},
+    {k:"numeros_kpis", l:"Ticket medio, pedidos o clientes al mes, recurrencia y devoluciones", h:"Lo que tengáis. Si sois de servicios: leads al mes, % de cierre y valor medio de un cliente."},
+    {k:"numeros_margen", l:"Precio, coste y margen de los productos o servicios del proyecto", h:"Aproximado vale. Incluye envío, comisiones o costes de entrega si son relevantes."},
+    {k:"numeros_estacionalidad", l:"¿Qué meses son fuertes y cuáles flojos? ¿Hay riesgo de quedarse sin stock o sin capacidad?", h:""}
+  ]},
+  { id:"marketing", title:"Publicidad y marketing hasta hoy", qs:[
+    {k:"mkt_google", l:"Google Ads: ¿quién lo lleva, cuánto invertís y qué resultados da?", h:"Tipos de campaña, inversión mensual, ROAS o coste por contacto, qué funciona y qué no."},
+    {k:"mkt_meta", l:"Meta (Facebook / Instagram) y otras plataformas de anuncios", h:"Qué se ha hecho, inversión, tipo de anuncios, qué se medía y qué aprendisteis."},
+    {k:"mkt_web_seo", l:"Web y SEO: ¿quién mantiene la web y qué se está haciendo?", h:"Plataforma (Shopify, WooCommerce, PrestaShop, Tiendanube…), agencias o freelances con los que coordinarnos."},
+    {k:"mkt_email_redes", l:"Email y redes sociales", h:"¿Tenéis base de contactos? ¿Qué enviáis hoy? ¿Quién lleva las redes y con qué frecuencia se publica?"}
+  ]},
+  { id:"creatividades", title:"Creatividades, marca y contenido", qs:[
+    {k:"crea_material", l:"¿Qué material tenéis?", h:"Fotos, vídeos, renders, fichas técnicas, catálogos, contenido de clientes o creadores. Un enlace a una carpeta compartida es perfecto."},
+    {k:"crea_marca", l:"¿Tenéis guía de marca?", h:"Logo, colores, tipografías, tono y cosas que nunca diríais."},
+    {k:"crea_ia", l:"¿Hay algo que no deba aparecer en contenido hecho con IA?", h:"Productos, personas, lugares o mensajes que preferís que se graben o fotografíen de verdad."},
+    {k:"crea_validacion", l:"¿Quién valida los anuncios, textos y vídeos, y en cuánto tiempo?", h:""}
+  ]},
+  { id:"medicion", title:"Medición y accesos", qs:[
+    {k:"med_herramientas", l:"¿Qué herramientas usáis y quién tiene los accesos?", h:"Plataforma de la web, Google Analytics, Tag Manager, Google Ads, Meta Business, Merchant Center, CRM, email marketing…"},
+    {k:"med_leads", l:"¿Cómo os llegan hoy los contactos o pedidos y cómo sabéis de dónde vienen?", h:"¿Sabéis qué contacto acaba en venta? ¿Dónde se registra?"}
+  ]},
+  { id:"proyecto", title:"El proyecto con URCA", qs:[
+    {k:"proy_exito", l:`¿Qué tiene que haber pasado ${FECHA_EXITO} para que esto sea un éxito?`, h:"Objetivos con cifras si puedes: ventas, ROAS, contactos, coste por cliente…"},
+    {k:"proy_presupuesto", l:"Presupuesto de publicidad mensual y cómo lo repartiríais", h:"Por producto, servicio o plataforma. ¿Puede crecer si se cumplen los objetivos?"},
+    {k:"proy_por_que", l:"¿Qué os ha hecho decidir trabajar con nosotros?", h:"Y si hay algo que os preocupe al empezar, también queremos saberlo."}
+  ]},
+  { id:"equipo", title:"Equipo y otros factores", qs:[
+    {k:"equipo_quien", l:"¿Quién es quién?", h:"Quién decide, quién valida, quién lleva la web y la publicidad, y con quién hablamos para cada cosa."},
+    {k:"equipo_fechas", l:"¿Hay restricciones o fechas clave?", h:"Ferias, temporadas, campañas, vacaciones, cierres de presupuesto."},
+    {k:"equipo_otros", l:"¿Algo más que debamos saber?", h:""}
+  ]}
+];
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+const form = document.getElementById("kickoff");
+document.getElementById("clientName").textContent = EMPRESA;
+if (EMPRESA) document.title = "Pre-kickoff · " + EMPRESA + " · URCA";
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const micSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let n = 0;
+SECTIONS.forEach(sec => {
+  const s = document.createElement("section");
+  s.id = sec.id;
+  const label = sec.id === "contacto" ? "00" : String(++n).padStart(2,"0");
+  let html = `<div class="sec-head"><span class="num mono">${label}</span><h2>${esc(sec.title)}</h2></div>`;
+  if (sec.intro) html += `<p class="sec-intro">${esc(sec.intro)}</p>`;
+  if (sec.grid) html += `<div class="grid-wrap"><div class="grid2">`;
+  sec.qs.forEach(q => {
+    const id = "f_" + q.k;
+    const input = q.type
+      ? `<input id="${id}" name="${q.k}" type="${q.type}" placeholder="${esc(q.ph||"")}" value="${esc(q.value||"")}">`
+      : `<textarea id="${id}" name="${q.k}"></textarea>${SR ? `<button type="button" class="mic" data-for="${id}" aria-label="Dictar respuesta">${micSVG}</button>` : ""}`;
+    html += `<div class="q"><label for="${id}">${esc(q.l)}</label>${q.h ? `<span class="hint">${esc(q.h)}</span>` : ""}<div class="field">${input}</div></div>`;
+  });
+  if (sec.grid) html += `</div></div>`;
+  s.innerHTML = html;
+  form.appendChild(s);
+});
+
+const fields = [...form.querySelectorAll("textarea, input")];
+
+/* =========================================================
+   AUTOGUARDADO (localStorage) + PROGRESO
+   ========================================================= */
+function load(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    fields.forEach(f => { if (saved[f.name]) f.value = saved[f.name]; });
+  }catch(e){}
+}
+function save(silent){
+  const data = {};
+  fields.forEach(f => data[f.name] = f.value);
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); if(!silent) toast("Guardado"); }
+  catch(e){ if(!silent) toast("No se pudo guardar en este navegador"); }
+}
+function progress(){
+  let done = 0;
+  fields.forEach(f => {
+    const ok = f.value.trim().length > 0;
+    f.closest(".q").classList.toggle("filled", ok);
+    if (ok) done++;
+  });
+  const pct = Math.round(done / fields.length * 100);
+  document.getElementById("bar").style.width = pct + "%";
+  document.getElementById("pct").textContent = pct + "%";
+  return pct;
+}
+let t;
+form.addEventListener("input", () => { progress(); clearTimeout(t); t = setTimeout(() => save(true), 600); });
+document.getElementById("btnSave").onclick = () => save(false);
+load(); progress();
+
+/* =========================================================
+   DICTADO POR VOZ (Chrome, Edge, Safari)
+   ========================================================= */
+let rec = null, activeBtn = null;
+form.addEventListener("click", e => {
+  const btn = e.target.closest(".mic"); if (!btn) return;
+  if (rec) { rec.stop(); return; }
+  const ta = document.getElementById(btn.dataset.for);
+  rec = new SR(); rec.lang = "es-ES"; rec.continuous = true; rec.interimResults = false;
+  activeBtn = btn; btn.classList.add("on");
+  rec.onresult = ev => {
+    for (let i = ev.resultIndex; i < ev.results.length; i++){
+      if (ev.results[i].isFinal){
+        const txt = ev.results[i][0].transcript.trim();
+        ta.value = (ta.value ? ta.value.replace(/\s*$/," ") : "") + txt.charAt(0).toUpperCase() + txt.slice(1) + ". ";
+        ta.dispatchEvent(new Event("input", {bubbles:true}));
+      }
+    }
+  };
+  rec.onerror = () => toast("No se pudo usar el micrófono");
+  rec.onend = () => { activeBtn && activeBtn.classList.remove("on"); rec = null; activeBtn = null; };
+  rec.start();
+});
+
+/* =========================================================
+   ENVÍO
+   Formato pensado para importarse al sistema interno.
+   ========================================================= */
+function buildPayload(){
+  const answers = {};
+  fields.forEach(f => answers[f.name] = f.value.trim());
+  return {
+    form_version: CONFIG.FORM_VERSION,
+    client_id: CLIENT_ID,
+    empresa: EMPRESA || answers.contacto_empresa || "",
+    submitted_at: new Date().toISOString(),
+    completion_pct: progress(),
+    answers,
+    questions: SECTIONS.flatMap(s => s.qs.map(q => ({key:q.k, section:s.id, label:q.l})))
+  };
+}
+function downloadBackup(payload){
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `kickoff-${(payload.empresa||"cliente").toLowerCase().replace(/\s+/g,"-")}.json`;
+  a.click();
+}
+document.getElementById("btnSend").onclick = async () => {
+  const status = document.getElementById("status");
+  const btn = document.getElementById("btnSend");
+  save(true);
+  const payload = buildPayload();
+  btn.disabled = true; status.className = "status"; status.textContent = "Enviando…";
+  try{
+    if (!CONFIG.ENDPOINT || CONFIG.ENDPOINT.startsWith("PEGAR")) throw new Error("sin endpoint");
+    // text/plain evita el preflight CORS con Google Apps Script
+    await fetch(CONFIG.ENDPOINT, { method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) });
+    status.className = "status ok";
+    status.textContent = "¡Recibido! Lo revisamos y te escribimos para cerrar la fecha del kickoff.";
+    btn.textContent = "Enviar de nuevo";
+  }catch(e){
+    status.className = "status err";
+    status.textContent = "No hemos podido enviarlo. Se ha descargado un archivo con tus respuestas: envíanoslo por email o WhatsApp.";
+    downloadBackup(payload);
+  }finally{ btn.disabled = false; }
+};
+
+function toast(msg){
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 1600);
+}
+</script>
+</body>
+</html>
