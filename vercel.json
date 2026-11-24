@@ -12,7 +12,7 @@
       ]
     },
     {
-      "source": "/(interno|api)/(.*)",
+      "source": "/(interno|api|descargas)/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
