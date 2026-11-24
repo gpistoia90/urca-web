@@ -54,25 +54,24 @@
       <li>Con esa frase tienes el guion de tu próximo anuncio y las búsquedas por las que merece la pena pagar.</li>
     </ul>
   </div>
-  <form class="form iman-form" id="iman-form" novalidate>
+  <form class="form iman-form" id="iman-form" action="https://formsubmit.co/hola@urca.agency" method="POST" novalidate>
+    <input type="hidden" name="_subject" value="Descarga CLIENTE">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="https://www.urca.agency/recursos/plantilla-cliente-ideal-gracias">
+    <input type="hidden" name="_autoresponse" value="Hola:&#10;&#10;Aquí tienes tu plantilla de cliente ideal:&#10;https://www.urca.agency/descargas/URCA-plantilla-cliente-ideal.pdf&#10;&#10;Rellénala de corrido, sin buscar la respuesta «correcta»: la primera que te sale suele ser la buena. Cuando llegues a la frase final («mi cliente ideal es… que quiere… pero le frena…») tendrás, sin darte cuenta, el guion de tu próximo anuncio.&#10;&#10;Si quieres que la revisemos contigo, escríbenos a hola@urca.agency.&#10;&#10;Un saludo,&#10;URCA · Tu inversión, a buen puerto.">
+    <input type="hidden" name="iman" value="CLIENTE · plantilla de cliente ideal">
+    <input type="hidden" name="origen" value="">
     <input class="oculto" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="campo ancho"><label for="im-email">Tu correo</label><input id="im-email" name="email" type="email" autocomplete="email" required></div>
     <fieldset class="opciones-radio ancho"><legend>¿Ya inviertes en Google Ads o Meta Ads?</legend>
-      <label><input type="radio" name="invierte" value="Sí" required> Sí</label>
-      <label><input type="radio" name="invierte" value="Todavía no"> Todavía no</label>
+      <label><input type="radio" name="ya_invierte" value="Sí" required> Sí</label>
+      <label><input type="radio" name="ya_invierte" value="Todavía no"> Todavía no</label>
     </fieldset>
     <label class="casilla ancho"><input type="checkbox" name="privacidad" value="aceptada" required><span>Acepto que URCA guarde mi correo para enviarme la plantilla y, de vez en cuando, ideas para mis anuncios. Puedo pedir la baja cuando quiera. <a href="/privacidad" target="_blank" rel="noopener">Privacidad</a>.</span></label>
     <p class="cl-error ancho" id="im-error" role="alert" hidden></p>
     <div class="ancho"><button class="btn btn-principal" type="submit">Enviarme la plantilla →</button></div>
-    <p class="ayuda ancho">Te llega al momento, y también la puedes descargar aquí mismo.</p>
+    <p class="ayuda ancho">Puede que te pida marcar «no soy un robot». Después vuelves aquí con la plantilla lista para descargar, y te llega también al correo.</p>
   </form>
-  <div class="form iman-listo" id="iman-listo" role="status" tabindex="-1" hidden>
-    <p class="etiqueta ancho">Listo</p>
-    <h2 class="ancho">Aquí tienes tu plantilla.</h2>
-    <p class="ancho" id="im-correo"></p>
-    <p class="ancho"><a class="btn btn-principal" href="/descargas/URCA-plantilla-cliente-ideal.pdf" download id="im-descarga">Descargar la plantilla (PDF)</a></p>
-    <p class="ancho iman-siguiente" id="im-siguiente"></p>
-  </div>
   <figure class="iman-vista"><img src="/img/recursos/plantilla-cliente-ideal.jpg" alt="Primera página de la plantilla de cliente ideal de URCA" width="777" height="1100" loading="lazy"></figure>
 </div></div></section><section class="cierre oscuro">
   <div class="wrap">
@@ -111,51 +110,25 @@
 </footer>
 <script>
 (function () {
-  var f = document.getElementById('iman-form'), listo = document.getElementById('iman-listo'), err = document.getElementById('im-error');
+  var f = document.getElementById('iman-form'), err = document.getElementById('im-error');
   if (!f) return;
-  var EMAIL = "hola@urca.agency", AUTORESPUESTA = "Hola:\n\nAquí tienes tu plantilla de cliente ideal:\nhttps://www.urca.agency/descargas/URCA-plantilla-cliente-ideal.pdf\n\nRellénala de corrido, sin buscar la respuesta «correcta»: la primera que te sale suele ser la buena. Cuando llegues a la frase final («mi cliente ideal es… que quiere… pero le frena…») tendrás, sin darte cuenta, el guion de tu próximo anuncio.\n\nSi quieres que la revisemos contigo, escríbenos a hola@urca.agency.\n\nUn saludo,\nURCA · Tu inversión, a buen puerto.", EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, GRACIAS = "https://www.urca.agency/recursos/plantilla-cliente-ideal-gracias";
   var q = new URLSearchParams(location.search);
-  function medir(ev, datos) {
-    try {
-      window.dataLayer = window.dataLayer || []; var o = { event: ev }; for (var k in datos) o[k] = datos[k]; window.dataLayer.push(o);
-      if (typeof window.gtag === 'function') window.gtag('event', ev, datos);
-      if (typeof window.fbq === 'function') window.fbq('track', 'Lead', datos);
-    } catch (e) {}
-  }
-  function mostrar(invierte, enviado) {
-    document.getElementById('im-correo').textContent = enviado
-      ? 'También te la hemos enviado al correo. Si no la ves en unos minutos, mira en Promociones o en Spam.'
-      : 'No hemos podido enviártela por correo, pero aquí la tienes. Si la quieres también por correo, escríbenos a ' + EMAIL + '.';
-    document.getElementById('im-siguiente').innerHTML = invierte === 'Sí'
-      ? '<b>Ya inviertes en anuncios:</b> cuando la tengas rellena, podemos revisarla contigo junto a tu cuenta. <a href="/contacto">Cuéntanos tu caso →</a>'
-      : '<b>Antes de invertir:</b> calcula cuánto puedes pagar como máximo por cada cliente con la <a href="/recursos/calculadora-roas">calculadora de ROAS</a>. Es gratis y no pide correo.';
-    f.hidden = true; listo.hidden = false; listo.focus();
-  }
+  f.elements.origen.value = [q.get('utm_source'), q.get('utm_medium'), q.get('utm_campaign')].filter(Boolean).join(' / ') || document.referrer || 'directo';
   f.addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    if (f.elements._honey.value) return;
-    var correo = f.elements.email.value.trim(), marcada = f.querySelector('input[name=invierte]:checked'), inv = marcada ? marcada.value : '';
+    var correo = f.elements.email.value.trim(), marcada = f.querySelector('input[name=ya_invierte]:checked'), inv = marcada ? marcada.value : '';
     var fallo = !EMAIL_RE.test(correo) ? 'Revisa el correo: parece incompleto.' : !inv ? 'Dinos si ya inviertes en anuncios: es un clic.' : !f.elements.privacidad.checked ? 'Marca la casilla para poder enviártela.' : '';
-    if (fallo) { err.textContent = fallo; err.hidden = false; return; }
+    if (fallo) { ev.preventDefault(); err.textContent = fallo; err.hidden = false; return; }
     err.hidden = true;
+    f.elements._subject.value = 'Descarga CLIENTE · ya invierte: ' + inv;
+    f.elements._next.value = GRACIAS + '?invierte=' + (inv === 'Sí' ? 'si' : 'no');
+    try {
+      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'generate_lead', origen: 'iman_cliente', ya_invierte: inv });
+      if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { origen: 'iman_cliente', ya_invierte: inv });
+      if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { origen: 'iman_cliente' });
+    } catch (e) {}
     var b = f.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
-    var d = new FormData();
-    d.append('email', correo); d.append('ya_invierte', inv); d.append('iman', 'CLIENTE · plantilla de cliente ideal');
-    d.append('origen', [q.get('utm_source'), q.get('utm_medium'), q.get('utm_campaign')].filter(Boolean).join(' / ') || document.referrer || 'directo');
-    d.append('privacidad', 'aceptada');
-    d.append('_subject', 'Descarga CLIENTE · ya invierte: ' + inv);
-    d.append('_template', 'table');
-    d.append('_autoresponse', AUTORESPUESTA);
-    fetch('https://formsubmit.co/ajax/' + EMAIL, { method: 'POST', headers: { Accept: 'application/json' }, body: d })
-      .then(function (r) { return r.json(); })
-      .then(function (j) {
-        if (String(j && j.success) !== 'true') throw new Error('sin enviar');
-        medir('generate_lead', { origen: 'iman_cliente', ya_invierte: inv });
-        mostrar(inv, true);
-      })
-      .catch(function () { mostrar(inv, false); });
   });
-  document.getElementById('im-descarga').addEventListener('click', function () { medir('file_download', { archivo: 'plantilla-cliente-ideal' }); });
 })();
 </script>
 <script src="/chat.js?v=2026-11-24" defer></script>

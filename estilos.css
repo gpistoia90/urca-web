@@ -855,3 +855,6 @@ h3 { font-size: 20px; line-height: 1.3; }
 .iman-siguiente { border-top: 1px solid var(--line); padding-top: 14px; font-size: 15px; color: var(--ink-muted); }
 .iman-siguiente b { color: var(--ink); }
 .iman [hidden] { display: none !important; }
+.iman-gracias { max-width: var(--read); display: grid; gap: 22px; }
+.iman-gracias [hidden] { display: none !important; }
+.iman-gracias .iman-siguiente p + p { margin-top: 12px; }
