@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meta Ads para pymes: clientes, no likes | URCA</title>
+<meta name="description" content="Campañas en Facebook e Instagram para pymes, medidas en contactos y ventas. Cuéntanos tu caso y te enviamos una propuesta con precio cerrado.">
+<!-- Landing de anuncios: fuera de Google para no competir con /meta-ads -->
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="URCA">
+<meta property="og:title" content="Meta Ads para pymes: clientes, no likes | URCA">
+<meta property="og:description" content="Campañas en Facebook e Instagram medidas en ventas.">
+<meta property="og:image" content="https://www.urca.agency/img/og.jpg">
+<meta name="theme-color" content="#0B0F0D">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/estilos.css?v=2026-11-26">
+<style>
+  /* Solo para esta landing */
+  .lp-cab { background: var(--d-ground); border-bottom: 1px solid var(--d-line); }
+  .lp-cab .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .lp-cab img { width: 116px; height: 37px; }
+  .lp-cab a.btn { white-space: nowrap; }
+
+  .lp-portada { padding-block: clamp(40px, 6vw, 80px); background-image: radial-gradient(700px 520px at 100% 100%, rgba(46, 90, 69, .45), transparent 70%); }
+  .lp-portada .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); grid-template-areas: "intro form" "puntos form"; gap: 0 clamp(32px, 5vw, 72px); align-items: start; }
+  .lp-intro { grid-area: intro; }
+  .lp-form { grid-area: form; }
+  .lp-puntos { grid-area: puntos; }
+  .lp-portada .etiqueta { color: var(--lime); margin-bottom: 20px; }
+  .lp-titular { font-family: var(--display); font-weight: 800; line-height: .95; letter-spacing: -0.03em; }
+  .lp-titular del { position: relative; display: inline-block; text-decoration: none; font-size: clamp(44px, 7vw, 84px); color: var(--d-ink-muted); opacity: .7; }
+  .lp-titular del::after { content: ""; position: absolute; left: -8px; right: -8px; top: 54%; height: clamp(8px, 1vw, 12px); border-radius: 8px; background: var(--lime); transform: rotate(-4deg); box-shadow: 0 0 24px rgba(184, 242, 92, .4); }
+  .lp-titular .si { display: block; margin-top: 10px; font-size: clamp(44px, 20vw, 124px); color: var(--lime); }
+  .lp-portada .entradilla { margin-top: 28px; max-width: 46ch; font-size: clamp(18px, 1.8vw, 21px); line-height: 1.5; color: var(--d-ink); }
+  .lp-puntos { list-style: none; padding: 0; margin-top: 28px; display: grid; gap: 12px; max-width: 46ch; }
+  .lp-puntos li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; color: var(--d-ink-muted); }
+  .lp-puntos li::before { content: "✓"; color: var(--lime); font-weight: 600; }
+  .lp-puntos b { color: var(--d-ink); font-weight: 600; }
+
+  .lp-form { color-scheme: light; background: var(--surface); color: var(--ink); border-radius: 16px; padding: clamp(20px, 3vw, 30px); box-shadow: 0 24px 60px rgba(0, 0, 0, .35); scroll-margin-top: 24px; }
+  .lp-form h2 { color: var(--ink); font-size: 24px; }
+  .lp-form > p { margin-top: 6px; color: var(--ink-muted); font-size: 15px; }
+  .lp-form .form { margin-top: 18px; padding: 0; border: 0; background: none; grid-template-columns: 1fr; gap: 14px; }
+  .lp-form .campo input, .lp-form .campo select { padding: 11px 14px; }
+  .lp-form .opcional { font-weight: 400; color: var(--ink-muted); }
+  .lp-form .btn { width: 100%; justify-content: center; font-size: 17px; padding-block: 15px; background: var(--ink); color: var(--lime); }
+  .lp-form .btn:hover { filter: none; background: #000; }
+  .lp-form .letra { font-size: 13px; color: var(--ink-muted); text-align: center; }
+
+  .lp-pie { padding-block: 28px; font-size: 14px; }
+  .lp-pie .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; color: var(--muted); }
+  .lp-pie a { color: var(--fg); text-decoration: none; }
+  .lp-pie a:hover { color: var(--acc); }
+
+  /* En móvil el formulario va justo después del titular */
+  @media (max-width: 900px) {
+    .lp-portada .wrap { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "form" "puntos"; }
+    .lp-form { margin-top: 32px; }
+    .lp-puntos { margin-top: 36px; }
+  }
+  @media (max-width: 520px) {
+    .lp-cab a.btn { padding: 8px 14px; font-size: 14px; }
+    .lp-cab img { width: 100px; height: 32px; }
+  }
+  @media (max-width: 359px) { .lp-cab a.btn { display: none; } }
+</style>
+</head>
+<body>
+<a class="salto" href="#formulario">Saltar al formulario</a>
+
+<!-- Sin menú: una sola salida, el formulario -->
+<header class="lp-cab oscuro">
+  <div class="wrap">
+    <img src="/img/urca-lockup-sobre-oscuro.svg" alt="URCA" width="116" height="37">
+    <a class="btn btn-principal btn-peq" href="#formulario">Pide tu propuesta</a>
+  </div>
+</header>
+
+<main id="contenido">
+<section class="lp-portada oscuro">
+  <div class="wrap">
+    <div class="lp-intro">
+      <p class="etiqueta">Meta Ads · Facebook e Instagram · Pymes</p>
+      <h1 class="lp-titular"><del>Likes</del><span class="si">Clientes.</span></h1>
+      <p class="entradilla">Hacemos campañas en Facebook e Instagram para pymes y las medimos en contactos y ventas, no en alcance ni en «me gusta».</p>
+    </div>
+
+    <ul class="lp-puntos">
+      <li><span><b>Medición antes de lanzar:</b> cada formulario, mensaje y llamada queda registrado.</span></li>
+      <li><span><b>Presupuesto prudente:</b> empezamos con poco y solo subimos si los datos lo justifican.</span></li>
+      <li><span><b>Creatividades incluidas:</b> imágenes y vídeos para feed, stories y reels, con guion para grabar con el móvil.</span></li>
+      <li><span><b>Precio cerrado</b> y por escrito antes de empezar. Las cuentas, a tu nombre.</span></li>
+    </ul>
+
+    <div class="lp-form" id="formulario">
+      <h2>Cuéntanos tu caso</h2>
+      <p>Miramos tu negocio y te enviamos una propuesta con precio cerrado. Sin compromiso.</p>
+      <form class="form" action="https://formsubmit.co/hola@urca.agency" method="POST">
+        <input type="hidden" name="_subject" value="Nuevo lead · Landing Meta Ads pymes">
+        <input type="hidden" name="_next" value="https://www.urca.agency/lp/gracias">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="landing" value="meta-ads-pymes">
+        <input type="hidden" name="utm_source" value="">
+        <input type="hidden" name="utm_medium" value="">
+        <input type="hidden" name="utm_campaign" value="">
+        <input type="hidden" name="utm_content" value="">
+        <input class="oculto" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="campo"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" autocomplete="name" required></div>
+        <div class="campo"><label for="f-email">Correo</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="campo"><label for="f-tel">Teléfono o WhatsApp <span class="opcional">(opcional)</span></label><input id="f-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel"></div>
+        <div class="campo"><label for="f-negocio">Tu negocio o web</label><input id="f-negocio" name="negocio" autocomplete="organization" placeholder="Ej.: Clínica Dental Sants o tuweb.com" required></div>
+        <div class="campo"><label for="f-inversion">Inversión mensual en anuncios</label>
+          <select id="f-inversion" name="inversion"><option>Todavía no invierto</option><option>Menos de 300 €</option><option>300–1.000 €</option><option>1.000–3.000 €</option><option>Más de 3.000 €</option></select></div>
+        <label class="casilla"><input type="checkbox" name="privacidad" value="aceptada" required><span>He leído la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a> y acepto que URCA use estos datos para responder a mi consulta.</span></label>
+        <button class="btn" type="submit">Quiero mi propuesta →</button>
+        <p class="letra">Te respondemos en 1 día laborable.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="seccion blanca">
+  <div class="wrap">
+    <div class="cab-seccion"><p class="etiqueta">Cómo trabajamos</p><h2>Del primer anuncio al coste por cliente</h2></div>
+    <ol class="pasos">
+      <li><span class="cuando">Semana 1</span><h3>Revisamos tu negocio y tus números</h3><p>Qué vendes, a quién y cuánto vale un cliente para ti. Si no tienes cuenta publicitaria, la creamos a tu nombre.</p></li>
+      <li><span class="cuando">Antes de lanzar</span><h3>Dejamos la medición lista</h3><p>Píxel de Meta y API de conversiones. Sin eso no se puede saber qué anuncio trae clientes.</p></li>
+      <li><span class="cuando">Semanas 2–4</span><h3>Lanzamos una oferta clara</h3><p>Una primera visita, una prueba o una consulta, con públicos por zona e intereses y varias versiones de cada anuncio.</p></li>
+      <li><span class="cuando">Cada semana</span><h3>Ajustamos</h3><p>Apagamos lo que no trae contactos y movemos el dinero hacia lo que sí.</p></li>
+      <li><span class="cuando">Cada mes</span><h3>Informe en lenguaje claro</h3><p>Cuánto se invirtió, cuántos contactos llegaron y cuánto costó cada uno.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="wrap">
+    <div class="cab-seccion"><p class="etiqueta">Nuestras reglas</p><h2>Claridad desde el primer día</h2></div>
+    <ul class="compromisos">
+      <li><h3>Las cuentas son tuyas</h3><p>Meta y la medición se crean a tu nombre. Si un día te vas, te lo llevas todo.</p></li>
+      <li><h3>La inversión, directa</h3><p>Pagas los anuncios a Meta con tu tarjeta. Ese dinero no pasa por nosotros.</p></li>
+      <li><h3>Precio cerrado</h3><p>Te damos por escrito lo que cuesta la gestión antes de empezar.</p></li>
+      <li><h3>Nada sin tu visto bueno</h3><p>Usamos IA para hacer más versiones de cada anuncio, pero una persona revisa todo y tú apruebas antes de publicar.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="seccion blanca">
+  <div class="wrap">
+    <div class="cab-seccion"><p class="etiqueta">Preguntas frecuentes</p><h2>Antes de escribirnos</h2></div>
+    <div class="preguntas">
+      <details open><summary>¿Cuánto tengo que invertir en anuncios?</summary><div class="respuesta"><p>Tú decides el presupuesto y lo pagas directamente a Meta. Empezamos con una cantidad prudente y solo la subimos cuando sabemos qué anuncio trae contactos.</p></div></details>
+      <details><summary>¿Tengo que grabar vídeos?</summary><div class="respuesta"><p>Pocos. Partimos de lo que ya tienes y, si falta material, te damos un guion corto para grabar con el móvil. Los vídeos sencillos y reales suelen funcionar mejor que los muy producidos.</p></div></details>
+      <details><summary>¿Cuánto tarda en funcionar?</summary><div class="respuesta"><p>Meta necesita unos días de aprendizaje al empezar cada campaña. En las primeras dos semanas ya se ve qué mensajes funcionan mejor, y a partir de ahí ajustamos.</p></div></details>
+      <details><summary>¿Es lo mismo que llevar mis redes sociales?</summary><div class="respuesta"><p>No. Llevar redes es publicar en tu perfil. Nosotros hacemos publicidad pagada para llegar a gente que no te sigue y conseguir contactos o ventas.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="cierre oscuro">
+  <div class="wrap">
+    <div class="cierre-texto"><h2>¿Probamos Meta Ads en tu negocio?</h2><p>Dos minutos de formulario. Te respondemos en 1 día laborable con los siguientes pasos.</p></div>
+    <a class="btn btn-principal" href="#formulario">Pide tu propuesta →</a>
+  </div>
+</section>
+</main>
+
+<footer class="lp-pie oscuro">
+  <div class="wrap">
+    <span>© 2026 URCA. Tu inversión, a buen puerto.</span>
+    <a href="mailto:hola@urca.agency">hola@urca.agency</a>
+    <a href="/aviso-legal">Aviso legal</a>
+    <a href="/privacidad">Privacidad</a>
+  </div>
+</footer>
+
+<script>
+// Copia los UTM de la URL al formulario, para saber de qué anuncio llega cada contacto
+(function () {
+  var q = new URLSearchParams(location.search);
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+    var v = q.get(k), el = document.querySelector('input[name="' + k + '"]');
+    if (v && el) el.value = v.slice(0, 100);
+  });
+})();
+</script>
+</body>
+</html>
