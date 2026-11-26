@@ -1,3 +1,5 @@
-# URCA: web en preparación, todavía sin indexar.
+# URCA
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://www.urca.agency/sitemap.xml
